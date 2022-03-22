@@ -1,9 +1,7 @@
 import axios, {
-  AxiosDefaults,
   AxiosInstance,
   AxiosRequestConfig,
   AxiosRequestHeaders,
-  HeadersDefaults,
   ResponseType
 } from 'axios'
 
