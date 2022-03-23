@@ -11,6 +11,7 @@ const Auth = () => {
   const { t } = useLocale()
 
   const [userData, setUserData] = useState<UserAuthData>(initialAuthData)
+  const [authError, setAuthError] = useState('')
 
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget
@@ -23,8 +24,8 @@ const Auth = () => {
       const response = await logIn(userData)
       localStorage.setItem('token', response.data.token)
       await router.replace('/')
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      setAuthError(error?.response?.data?.message || '')
     }
   }
 
@@ -51,6 +52,7 @@ const Auth = () => {
           onClick={handleLogIn}
           onSubmit={handleLogIn}
         />
+        <div data-testid={'error-message'}>{authError}</div>
       </form>
     </div>
   )
