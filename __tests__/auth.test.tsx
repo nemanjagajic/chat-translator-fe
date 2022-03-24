@@ -8,11 +8,8 @@ jest.mock('../hooks/i18n', () => ({
 }))
 
 describe('Auth', () => {
-  beforeEach(() => {
-    render(<Auth />)
-  })
-
   it('renders auth form', () => {
+    render(<Auth />)
     screen.getByPlaceholderText(en.auth.placeholders.email)
     screen.getByPlaceholderText(en.auth.placeholders.password)
     screen.getByText(en.auth.buttons.logIn)
@@ -20,6 +17,7 @@ describe('Auth', () => {
   })
 
   it('displays error message on bad request', async () => {
+    render(<Auth />)
     const message = 'There has been some issues in login request'
     const failingLoginRequest = () => Promise.reject({ response: { status: 200, data: { message } } })
     const logIn = jest.spyOn(authService, 'logIn').mockImplementationOnce(failingLoginRequest)
