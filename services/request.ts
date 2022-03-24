@@ -21,7 +21,7 @@ export const attachHeaders = (instance: AxiosInstance, headers: AxiosRequestHead
   })
 }
 
-const request = (config: AxiosRequestConfig = defaultConfig) => {
+const request = (config: AxiosRequestConfig = defaultConfig): AxiosInstance => {
   const instance = axios.create(config)
   const token = !IS_SERVER && localStorage.getItem('token')
   const headers = {
@@ -31,6 +31,15 @@ const request = (config: AxiosRequestConfig = defaultConfig) => {
   if (token) headers.authorization = token
   attachHeaders(instance, headers)
   return instance
+}
+
+export const apiRequest = async (request: Promise<any>) => {
+  try {
+    const { data } = await request
+    return data
+  } catch (error: any) {
+    throw error?.response?.data?.message
+  }
 }
 
 export default request()

@@ -1,5 +1,5 @@
 import request from '../request'
-import { UserAuthData } from '../../ts/userTypes'
+import { UserAuthData } from '../../ts/user'
 
 const API_ENDPOINTS = {
   LOGIN: '/api/auth/login',

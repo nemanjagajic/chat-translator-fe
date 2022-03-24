@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { UserAuthData } from '../ts/userTypes'
+import { UserAuthData } from '../ts/user'
 import { logIn } from '../services/api/auth'
 import { useLocale } from '../hooks/i18n'
 import { useRouter } from 'next/router'
@@ -21,9 +21,10 @@ const Auth = () => {
   const handleLogIn = async (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault()
     try {
-      const response = await logIn(userData)
-      localStorage.setItem('token', response.data.token)
+      const { data } = await logIn(userData)
+      localStorage.setItem('token', data?.token)
       await router.replace('/')
+      await router.reload()
     } catch (error: any) {
       setAuthError(error?.response?.data?.message || '')
     }
