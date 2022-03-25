@@ -14,3 +14,12 @@ export const useAuthRedirection = () => {
     if (isLoggedIn && isAuthPage) router.replace('/')
   }, [isLoggedIn])
 }
+
+export const useLogOut = () => {
+  const router = useRouter()
+  const logOut = () => {
+    !IS_SERVER && localStorage.removeItem('token')
+    router.reload()
+  }
+  return { logOut }
+}

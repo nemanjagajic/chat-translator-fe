@@ -1,29 +1,27 @@
 import type { NextPage } from 'next'
-import { useRouter } from 'next/router'
 import { useLocale } from '../hooks/i18n'
 import { useFetchAllChats } from '../hooks/chats'
-
-const IS_SERVER = typeof window === 'undefined'
+import { useLogOut } from '../hooks/auth'
+import ChatsDrawer from '../components/chats/ChatsDrawer'
+import Chat from '../components/chats/Chat'
 
 const Home: NextPage = () => {
-  const router = useRouter()
   const { t } = useLocale()
+  const { logOut } = useLogOut()
 
-  const { data } = useFetchAllChats()
-  console.log({ data })
-
-  const logOut = () => {
-    !IS_SERVER && localStorage.removeItem('token')
-    router.reload()
-  }
+  const { data: chats = [] } = useFetchAllChats()
 
   return (
-    <div>
+    <div className='h-screen bg-gray-200'>
       <div
-        className='p-2 mx-4 cursor-pointer text-base font-medium'
+        className='p-2 mx-4 cursor-pointer text-base font-medium h-[8%]'
         onClick={logOut}
       >
         {t.auth.buttons.logOut}
+      </div>
+      <div className='flex flex-row h-[92%]'>
+        <ChatsDrawer chats={chats} />
+        <Chat />
       </div>
     </div>
   )

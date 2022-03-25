@@ -1,9 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import Auth from '../pages/auth'
-import en from '../locales/en'
-import * as authService from '../services/api/auth'
+import Auth from '../../pages/auth'
+import en from '../../locales/en'
+import * as authService from '../../services/api/auth'
 
-jest.mock('../hooks/i18n', () => ({
+jest.mock('../../hooks/i18n', () => ({
   useLocale: () => ({ t: en })
 }))
 
