@@ -7,9 +7,9 @@ type ChatItemProps = {
 
 const ChatItem: FC<ChatItemProps> = ({ chat: { friend, lastMessage } }) => {
   return (
-    <div>
+    <div data-testid='chat-item'>
       <div>{`${friend.firstName} ${friend.lastName}`}</div>
-      <div>{lastMessage.text}</div>
+      <div>{lastMessage.textTranslated || lastMessage.text}</div>
     </div>
   )
 }

@@ -8,5 +8,8 @@ export default {
       logIn: 'Log in',
       logOut: 'Log out'
     }
+  },
+  chats: {
+    emptyChatList: 'There are no chats yet, start by sending someone message!'
   }
 }

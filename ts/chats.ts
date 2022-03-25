@@ -1,6 +1,7 @@
 interface LastMessage {
   _id: string
   text: string
+  textTranslated?: string
   createdAt: string
   senderId: string
 }
@@ -10,7 +11,9 @@ interface ChatParticipator {
   email: string
   firstName: string
   lastName: string
-  showOriginalMessage: boolean
+  showOriginalMessages: boolean
+  sendLanguage?: string
+  receiveLanguage?: string
 }
 
 export interface Chat {

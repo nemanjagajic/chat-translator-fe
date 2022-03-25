@@ -7,7 +7,7 @@ jest.mock('../../hooks/i18n', () => ({
   useLocale: () => ({ t: en })
 }))
 
-describe('Auth', () => {
+describe('Auth page', () => {
   it('renders auth form', () => {
     render(<Auth />)
     screen.getByPlaceholderText(en.auth.placeholders.email)
