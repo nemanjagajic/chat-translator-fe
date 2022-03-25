@@ -34,12 +34,8 @@ const request = (config: AxiosRequestConfig = defaultConfig): AxiosInstance => {
 }
 
 export const apiRequest = async (request: Promise<any>) => {
-  try {
-    const { data } = await request
-    return data
-  } catch (error: any) {
-    throw error?.response?.data?.message
-  }
+  const { data } = await request
+  return data
 }
 
 export default request()

@@ -10,7 +10,7 @@ const Home: NextPage = () => {
   const { t } = useLocale()
 
   const { data } = useFetchAllChats()
-  console.log(data)
+  console.log({ data })
 
   const logOut = () => {
     !IS_SERVER && localStorage.removeItem('token')
