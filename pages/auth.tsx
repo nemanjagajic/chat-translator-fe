@@ -22,7 +22,7 @@ const Auth = () => {
     e.preventDefault()
     try {
       const { data } = await logIn(userData)
-      localStorage.setItem('token', data?.token)
+      localStorage.setItem('user', JSON.stringify(data))
       await router.replace('/')
       await router.reload()
     } catch (error: any) {

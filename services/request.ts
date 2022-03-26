@@ -23,7 +23,8 @@ export const attachHeaders = (instance: AxiosInstance, headers: AxiosRequestHead
 
 const request = (config: AxiosRequestConfig = defaultConfig): AxiosInstance => {
   const instance = axios.create(config)
-  const token = !IS_SERVER && localStorage.getItem('token')
+  const user = !IS_SERVER && localStorage.getItem('user')
+  const token = user ? JSON.parse(user).token : null
   const headers = {
     accept: 'application/json',
     authorization: ''
