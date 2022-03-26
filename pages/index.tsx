@@ -1,14 +1,14 @@
 import type { NextPage } from 'next'
 import { useLocale } from '../hooks/i18n'
 import { useFetchAllChats } from '../hooks/chats'
-import { useGetLoggedUser, useLogOut } from '../hooks/auth'
+import { useLoggedUser, useLogOut } from '../hooks/auth'
 import ChatsDrawer from '../components/chats/ChatsDrawer'
 import Chat from '../components/chats/Chat'
 
 const Home: NextPage = () => {
   const { t } = useLocale()
   const { logOut } = useLogOut()
-  const loggedUser = useGetLoggedUser()
+  const loggedUser = useLoggedUser()
 
   const { data: chats = [], isLoading: isLoadingChats } = useFetchAllChats()
 

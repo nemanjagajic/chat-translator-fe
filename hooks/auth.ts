@@ -25,7 +25,7 @@ export const useLogOut = () => {
   return { logOut }
 }
 
-export const useGetLoggedUser = (): User | null => {
+export const useLoggedUser = (): User | null => {
   const [user, setUser] = useState(null)
 
   useEffect(() => {

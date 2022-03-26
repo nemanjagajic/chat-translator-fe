@@ -10,6 +10,7 @@ export default {
     }
   },
   chats: {
-    emptyChatList: 'There are no chats yet, start by sending someone message!'
+    emptyChatList: 'There are no chats yet, start by sending someone message!',
+    noMessages: 'Send a message to start the conversation!'
   }
 }
