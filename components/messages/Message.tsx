@@ -21,7 +21,6 @@ const Message: FC<MessageProps> = ({ message: {
       data-testid='message-item'
       className={`flex flex-col ${isMessageMine ? 'self-end' : 'self-start'} bg-gray-300 m-4 p-2 w-60`}
     >
-      {console.log('render')}
       <div>{textTranslated || text}</div>
       <div>{moment(createdAt).format('HH:mm')}</div>
     </div>
