@@ -12,6 +12,7 @@ const Chat = () => {
   const selectedChatId = selectedChat ? selectedChat._id : ''
 
   const [nextPageParam, setNextPageParam] = useState(1)
+  const [isLastPageReached, setIsLastPageReached] = useState(false)
 
   const { data: allMessages, fetchNextPage, isLoading } = useFetchMessages(selectedChatId, PAGINATION_LIMIT)
 
@@ -21,9 +22,22 @@ const Chat = () => {
     }
   }, [selectedChat?._id])
 
+  useEffect(() => {
+    checkIsLastPageReached()
+  }, [allMessages])
+
   const resetQueryAndPageParamData = () => {
     setNextPageParam(1)
     queryClient.removeQueries(['messages', selectedChatId])
+  }
+
+  const checkIsLastPageReached = () => {
+    const pages = allMessages?.pages
+    if (pages && pages[pages.length - 1].length < PAGINATION_LIMIT) {
+      setIsLastPageReached(true)
+      return
+    }
+    if (isLastPageReached) setIsLastPageReached(false)
   }
 
   const fetchOlderMessages = async () => {
@@ -32,7 +46,7 @@ const Chat = () => {
   }
 
   const fetchNewestMessages = async () => {
-    queryClient.setQueryData(['messages', selectedChatId], data => ({
+    queryClient.setQueryData(['messages', selectedChatId], () => ({
       pages: [allMessages?.pages[0]],
       pageParams: [undefined],
     }))
@@ -51,9 +65,11 @@ const Chat = () => {
       <div
         className='flex flex-row absolute cursor-pointer'
       >
-        <div className='m-2' onClick={fetchOlderMessages}>
-          Fetch more
-        </div>
+        {!isLastPageReached && (
+          <div className='m-2' onClick={fetchOlderMessages}>
+            Fetch more
+          </div>
+        )}
         <div className='m-2' onClick={fetchNewestMessages}>
           Newest
         </div>
