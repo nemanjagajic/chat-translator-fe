@@ -21,12 +21,13 @@ const Message: FC<MessageProps> = ({ message: {
       data-testid='message-item'
       className={`flex flex-col ${isMessageMine ? 'self-end' : 'self-start'} bg-gray-300 m-4 p-2 w-60`}
     >
+      {console.log('render')}
       <div>{textTranslated || text}</div>
       <div>{moment(createdAt).format('HH:mm')}</div>
     </div>
   )
 }
 
-export default memo(Message, (prevProps, newProps) => {
-  return JSON.stringify(prevProps.message) === JSON.stringify(newProps.message)
+export default memo(Message, (prevProps, nextProps) => {
+  return JSON.stringify(prevProps.message) === JSON.stringify(nextProps.message)
 })
