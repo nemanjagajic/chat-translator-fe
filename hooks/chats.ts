@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query'
+import { useInfiniteQuery, useQuery } from 'react-query'
 import { Chat } from '../ts/chats'
 import { getAllChats, getMessages } from '../services/api/chats'
 import { Message } from '../ts/messages'
@@ -11,11 +11,13 @@ export const useFetchAllChats = () => {
   return { data, isLoading, error }
 }
 
-export const useFetchMessages = (chatId: string) => {
-  const { data, isLoading, error } = useQuery<Message[]>(
+export const useFetchMessages = (chatId: string, limit: number) => {
+  const { data, fetchNextPage, isLoading, error } = useInfiniteQuery<Message[]>(
     ['messages', chatId],
-    () => getMessages(chatId),
-    { enabled: !!chatId }
+    ({ pageParam = 0 }) => getMessages(chatId, pageParam, limit),
+    {
+      enabled: !!chatId
+    }
   )
-  return { data, isLoading, error }
+  return { data, fetchNextPage, isLoading, error }
 }

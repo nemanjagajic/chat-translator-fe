@@ -4,6 +4,7 @@ import { useFetchAllChats } from '../hooks/chats'
 import { useLoggedUser, useLogOut } from '../hooks/auth'
 import ChatsDrawer from '../components/chats/ChatsDrawer'
 import Chat from '../components/chats/Chat'
+import ChatsProvider from '../providers/ChatsProvider'
 
 const Home: NextPage = () => {
   const { t } = useLocale()
@@ -25,10 +26,12 @@ const Home: NextPage = () => {
           {t.auth.buttons.logOut}
         </div>
       </div>
-      <div className='flex flex-row h-[92%]'>
-        <ChatsDrawer chats={chats} isLoadingChats={isLoadingChats} />
-        <Chat />
-      </div>
+      <ChatsProvider>
+        <div className='flex flex-row h-[92%]'>
+          <ChatsDrawer chats={chats} isLoadingChats={isLoadingChats} />
+          <Chat />
+        </div>
+      </ChatsProvider>
     </div>
   )
 }

@@ -8,5 +8,5 @@ const API_ENDPOINTS = {
 export const getAllChats = async () =>
   apiRequest(request.get(API_ENDPOINTS.CHATS))
 
-export const getMessages = async (chatId: string) =>
-  apiRequest(request.get(`${API_ENDPOINTS.MESSAGES}?chatId=${chatId}`))
+export const getMessages = async (chatId: string, offset: number, limit: number) =>
+  apiRequest(request.get(`${API_ENDPOINTS.MESSAGES}?chatId=${chatId}&offset=${offset}&limit=${limit}`))

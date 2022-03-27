@@ -2,7 +2,6 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { useAuthRedirection } from '../hooks/auth'
-import ChatsProvider from '../providers/ChatsProvider'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,9 +16,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ChatsProvider>
-        <Component {...pageProps} />
-      </ChatsProvider>
+      <Component {...pageProps} />
     </QueryClientProvider>
   )
 }
