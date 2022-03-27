@@ -7,7 +7,7 @@ type ChatsListProps = {
   chats: Chat[]
 }
 
-const ChatsList: FC<ChatsListProps> = ({ chats = [] }) => {
+const ChatsList: FC<ChatsListProps> = ({ chats }) => {
   const { t } = useLocale()
 
   const renderAllChats = () => chats.map(chat => <ChatItem key={chat._id} chat={chat} />)

@@ -1,14 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { ChatsContext } from '../../providers/ChatsProvider'
 import { useFetchMessages } from '../../hooks/chats'
-import { useLocale } from '../../hooks/i18n'
 import MessagesList from '../messages/MessagesList'
 import { useQueryClient } from 'react-query'
 
 const PAGINATION_LIMIT = 10
 
 const Chat = () => {
-  const { t } = useLocale()
   const queryClient = useQueryClient()
   const { selectedChat } = useContext(ChatsContext)
   const selectedChatId = selectedChat ? selectedChat._id : ''
@@ -27,14 +25,6 @@ const Chat = () => {
     setNextPageParam(1)
     queryClient.removeQueries(['messages', selectedChatId])
   }
-
-  const renderMessages = () => (
-    <MessagesList messagesPages={allMessages?.pages || null} />
-  )
-
-  const renderNoMessagesText = () => (
-    <div>{t.chats.noMessages}</div>
-  )
 
   const fetchOlderMessages = async () => {
     await fetchNextPage({ pageParam: nextPageParam })
@@ -56,8 +46,6 @@ const Chat = () => {
     )
   }
 
-  const isMessagesListEmpty = !allMessages?.pages[0][0]
-
   return (
     <div className='flex flex-1 h-full bg-gray-400'>
       <div
@@ -70,7 +58,7 @@ const Chat = () => {
           Newest
         </div>
       </div>
-      {isMessagesListEmpty ? renderNoMessagesText() : renderMessages()}
+      {allMessages?.pages && <MessagesList messagesPages={allMessages?.pages} />}
     </div>
   )
 }

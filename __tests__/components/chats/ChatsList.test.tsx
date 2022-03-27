@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react'
-import ChatsList from '../../components/chats/ChatsList'
-import { chats } from '../__mocks__/chats'
-import en from '../../locales/en'
+import ChatsList from '../../../components/chats/ChatsList'
+import { chats } from '../../__mocks__/chats'
+import en from '../../../locales/en'
 
-jest.mock('../../hooks/i18n', () => ({
+jest.mock('../../../hooks/i18n', () => ({
   useLocale: () => ({ t: en })
 }))
 
@@ -20,5 +20,6 @@ describe('ChatsList component', () => {
   it('shows empty list message', () => {
     render(<ChatsList chats={[]} />)
     screen.getByText(en.chats.emptyChatList)
+    expect(screen.queryAllByTestId('chat-item').length).toBe(0)
   })
 })

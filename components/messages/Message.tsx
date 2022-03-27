@@ -17,7 +17,10 @@ const Message: FC<MessageProps> = ({ message: {
   const isMessageMine = senderId === loggedUser?._id
 
   return (
-    <div className={`flex flex-col ${isMessageMine ? 'self-end' : 'self-start'} bg-gray-300 m-4 p-2 w-60`}>
+    <div
+      data-testid='message-item'
+      className={`flex flex-col ${isMessageMine ? 'self-end' : 'self-start'} bg-gray-300 m-4 p-2 w-60`}
+    >
       <div>{textTranslated || text}</div>
       <div>{moment(createdAt).format('HH:mm')}</div>
     </div>
