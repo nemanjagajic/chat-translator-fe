@@ -58,7 +58,7 @@ const Chat = () => {
           Newest
         </div>
       </div>
-      {allMessages?.pages && <MessagesList messagesPages={allMessages?.pages} />}
+      {allMessages?.pages && <MessagesList messagesPages={allMessages.pages} />}
     </div>
   )
 }
