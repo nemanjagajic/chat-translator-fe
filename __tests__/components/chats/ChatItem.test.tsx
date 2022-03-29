@@ -10,13 +10,13 @@ jest.mock('../../../providers/ChatsProvider', () => ({
 }))
 const useChatsContextMock = useChatsContext as jest.Mock;
 
-describe('ChatsList component', () => {
-  it ('renders chat items correctly', () => {
+describe('ChatItem component', () => {
+  it ('toggles active class on chat item selection', () => {
     const chat = chats[0]
     const activeChatClass = 'bg-gray-300'
     useChatsContextMock.mockImplementation(() => {
       const [activeChat, setActiveChat] = useState<Chat | null>(null)
-      return { selectedChat: activeChat, setSelectedChat: () => setActiveChat(chat) }
+      return { selectedChat: activeChat, setSelectedChat: (chat: Chat) => setActiveChat(chat) }
     })
 
     render(<ChatItem chat={chat} />)
