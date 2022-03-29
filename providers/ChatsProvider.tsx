@@ -1,4 +1,4 @@
-import React, { createContext, useState, ReactElement, FC, Dispatch, SetStateAction } from 'react'
+import React, { createContext, useState, ReactElement, FC, Dispatch, SetStateAction, useContext } from 'react'
 import { Chat } from '../ts/chats'
 
 type ChatsContextType = {
@@ -15,7 +15,8 @@ const initialValue = {
   setSelectedChat: () => {}
 }
 
-export const ChatsContext = createContext<ChatsContextType>(initialValue)
+const ChatsContext = createContext<ChatsContextType>(initialValue)
+export const useChatsContext = () => useContext(ChatsContext)
 
 const ChatsProvider: FC<ChatsProviderProps> = ({ children }) => {
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null)

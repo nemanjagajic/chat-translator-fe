@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { ChatsContext } from '../../providers/ChatsProvider'
+import React, { useEffect, useState } from 'react'
+import { useChatsContext } from '../../providers/ChatsProvider'
 import { useFetchMessages } from '../../hooks/chats'
 import MessagesList from '../messages/MessagesList'
 import { useQueryClient } from 'react-query'
@@ -8,7 +8,7 @@ const PAGINATION_LIMIT = 10
 
 const Chat = () => {
   const queryClient = useQueryClient()
-  const { selectedChat } = useContext(ChatsContext)
+  const { selectedChat } = useChatsContext()
   const selectedChatId = selectedChat ? selectedChat._id : ''
 
   const [nextPageParam, setNextPageParam] = useState(1)

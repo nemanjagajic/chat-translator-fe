@@ -1,7 +1,7 @@
-import React, { FC, useContext, useEffect } from 'react'
+import React, { FC, useEffect } from 'react'
 import ChatsList from './ChatsList'
 import { Chat } from '../../ts/chats'
-import { ChatsContext } from '../../providers/ChatsProvider'
+import { useChatsContext } from '../../providers/ChatsProvider'
 
 type ChatsDrawerProps = {
   chats: Chat[]
@@ -9,7 +9,7 @@ type ChatsDrawerProps = {
 }
 
 const ChatsDrawer: FC<ChatsDrawerProps> = ({ chats, isLoadingChats }) => {
-  const { selectedChat, setSelectedChat } = useContext(ChatsContext)
+  const { selectedChat, setSelectedChat } = useChatsContext()
 
   useEffect(() => {
     if (!isLoadingChats && !selectedChat && chats[0]) setSelectedChat(chats[0])
