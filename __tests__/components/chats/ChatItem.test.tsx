@@ -8,7 +8,7 @@ import { useChatsContext } from '../../../providers/ChatsProvider'
 jest.mock('../../../providers/ChatsProvider', () => ({
   useChatsContext: jest.fn()
 }))
-const useChatsContextMock = useChatsContext as jest.Mock;
+const useChatsContextMock = useChatsContext as jest.Mock
 
 describe('ChatItem component', () => {
   it ('toggles active class on chat item selection', () => {

@@ -29,9 +29,9 @@ const MessageInput: FC<MessageInputProps> = ({ fetchNewestMessages }) => {
   }
 
   return (
-    <div className="flex w-full h-12 bg-white">
+    <div className='flex w-full h-12 bg-white'>
       <input
-        className="focus:outline-none w-full"
+        className='focus:outline-none w-full'
         type='text'
         value={text} onChange={handleTextChange}
         onKeyDown={handleKeyDown}
