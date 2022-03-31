@@ -3,6 +3,7 @@ import { useChatsContext } from '../../providers/ChatsProvider'
 import { useFetchMessages } from '../../hooks/chats'
 import MessagesList from '../messages/MessagesList'
 import { useQueryClient } from 'react-query'
+import MessageInput from '../messages/MessageInput'
 
 const PAGINATION_LIMIT = 10
 
@@ -61,7 +62,7 @@ const Chat = () => {
   }
 
   return (
-    <div className='flex flex-1 h-full bg-gray-400'>
+    <div className='flex flex-1 flex-col h-full bg-gray-400'>
       <div
         className='flex flex-row absolute cursor-pointer'
       >
@@ -75,6 +76,7 @@ const Chat = () => {
         </div>
       </div>
       {allMessages?.pages && <MessagesList messagesPages={allMessages.pages} />}
+      <MessageInput fetchNewestMessages={fetchNewestMessages} />
     </div>
   )
 }

@@ -7,3 +7,8 @@ export interface Message {
   receiverId: string
   createdAt: string
 }
+
+export interface MessageInput {
+  chatId: string,
+  text: string
+}

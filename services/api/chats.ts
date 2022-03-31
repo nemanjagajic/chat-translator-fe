@@ -10,3 +10,6 @@ export const getAllChats = async () =>
 
 export const getMessages = async (chatId: string, offset: number, limit: number) =>
   apiRequest(request.get(`${API_ENDPOINTS.MESSAGES}?chatId=${chatId}&offset=${offset}&limit=${limit}`))
+
+export const sendMessage = async (chatId: string, text: string) =>
+  apiRequest(request.post(API_ENDPOINTS.MESSAGES, { chatId, text }) )
