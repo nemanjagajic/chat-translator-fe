@@ -22,3 +22,14 @@ export interface Chat {
   me: ChatParticipator
   friend: ChatParticipator
 }
+
+export enum ChatSettingsProperty {
+  SEND_LANGUAGE = 'sendLanguage',
+  RECEIVE_LANGUAGE = 'receiveLanguage'
+}
+
+export interface ChatSettingsInput {
+  chatId: string
+  property: ChatSettingsProperty
+  value: string
+}

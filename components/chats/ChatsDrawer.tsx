@@ -13,7 +13,15 @@ const ChatsDrawer: FC<ChatsDrawerProps> = ({ chats, isLoadingChats }) => {
 
   useEffect(() => {
     if (!isLoadingChats && !selectedChat && chats[0]) setSelectedChat(chats[0])
+    checkAndUpdateSelectedChat()
   }, [chats])
+
+  const checkAndUpdateSelectedChat = () => {
+    const selectedChatNewestVersion = chats.find(chat => chat._id === selectedChat?._id)
+    const isSelectedChatLanguageChanged = (selectedChatNewestVersion?.me.sendLanguage !== selectedChat?.me.sendLanguage)
+      || (selectedChatNewestVersion?.friend.sendLanguage !== selectedChat?.friend.sendLanguage)
+    if (isSelectedChatLanguageChanged && selectedChatNewestVersion) setSelectedChat(selectedChatNewestVersion)
+  }
 
   return (
     <div className='flex h-full w-[25%] bg-gray-100'>

@@ -11,6 +11,9 @@ export default {
   },
   chats: {
     emptyChatList: 'There are no chats yet, start by sending someone message!',
-    noMessages: 'Send a message to start the conversation!'
+    noMessages: 'Send a message to start the conversation!',
+    settings: {
+      languageNotSelected: 'Language not selected'
+    }
   }
 }
