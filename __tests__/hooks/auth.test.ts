@@ -1,4 +1,4 @@
-import { useAuthRedirection } from '../../hooks/auth'
+import { useAuthRedirection, useLogOut } from '../../hooks/auth'
 import { renderHook } from '@testing-library/react-hooks'
 import { useRouter } from 'next/router'
 
@@ -14,6 +14,7 @@ describe('Auth hooks', () => {
         replace: (path: string) => { currentPath = path },
         pathname: currentPath
       }))
+
       renderHook(useAuthRedirection)
       expect(currentPath).toBe('/auth')
     })
@@ -27,8 +28,22 @@ describe('Auth hooks', () => {
         replace: (path: string) => { currentPath = path },
         pathname: currentPath
       }))
+
       renderHook(useAuthRedirection)
       expect(currentPath).toBe('/')
     })
+  })
+
+  describe('useLogOut', () => {
+    let isPageReloaded = false
+    useRouterMock.mockImplementation(() => ({
+      reload: () => isPageReloaded = true
+    }))
+    jest.spyOn(window.localStorage.__proto__, 'removeItem').mockImplementation()
+
+    const { result } = renderHook(useLogOut)
+    result.current.logOut()
+    expect(window.localStorage.__proto__.removeItem).toBeCalledWith('user')
+    expect(isPageReloaded).toBe(true)
   })
 })
