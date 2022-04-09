@@ -7,7 +7,7 @@ const AUTH_ROUTE = '/auth'
 
 export const useAuthRedirection = () => {
   const router = useRouter()
-  const isLoggedIn = !IS_SERVER && !!localStorage.user
+  const isLoggedIn = !IS_SERVER && !!localStorage.getItem('user')
   const isAuthPage = router.pathname === AUTH_ROUTE
 
   useEffect(() => {
