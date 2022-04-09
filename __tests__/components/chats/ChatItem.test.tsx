@@ -5,9 +5,7 @@ import React, { useState } from 'react'
 import { Chat } from '../../../ts/chats'
 import { useChatsContext } from '../../../providers/ChatsProvider'
 
-jest.mock('../../../providers/ChatsProvider', () => ({
-  useChatsContext: jest.fn()
-}))
+jest.mock('../../../providers/ChatsProvider')
 const useChatsContextMock = useChatsContext as jest.Mock
 
 describe('ChatItem component', () => {

@@ -2,9 +2,7 @@ import { useAuthRedirection } from '../../hooks/auth'
 import { renderHook } from '@testing-library/react-hooks'
 import { useRouter } from 'next/router'
 
-jest.mock('next/router', () => ({
-  useRouter: jest.fn()
-}))
+jest.mock('next/router')
 const useRouterMock = useRouter as jest.Mock
 
 describe('Auth hooks', () => {
