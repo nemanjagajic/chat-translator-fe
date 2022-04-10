@@ -8,42 +8,42 @@ const useRouterMock = useRouter as jest.Mock
 describe('Auth hooks', () => {
   describe('useAuthRedirection', () => {
     it('redirects to auth when no user is logged in', () => {
-      let currentPath = ''
+      const replaceMock = jest.fn()
       jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation(() => null)
       useRouterMock.mockImplementation(() => ({
-        replace: (path: string) => { currentPath = path },
-        pathname: currentPath
+        replace: replaceMock,
+        pathname: ''
       }))
 
       renderHook(useAuthRedirection)
-      expect(currentPath).toBe('/auth')
+      expect(replaceMock).toBeCalledWith('/auth')
     })
 
     it('redirects to home when user is logged in', () => {
-      let currentPath = '/auth'
+      const replaceMock = jest.fn()
       jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation(() => (
         '{ email: \'test@gmail.com\', firstName: \'test\', lastName: \'test\' }'
       ))
       useRouterMock.mockImplementation(() => ({
-        replace: (path: string) => { currentPath = path },
-        pathname: currentPath
+        replace: replaceMock,
+        pathname: '/auth'
       }))
 
       renderHook(useAuthRedirection)
-      expect(currentPath).toBe('/')
+      expect(replaceMock).toBeCalledWith('/')
     })
   })
 
   describe('useLogOut', () => {
-    let isPageReloaded = false
+    const reloadMock = jest.fn()
     useRouterMock.mockImplementation(() => ({
-      reload: () => isPageReloaded = true
+      reload: reloadMock
     }))
     jest.spyOn(window.localStorage.__proto__, 'removeItem').mockImplementation()
 
     const { result } = renderHook(useLogOut)
     result.current.logOut()
     expect(window.localStorage.__proto__.removeItem).toBeCalledWith('user')
-    expect(isPageReloaded).toBe(true)
+    expect(reloadMock).toBeCalled()
   })
 })
