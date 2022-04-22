@@ -49,7 +49,7 @@ const Home: NextPage = () => {
       <ChatsProvider>
         <div className='flex flex-row h-[92%]'>
           <ChatsDrawer chats={chats} isLoadingChats={isLoadingChats} />
-          <Chat />
+          <Chat invalidateChats={invalidateChats} />
         </div>
       </ChatsProvider>
     </div>

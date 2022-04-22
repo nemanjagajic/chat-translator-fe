@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import { useChatsContext } from '../../providers/ChatsProvider'
 import { useFetchMessages } from '../../hooks/chats'
 import MessagesList from '../messages/MessagesList'
@@ -11,7 +11,11 @@ import { Message } from '../../ts/messages'
 
 const PAGINATION_LIMIT = 50
 
-const Chat = () => {
+type ChatProps = {
+  invalidateChats: () => Promise<void>
+}
+
+const Chat: FC<ChatProps> = ({ invalidateChats }) => {
   const queryClient = useQueryClient()
   const { selectedChat } = useChatsContext()
   const selectedChatId = selectedChat ? selectedChat._id : ''
@@ -53,6 +57,7 @@ const Chat = () => {
 
   const onLoadMessage = (message: Message) => {
     if (message.chatId === selectedChatId) fetchNewestMessages()
+    invalidateChats()
   }
 
   const resetQueryAndPageParamData = () => {
