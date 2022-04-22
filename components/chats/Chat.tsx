@@ -9,7 +9,7 @@ import ChatSettings from './ChatSettings'
 import socket from '../../sockets/index'
 import { Message } from '../../ts/messages'
 
-const PAGINATION_LIMIT = 10
+const PAGINATION_LIMIT = 50
 
 const Chat = () => {
   const queryClient = useQueryClient()
@@ -19,27 +19,36 @@ const Chat = () => {
   const [nextPageParam, setNextPageParam] = useState(1)
   const [isLastPageReached, setIsLastPageReached] = useState(false)
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
+  const [isFriendTyping, setIsFriendTyping] = useState(false)
 
   const { data: allMessages, fetchNextPage, isLoading } = useFetchMessages(selectedChatId, PAGINATION_LIMIT)
   const allMessagesRef = useRef<InfiniteData<Message[]>>()
 
   useEffect(() => {
+    socket.on('loadMessage', onLoadMessage)
+    socket.on('friendStartedTyping', ({ chatId }: { chatId: string }) => {
+      if (chatId === selectedChat?._id) setIsFriendTyping(true)
+    })
+    socket.on('friendStoppedTyping', ({ chatId }: { chatId: string }) => {
+      if (chatId === selectedChat?._id) setIsFriendTyping(false)
+    })
+
     return () => {
       resetQueryAndPageParamData()
+      socket.off('loadMessage', onLoadMessage)
+      socket.off('friendStartedTyping', ({ chatId }: { chatId: string }) => {
+        if (chatId === selectedChat?._id) setIsFriendTyping(true)
+      })
+      socket.off('friendStoppedTyping', ({ chatId }: { chatId: string }) => {
+        if (chatId === selectedChat?._id) setIsFriendTyping(false)
+      })
     }
-  }, [selectedChat?._id])
+  }, [selectedChatId])
 
   useEffect(() => {
     allMessagesRef.current = allMessages
     checkIsLastPageReached()
   }, [allMessages])
-
-  useEffect(() => {
-    socket.on('loadMessage', onLoadMessage)
-    return () => {
-      socket.off('loadMessage', onLoadMessage)
-    }
-  }, [selectedChatId])
 
   const onLoadMessage = (message: Message) => {
     if (message.chatId === selectedChatId) fetchNewestMessages()
@@ -100,6 +109,7 @@ const Chat = () => {
       ) : (
         <div className='flex flex-col-reverse h-full w-full overflow-y-scroll' />
       )}
+      {isFriendTyping && <div>Typing...</div>}
       <MessageInput fetchNewestMessages={fetchNewestMessages} />
     </div>
   )
