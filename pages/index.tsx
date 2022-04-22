@@ -13,7 +13,7 @@ const Home: NextPage = () => {
   const { logOut } = useLogOut()
   const loggedUser = useLoggedUser()
 
-  const { data: chats = [], isLoading: isLoadingChats } = useFetchAllChats()
+  const { data: chats = [], isLoading: isLoadingChats, invalidateChats } = useFetchAllChats()
 
   useEffect(() => {
     socket.on('connect', () => {
@@ -25,6 +25,13 @@ const Home: NextPage = () => {
       }
     })
   }, [loggedUser])
+
+  useEffect(() => {
+    socket.on('loadChatSettings', invalidateChats)
+    return () => {
+      socket.off('loadChatSettings', invalidateChats)
+    }
+  }, [])
 
   return (
     <div className='h-screen bg-gray-200'>

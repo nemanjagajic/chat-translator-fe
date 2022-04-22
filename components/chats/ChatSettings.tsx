@@ -1,36 +1,38 @@
-import React, { ChangeEventHandler, Dispatch, SetStateAction, useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useSetSettingsProperty } from '../../hooks/chats'
 import { useChatsContext } from '../../providers/ChatsProvider'
 import { useLocale } from '../../hooks/i18n'
 import languages from '../../utils/languages'
 import { ChatSettingsProperty } from '../../ts/chats'
+import socket from '../../sockets'
 
 const ChatSettings = () => {
   const { t } = useLocale()
   const { selectedChat } = useChatsContext()
 
-  const { mutateAsync: setSettingsProperty } = useSetSettingsProperty(selectedChat)
-  const [sendLanguage, setSendLanguage] = useState('')
-  const [receiveLanguage, setReceiveLanguage] = useState('')
+  const { mutateAsync: setSettingsProperty, invalidateChats } = useSetSettingsProperty(selectedChat)
+  const [language, setLanguage] = useState('')
 
   useEffect(() => {
-    if (selectedChat?.me.sendLanguage) setSendLanguage(selectedChat?.me.sendLanguage)
-    if (selectedChat?.me.receiveLanguage) setReceiveLanguage(selectedChat?.me.receiveLanguage)
+    console.log({ selectedChat })
+    if (selectedChat?.me.sendLanguage) setLanguage(selectedChat?.me.sendLanguage)
   }, [selectedChat])
 
   const applyChanges = async () => {
-    if (!selectedChat || !sendLanguage || !receiveLanguage) return
+    if (!selectedChat || !language) return
 
     await setSettingsProperty({
       chatId: selectedChat._id,
       property: ChatSettingsProperty.SEND_LANGUAGE,
-      value: sendLanguage
+      value: language
     })
     await setSettingsProperty({
       chatId: selectedChat._id,
       property: ChatSettingsProperty.RECEIVE_LANGUAGE,
-      value: receiveLanguage
+      value: language
     })
+    await invalidateChats()
+    socket.emit('chatSettingChanged', selectedChat)
   }
 
   const renderSelectLanguage = (value: string, onChange: Dispatch<SetStateAction<string>>) => (
@@ -44,19 +46,13 @@ const ChatSettings = () => {
     </select>
   )
 
-  const friendsSendLanguage = selectedChat?.friend.sendLanguage || t.chats.settings.languageNotSelected
-  const friendsReceiveLanguage = selectedChat?.friend.receiveLanguage || t.chats.settings.languageNotSelected
+  const friendsLanguage = selectedChat?.friend.sendLanguage || t.chats.settings.languageNotSelected
 
   return (
     <div>
       <div>Mine</div>
-      <div>Send language:</div>
-      {renderSelectLanguage(sendLanguage, setSendLanguage)}
-      <div>Receive language:</div>
-      {renderSelectLanguage(receiveLanguage, setReceiveLanguage)}
-      <div>Theirs</div>
-      <div>Send language: {friendsSendLanguage}</div>
-      <div>Receive language: {friendsReceiveLanguage}</div>
+      {renderSelectLanguage(language, setLanguage)}
+      <div>Their: {friendsLanguage}</div>
 
       <div onClick={applyChanges}>
         Apply

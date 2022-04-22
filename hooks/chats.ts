@@ -5,11 +5,13 @@ import { Message, MessageInput } from '../ts/messages'
 import socket from '../sockets'
 
 export const useFetchAllChats = () => {
+  const queryClient = useQueryClient()
+  const invalidateChats = () => queryClient.invalidateQueries('chats')
   const { data, isLoading, error } = useQuery<Chat[]>(
     'chats',
     getAllChats,
   )
-  return { data, isLoading, error }
+  return { data, isLoading, error, invalidateChats }
 }
 
 export const useFetchMessages = (chatId: string, limit: number) => {
@@ -39,15 +41,10 @@ export const useSendMessage = (onSuccess?: Function) => {
 
 export const useSetSettingsProperty = (selectedChat: Chat | null, onSuccess?: Function) => {
   const queryClient = useQueryClient()
+  const invalidateChats = () => queryClient.invalidateQueries('chats')
   const { mutate, mutateAsync, isLoading, error } = useMutation(
-    ({ chatId, property, value }: ChatSettingsInput) => setSettingProperty(chatId, property, value),
-    {
-      onSuccess: async () => {
-        await queryClient.invalidateQueries('chats')
-        onSuccess?.()
-      }
-    }
+    ({ chatId, property, value }: ChatSettingsInput) => setSettingProperty(chatId, property, value)
   )
 
-  return { mutate, mutateAsync, isLoading, error }
+  return { mutate, mutateAsync, isLoading, error, invalidateChats }
 }

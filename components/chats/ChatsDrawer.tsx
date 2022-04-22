@@ -20,7 +20,7 @@ const ChatsDrawer: FC<ChatsDrawerProps> = ({ chats, isLoadingChats }) => {
     const selectedChatNewestVersion = chats.find(chat => chat._id === selectedChat?._id)
     const me = selectedChat?.me
     const meNew = selectedChatNewestVersion?.me
-    const friend = selectedChatNewestVersion?.friend
+    const friend = selectedChat?.friend
     const friendNew = selectedChatNewestVersion?.friend
     const isSelectedChatLanguageChanged = (meNew?.sendLanguage !== me?.sendLanguage)
       || (meNew?.receiveLanguage !== me?.receiveLanguage)
