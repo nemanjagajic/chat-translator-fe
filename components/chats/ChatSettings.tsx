@@ -14,7 +14,7 @@ const ChatSettings = () => {
   const [language, setLanguage] = useState('')
 
   useEffect(() => {
-    if (selectedChat?.me.sendLanguage) setLanguage(selectedChat?.me.sendLanguage)
+    if (selectedChat?.me.sendLanguage) setLanguage(selectedChat.me.sendLanguage)
   }, [selectedChat])
 
   const applyChanges = async () => {

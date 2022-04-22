@@ -18,14 +18,16 @@ const ChatsDrawer: FC<ChatsDrawerProps> = ({ chats, isLoadingChats }) => {
 
   const checkAndUpdateSelectedChat = () => {
     const selectedChatNewestVersion = chats.find(chat => chat._id === selectedChat?._id)
-    const me = selectedChat?.me
-    const meNew = selectedChatNewestVersion?.me
-    const friend = selectedChat?.friend
-    const friendNew = selectedChatNewestVersion?.friend
-    const isSelectedChatLanguageChanged = (meNew?.sendLanguage !== me?.sendLanguage)
-      || (meNew?.receiveLanguage !== me?.receiveLanguage)
-      || (friendNew?.sendLanguage !== friend?.sendLanguage)
-      || (friendNew?.receiveLanguage !== friend?.receiveLanguage)
+    if (!selectedChat || !selectedChatNewestVersion) return
+
+    const me = selectedChat.me
+    const meNew = selectedChatNewestVersion.me
+    const friend = selectedChat.friend
+    const friendNew = selectedChatNewestVersion.friend
+    const isSelectedChatLanguageChanged = (meNew.sendLanguage !== me.sendLanguage)
+      || (meNew.receiveLanguage !== me.receiveLanguage)
+      || (friendNew.sendLanguage !== friend.sendLanguage)
+      || (friendNew.receiveLanguage !== friend.receiveLanguage)
     if (isSelectedChatLanguageChanged && selectedChatNewestVersion) setSelectedChat(selectedChatNewestVersion)
   }
 

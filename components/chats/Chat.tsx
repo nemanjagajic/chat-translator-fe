@@ -25,22 +25,23 @@ const Chat = () => {
   const allMessagesRef = useRef<InfiniteData<Message[]>>()
 
   useEffect(() => {
+    if (!selectedChat) return
     socket.on('loadMessage', onLoadMessage)
     socket.on('friendStartedTyping', ({ chatId }: { chatId: string }) => {
-      if (chatId === selectedChat?._id) setIsFriendTyping(true)
+      if (chatId === selectedChat._id) setIsFriendTyping(true)
     })
     socket.on('friendStoppedTyping', ({ chatId }: { chatId: string }) => {
-      if (chatId === selectedChat?._id) setIsFriendTyping(false)
+      if (chatId === selectedChat._id) setIsFriendTyping(false)
     })
 
     return () => {
       resetQueryAndPageParamData()
       socket.off('loadMessage', onLoadMessage)
       socket.off('friendStartedTyping', ({ chatId }: { chatId: string }) => {
-        if (chatId === selectedChat?._id) setIsFriendTyping(true)
+        if (chatId === selectedChat._id) setIsFriendTyping(true)
       })
       socket.off('friendStoppedTyping', ({ chatId }: { chatId: string }) => {
-        if (chatId === selectedChat?._id) setIsFriendTyping(false)
+        if (chatId === selectedChat._id) setIsFriendTyping(false)
       })
     }
   }, [selectedChatId])
