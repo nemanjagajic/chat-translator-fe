@@ -5,7 +5,7 @@ import axios, {
   ResponseType
 } from 'axios'
 
-export const BASE_API_ENDPOINT = process.env.NEXT_PUBLIC_API_BASE_URL
+export const BASE_API_ENDPOINT = process.env.NEXT_PUBLIC_API_BASE_URL || ''
 
 const IS_SERVER = typeof window === 'undefined'
 

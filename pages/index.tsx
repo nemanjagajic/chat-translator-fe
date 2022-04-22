@@ -5,6 +5,8 @@ import { useLoggedUser, useLogOut } from '../hooks/auth'
 import ChatsDrawer from '../components/chats/ChatsDrawer'
 import Chat from '../components/chats/Chat'
 import ChatsProvider from '../providers/ChatsProvider'
+import { useEffect } from 'react'
+import socket from '../sockets/index'
 
 const Home: NextPage = () => {
   const { t } = useLocale()
@@ -12,6 +14,17 @@ const Home: NextPage = () => {
   const loggedUser = useLoggedUser()
 
   const { data: chats = [], isLoading: isLoadingChats } = useFetchAllChats()
+
+  useEffect(() => {
+    socket.on('connect', () => {
+      if (loggedUser) {
+        socket.emit('createUserSession', {
+          userId: loggedUser._id,
+          socketId: socket.id
+        })
+      }
+    })
+  }, [loggedUser])
 
   return (
     <div className='h-screen bg-gray-200'>

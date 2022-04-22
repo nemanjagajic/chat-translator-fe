@@ -2,6 +2,7 @@ import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-q
 import { Chat, ChatSettingsInput } from '../ts/chats'
 import { getAllChats, getMessages, sendMessage, setSettingProperty } from '../services/api/chats'
 import { Message, MessageInput } from '../ts/messages'
+import socket from '../sockets'
 
 export const useFetchAllChats = () => {
   const { data, isLoading, error } = useQuery<Chat[]>(
@@ -26,7 +27,10 @@ export const useSendMessage = (onSuccess?: Function) => {
   const { mutate, isLoading, error } = useMutation(
     ({ chatId, text }: MessageInput) => sendMessage(chatId, text),
     {
-      onSuccess: () => onSuccess?.()
+      onSuccess: ({ message }) => {
+        socket.emit('chatMessageSent', message)
+        onSuccess?.()
+      }
     }
   )
 

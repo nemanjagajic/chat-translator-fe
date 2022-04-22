@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useChatsContext } from '../../providers/ChatsProvider'
 import { useFetchMessages } from '../../hooks/chats'
 import MessagesList from '../messages/MessagesList'
-import { useQueryClient } from 'react-query'
+import { InfiniteData, useQueryClient } from 'react-query'
 import MessageInput from '../messages/MessageInput'
 import Modal from '../shared/Modal'
 import ChatSettings from './ChatSettings'
+import socket from '../../sockets/index'
+import { Message } from '../../ts/messages'
 
 const PAGINATION_LIMIT = 10
 
@@ -19,6 +21,7 @@ const Chat = () => {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
 
   const { data: allMessages, fetchNextPage, isLoading } = useFetchMessages(selectedChatId, PAGINATION_LIMIT)
+  const allMessagesRef = useRef<InfiniteData<Message[]>>()
 
   useEffect(() => {
     return () => {
@@ -27,8 +30,20 @@ const Chat = () => {
   }, [selectedChat?._id])
 
   useEffect(() => {
+    allMessagesRef.current = allMessages
     checkIsLastPageReached()
   }, [allMessages])
+
+  useEffect(() => {
+    socket.on('loadMessage', onLoadMessage)
+    return () => {
+      socket.off('loadMessage', onLoadMessage)
+    }
+  }, [selectedChatId])
+
+  const onLoadMessage = (message: Message) => {
+    if (message.chatId === selectedChatId) fetchNewestMessages()
+  }
 
   const resetQueryAndPageParamData = () => {
     setNextPageParam(1)
@@ -51,7 +66,7 @@ const Chat = () => {
 
   const fetchNewestMessages = async () => {
     queryClient.setQueryData(['messages', selectedChatId], () => ({
-      pages: [allMessages?.pages[0]],
+      pages: [allMessagesRef.current?.pages[0]],
       pageParams: [undefined],
     }))
     await queryClient.refetchQueries(['messages', selectedChatId])
@@ -70,9 +85,6 @@ const Chat = () => {
             Fetch more
           </div>
         )}
-        <div className='m-2' onClick={fetchNewestMessages}>
-          Newest
-        </div>
         <div className='m-2' onClick={() => { setIsSettingsModalOpen(true)}}>
           Settings
         </div>
