@@ -13,8 +13,6 @@ const MessagesList: FC<MessagesListProps> = ({ messagesPages, friendLastVisit })
   const { t } = useLocale()
   const isMessagesListEmpty = !messagesPages[0][0]
 
-  useEffect(() => {
-  }, [friendLastVisit])
 
   const renderMessages = () => messagesPages?.map(
     messages => messages.map((message, index) => (
@@ -25,7 +23,7 @@ const MessagesList: FC<MessagesListProps> = ({ messagesPages, friendLastVisit })
           index !== 0 && !moment(message.createdAt).isSame(messages[index - 1].createdAt, 'day')
         }
         nextMessageDate={messages[index - 1] && messages[index - 1].createdAt}
-        isRead={moment(friendLastVisit).isSameOrAfter(moment(message.createdAt))}
+        isRead={!!friendLastVisit && moment(friendLastVisit).isSameOrAfter(moment(message.createdAt))}
       />
     ))
   )
