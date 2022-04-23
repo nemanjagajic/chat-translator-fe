@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC } from 'react'
 import { Message as IMessage } from '../../ts/messages'
 import Message from './Message'
 import { useLocale } from '../../hooks/i18n'
