@@ -9,7 +9,7 @@ jest.mock('../../../hooks/i18n', () => ({
 
 describe('ChatsList component', () => {
   it ('renders chat items correctly', () => {
-    render(<ChatsList chats={chats} />)
+    render(<ChatsList chats={chats} selectedChat={null} setSelectedChat={() => {}} />)
     expect(screen.getAllByTestId('chat-item').length).toBe(chats.length)
     chats.forEach(chat => {
       expect(screen.getAllByText(`${chat.friend.firstName} ${chat.friend.lastName}`).length).toBe(1)
@@ -18,7 +18,7 @@ describe('ChatsList component', () => {
   })
 
   it('shows empty list message', () => {
-    render(<ChatsList chats={[]} />)
+    render(<ChatsList chats={[]}  selectedChat={null} setSelectedChat={() => {}}/>)
     screen.getByText(en.chats.emptyChatList)
     expect(screen.queryAllByTestId('chat-item').length).toBe(0)
   })
