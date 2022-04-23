@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import { Chat } from '../../ts/chats'
 import { useChatsContext } from '../../providers/ChatsProvider'
+import moment from 'moment'
 
 type ChatItemProps = {
   chat: Chat
@@ -8,7 +9,9 @@ type ChatItemProps = {
 
 const ChatItem: FC<ChatItemProps> = ({ chat }) => {
   const { selectedChat, setSelectedChat } = useChatsContext()
-  const { friend, lastMessage } = chat
+  const { friend, lastMessage, me } = chat
+
+  const isLastMessageRead = moment(me.lastVisit).isSameOrAfter(moment(lastMessage.createdAt)) || lastMessage.senderId === me._id
 
   return (
     <div
@@ -18,6 +21,7 @@ const ChatItem: FC<ChatItemProps> = ({ chat }) => {
     >
       <div>{`${friend.firstName} ${friend.lastName}`}</div>
       <div>{lastMessage.textTranslated || lastMessage.text}</div>
+      <div>{isLastMessageRead ? 'read' : 'not read'}</div>
     </div>
   )
 }

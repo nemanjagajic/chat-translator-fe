@@ -1,16 +1,20 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import { Message as IMessage } from '../../ts/messages'
 import Message from './Message'
 import { useLocale } from '../../hooks/i18n'
 import moment from 'moment'
 
 type MessagesListProps = {
-  messagesPages: IMessage[][]
+  messagesPages: IMessage[][],
+  friendLastVisit: string | undefined
 }
 
-const MessagesList: FC<MessagesListProps> = ({ messagesPages }) => {
+const MessagesList: FC<MessagesListProps> = ({ messagesPages, friendLastVisit }) => {
   const { t } = useLocale()
   const isMessagesListEmpty = !messagesPages[0][0]
+
+  useEffect(() => {
+  }, [friendLastVisit])
 
   const renderMessages = () => messagesPages?.map(
     messages => messages.map((message, index) => (
@@ -21,6 +25,7 @@ const MessagesList: FC<MessagesListProps> = ({ messagesPages }) => {
           index !== 0 && !moment(message.createdAt).isSame(messages[index - 1].createdAt, 'day')
         }
         nextMessageDate={messages[index - 1] && messages[index - 1].createdAt}
+        isRead={moment(friendLastVisit).isSameOrAfter(moment(message.createdAt))}
       />
     ))
   )

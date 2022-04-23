@@ -28,8 +28,11 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     socket.on('loadChatSettings', invalidateChats)
+    socket.on('updateFriendVisitData', invalidateChats)
     return () => {
       socket.off('loadChatSettings', invalidateChats)
+      socket.off('updateFriendVisitData', invalidateChats)
+
     }
   }, [])
 

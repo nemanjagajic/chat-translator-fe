@@ -1,6 +1,6 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query'
-import { Chat, ChatSettingsInput } from '../ts/chats'
-import { getAllChats, getMessages, sendMessage, setSettingProperty } from '../services/api/chats'
+import { Chat, ChatLastVisitRequest, ChatSettingsInput } from '../ts/chats'
+import { getAllChats, getMessages, sendMessage, setChatVisited, setSettingProperty } from '../services/api/chats'
 import { Message, MessageInput } from '../ts/messages'
 import socket from '../sockets'
 
@@ -39,7 +39,7 @@ export const useSendMessage = (onSuccess?: Function) => {
   return { mutate, isLoading, error }
 }
 
-export const useSetSettingsProperty = (selectedChat: Chat | null, onSuccess?: Function) => {
+export const useSetSettingsProperty = () => {
   const queryClient = useQueryClient()
   const invalidateChats = () => queryClient.invalidateQueries('chats')
   const { mutate, mutateAsync, isLoading, error } = useMutation(
@@ -47,4 +47,12 @@ export const useSetSettingsProperty = (selectedChat: Chat | null, onSuccess?: Fu
   )
 
   return { mutate, mutateAsync, isLoading, error, invalidateChats }
+}
+
+export const useSetChatVisited = () => {
+  const { mutate, mutateAsync, isLoading, error } = useMutation(
+    ({ userId, chatId }: ChatLastVisitRequest) => setChatVisited(userId, chatId)
+  )
+
+  return { mutate, mutateAsync, isLoading, error }
 }

@@ -28,6 +28,7 @@ const ChatsDrawer: FC<ChatsDrawerProps> = ({ chats, isLoadingChats }) => {
       || (meNew.receiveLanguage !== me.receiveLanguage)
       || (friendNew.sendLanguage !== friend.sendLanguage)
       || (friendNew.receiveLanguage !== friend.receiveLanguage)
+      || (friendNew.lastVisit !== friend.lastVisit)
     if (isSelectedChatLanguageChanged && selectedChatNewestVersion) setSelectedChat(selectedChatNewestVersion)
   }
 

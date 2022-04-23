@@ -14,6 +14,7 @@ interface ChatParticipator {
   showOriginalMessages: boolean
   sendLanguage?: string
   receiveLanguage?: string
+  lastVisit?: string
 }
 
 export interface Chat {
@@ -32,4 +33,13 @@ export interface ChatSettingsInput {
   chatId: string
   property: ChatSettingsProperty
   value: string
+}
+
+export interface ChatLastVisitRequest {
+  userId: string,
+  chatId: string
+}
+
+export interface ChatTypingUpdate {
+  chatId: string
 }

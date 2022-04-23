@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
 import { useChatsContext } from '../../providers/ChatsProvider'
-import { useFetchMessages } from '../../hooks/chats'
+import { useFetchMessages, useSetChatVisited } from '../../hooks/chats'
 import MessagesList from '../messages/MessagesList'
 import { InfiniteData, useQueryClient } from 'react-query'
 import MessageInput from '../messages/MessageInput'
@@ -8,6 +8,8 @@ import Modal from '../shared/Modal'
 import ChatSettings from './ChatSettings'
 import socket from '../../sockets/index'
 import { Message } from '../../ts/messages'
+import { useLoggedUser } from '../../hooks/auth'
+import { ChatTypingUpdate } from '../../ts/chats'
 
 const PAGINATION_LIMIT = 50
 
@@ -19,6 +21,7 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
   const queryClient = useQueryClient()
   const { selectedChat } = useChatsContext()
   const selectedChatId = selectedChat ? selectedChat._id : ''
+  const loggedUser = useLoggedUser()
 
   const [nextPageParam, setNextPageParam] = useState(1)
   const [isLastPageReached, setIsLastPageReached] = useState(false)
@@ -27,24 +30,27 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
 
   const { data: allMessages, fetchNextPage, isLoading } = useFetchMessages(selectedChatId, PAGINATION_LIMIT)
   const allMessagesRef = useRef<InfiniteData<Message[]>>()
+  const { mutateAsync: setChatVisited } = useSetChatVisited()
 
   useEffect(() => {
-    if (!selectedChat) return
+    if (!selectedChat || !loggedUser) return
     socket.on('loadMessage', onLoadMessage)
-    socket.on('friendStartedTyping', ({ chatId }: { chatId: string }) => {
-      if (chatId === selectedChat._id) setIsFriendTyping(true)
+    socket.on('friendStartedTyping', ({ chatId }: ChatTypingUpdate) => {
+      // TODO FIX THIS
+      if (chatId === selectedChat._id) setIsFriendTyping(chatId === selectedChat._id)
     })
-    socket.on('friendStoppedTyping', ({ chatId }: { chatId: string }) => {
+    socket.on('friendStoppedTyping', ({ chatId }: ChatTypingUpdate) => {
       if (chatId === selectedChat._id) setIsFriendTyping(false)
     })
+    handleChatVisited(true)
 
     return () => {
       resetQueryAndPageParamData()
       socket.off('loadMessage', onLoadMessage)
-      socket.off('friendStartedTyping', ({ chatId }: { chatId: string }) => {
+      socket.off('friendStartedTyping', ({ chatId }: ChatTypingUpdate) => {
         if (chatId === selectedChat._id) setIsFriendTyping(true)
       })
-      socket.off('friendStoppedTyping', ({ chatId }: { chatId: string }) => {
+      socket.off('friendStoppedTyping', ({ chatId }: ChatTypingUpdate) => {
         if (chatId === selectedChat._id) setIsFriendTyping(false)
       })
     }
@@ -55,8 +61,11 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
     checkIsLastPageReached()
   }, [allMessages])
 
-  const onLoadMessage = (message: Message) => {
-    if (message.chatId === selectedChatId) fetchNewestMessages()
+  const onLoadMessage = async (message: Message) => {
+    if (message.chatId === selectedChatId) {
+      fetchNewestMessages()
+      await handleChatVisited()
+    }
     invalidateChats()
   }
 
@@ -88,6 +97,15 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
     setNextPageParam(1)
   }
 
+  const handleChatVisited = async (updateChats = false) => {
+    if (!loggedUser || !selectedChat) return
+    const userId = loggedUser._id
+    const chatId = selectedChat._id
+    await setChatVisited({ userId, chatId })
+    if (updateChats) await invalidateChats()
+    socket.emit('friendVisitedChat', { userId, chatId })
+  }
+
   const isReady = !isLoading && selectedChat
 
   return (
@@ -111,7 +129,7 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
         <ChatSettings />
       </Modal>
       {isReady && allMessages?.pages ? (
-        <MessagesList messagesPages={allMessages.pages} />
+        <MessagesList messagesPages={allMessages.pages} friendLastVisit={selectedChat.friend.lastVisit} />
       ) : (
         <div className='flex flex-col-reverse h-full w-full overflow-y-scroll' />
       )}

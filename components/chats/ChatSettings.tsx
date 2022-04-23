@@ -10,7 +10,7 @@ const ChatSettings = () => {
   const { t } = useLocale()
   const { selectedChat } = useChatsContext()
 
-  const { mutateAsync: setSettingsProperty, invalidateChats } = useSetSettingsProperty(selectedChat)
+  const { mutateAsync: setSettingsProperty, invalidateChats } = useSetSettingsProperty()
   const [language, setLanguage] = useState('')
 
   useEffect(() => {

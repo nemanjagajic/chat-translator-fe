@@ -15,7 +15,7 @@ describe('MessagesList component', () => {
     let numberOfMessages = 0
     messagesPages.forEach(page => numberOfMessages += page.length)
 
-    render(<MessagesList messagesPages={messagesPages} />)
+    render(<MessagesList messagesPages={messagesPages} friendLastVisit={undefined} />)
     expect(screen.getAllByTestId('message-item').length).toBe(numberOfMessages)
     messages.forEach(messagePage => {
       messagePage.forEach(message => {
@@ -26,7 +26,7 @@ describe('MessagesList component', () => {
   })
 
   it('shows empty list message', () => {
-    render(<MessagesList messagesPages={[[]]} />)
+    render(<MessagesList messagesPages={[[]]} friendLastVisit={undefined} />)
     screen.getByText(en.chats.noMessages)
     expect(screen.queryAllByTestId('message-item').length).toBe(0)
   })

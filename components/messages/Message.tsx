@@ -6,7 +6,8 @@ import moment from 'moment'
 type MessageProps = {
   message: Message,
   showDateSeparator: boolean,
-  nextMessageDate: string
+  nextMessageDate: string,
+  isRead: boolean
 }
 
 const Message: FC<MessageProps> = ({ message: {
@@ -16,7 +17,8 @@ const Message: FC<MessageProps> = ({ message: {
   createdAt,
 },
   showDateSeparator,
-  nextMessageDate }) => {
+  nextMessageDate,
+  isRead}) => {
   const loggedUser = useLoggedUser()
   const isMessageMine = senderId === loggedUser?._id
 
@@ -28,6 +30,9 @@ const Message: FC<MessageProps> = ({ message: {
       >
         <div>{textTranslated || text}</div>
         <div>{moment(createdAt).format('HH:mm')}</div>
+        {isMessageMine && (
+          <div>{isRead ? 'seen' : 'not seen'}</div>
+        )}
       </div>
       {showDateSeparator && (
         <div>{moment(nextMessageDate).format('MMM DD, YYYY')}</div>
@@ -37,5 +42,5 @@ const Message: FC<MessageProps> = ({ message: {
 }
 
 export default memo(Message, (prevProps, nextProps) => {
-  return JSON.stringify(prevProps.message) === JSON.stringify(nextProps.message)
+  return JSON.stringify(prevProps.message) === JSON.stringify(nextProps.message) && prevProps.isRead === nextProps.isRead
 })
