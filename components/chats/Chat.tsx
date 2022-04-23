@@ -10,6 +10,7 @@ import socket from '../../sockets/index'
 import { Message } from '../../ts/messages'
 import { useLoggedUser } from '../../hooks/auth'
 import { ChatTypingUpdate } from '../../ts/chats'
+import { SocketEvents } from '../../ts/sockets'
 
 const PAGINATION_LIMIT = 50
 
@@ -35,16 +36,16 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
   useEffect(() => {
     setIsFriendTyping(false)
     if (!selectedChat || !loggedUser) return
-    socket.on('loadMessage', onLoadMessage)
-    socket.on('friendStartedTyping', onFriendStartedTyping)
-    socket.on('friendStoppedTyping', onFriendStoppedTyping)
+    socket.on(SocketEvents.loadMessage, onLoadMessage)
+    socket.on(SocketEvents.friendStartedTyping, onFriendStartedTyping)
+    socket.on(SocketEvents.friendStoppedTyping, onFriendStoppedTyping)
     handleChatVisited(true)
 
     return () => {
       resetQueryAndPageParamData()
-      socket.off('loadMessage', onLoadMessage)
-      socket.off('friendStartedTyping', onFriendStartedTyping)
-      socket.off('friendStoppedTyping', onFriendStoppedTyping)
+      socket.off(SocketEvents.loadMessage, onLoadMessage)
+      socket.off(SocketEvents.friendStartedTyping, onFriendStartedTyping)
+      socket.off(SocketEvents.friendStoppedTyping, onFriendStoppedTyping)
     }
   }, [selectedChatId])
 

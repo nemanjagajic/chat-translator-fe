@@ -7,6 +7,7 @@ import Chat from '../components/chats/Chat'
 import ChatsProvider from '../providers/ChatsProvider'
 import { useEffect } from 'react'
 import socket from '../sockets/index'
+import { SocketEvents } from '../ts/sockets'
 
 const Home: NextPage = () => {
   const { t } = useLocale()
@@ -16,7 +17,7 @@ const Home: NextPage = () => {
   const { data: chats = [], isLoading: isLoadingChats, invalidateChats } = useFetchAllChats()
 
   useEffect(() => {
-    socket.on('connect', () => {
+    socket.on(SocketEvents.connect, () => {
       if (loggedUser) {
         socket.emit('createUserSession', {
           userId: loggedUser._id,
@@ -27,11 +28,11 @@ const Home: NextPage = () => {
   }, [loggedUser])
 
   useEffect(() => {
-    socket.on('loadChatSettings', invalidateChats)
-    socket.on('updateFriendVisitData', invalidateChats)
+    socket.on(SocketEvents.loadChatSettings, invalidateChats)
+    socket.on(SocketEvents.updateFriendVisitData, invalidateChats)
     return () => {
-      socket.off('loadChatSettings', invalidateChats)
-      socket.off('updateFriendVisitData', invalidateChats)
+      socket.off(SocketEvents.loadChatSettings, invalidateChats)
+      socket.off(SocketEvents.updateFriendVisitData, invalidateChats)
 
     }
   }, [])
