@@ -33,26 +33,18 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
   const { mutateAsync: setChatVisited } = useSetChatVisited()
 
   useEffect(() => {
+    setIsFriendTyping(false)
     if (!selectedChat || !loggedUser) return
     socket.on('loadMessage', onLoadMessage)
-    socket.on('friendStartedTyping', ({ chatId }: ChatTypingUpdate) => {
-      // TODO FIX THIS
-      if (chatId === selectedChat._id) setIsFriendTyping(chatId === selectedChat._id)
-    })
-    socket.on('friendStoppedTyping', ({ chatId }: ChatTypingUpdate) => {
-      if (chatId === selectedChat._id) setIsFriendTyping(false)
-    })
+    socket.on('friendStartedTyping', onFriendStartedTyping)
+    socket.on('friendStoppedTyping', onFriendStoppedTyping)
     handleChatVisited(true)
 
     return () => {
       resetQueryAndPageParamData()
       socket.off('loadMessage', onLoadMessage)
-      socket.off('friendStartedTyping', ({ chatId }: ChatTypingUpdate) => {
-        if (chatId === selectedChat._id) setIsFriendTyping(true)
-      })
-      socket.off('friendStoppedTyping', ({ chatId }: ChatTypingUpdate) => {
-        if (chatId === selectedChat._id) setIsFriendTyping(false)
-      })
+      socket.off('friendStartedTyping', onFriendStartedTyping)
+      socket.off('friendStoppedTyping', onFriendStoppedTyping)
     }
   }, [selectedChatId])
 
@@ -67,6 +59,14 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
       await handleChatVisited()
     }
     invalidateChats()
+  }
+
+  const onFriendStartedTyping = ({ chatId }: ChatTypingUpdate) => {
+    if (chatId === selectedChat?._id) setIsFriendTyping(true)
+  }
+
+  const onFriendStoppedTyping = ({ chatId }: ChatTypingUpdate) => {
+    if (chatId === selectedChat?._id) setIsFriendTyping(false)
   }
 
   const resetQueryAndPageParamData = () => {
