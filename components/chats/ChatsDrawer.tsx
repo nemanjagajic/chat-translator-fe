@@ -34,7 +34,7 @@ const ChatsDrawer: FC<ChatsDrawerProps> = ({ chats, isLoadingChats }) => {
 
   return (
     <div className='flex h-full w-[25%] bg-gray-100'>
-      {!isLoadingChats && <ChatsList chats={chats} />}
+      {!isLoadingChats && <ChatsList chats={chats} selectedChat={selectedChat} setSelectedChat={setSelectedChat} />}
     </div>
   )
 }

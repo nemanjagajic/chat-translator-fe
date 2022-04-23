@@ -5,12 +5,16 @@ import { useLocale } from '../../hooks/i18n'
 
 type ChatsListProps = {
   chats: Chat[]
+  selectedChat: Chat | null
+  setSelectedChat: Function
 }
 
-const ChatsList: FC<ChatsListProps> = ({ chats }) => {
+const ChatsList: FC<ChatsListProps> = ({ chats, selectedChat, setSelectedChat }) => {
   const { t } = useLocale()
 
-  const renderAllChats = () => chats.map(chat => <ChatItem key={chat._id} chat={chat} />)
+  const renderAllChats = () => chats.map(chat => (
+    <ChatItem key={chat._id} chat={chat} selectedChat={selectedChat} setSelectedChat={setSelectedChat} />
+  ))
   const renderEmptyListText = () => (
     <div>
       {t.chats.emptyChatList}

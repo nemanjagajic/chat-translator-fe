@@ -1,14 +1,14 @@
-import React, { FC } from 'react'
+import React, { FC, memo } from 'react'
 import { Chat } from '../../ts/chats'
-import { useChatsContext } from '../../providers/ChatsProvider'
 import moment from 'moment'
 
 type ChatItemProps = {
-  chat: Chat
+  chat: Chat,
+  selectedChat: Chat | null,
+  setSelectedChat: Function
 }
 
-const ChatItem: FC<ChatItemProps> = ({ chat }) => {
-  const { selectedChat, setSelectedChat } = useChatsContext()
+const ChatItem: FC<ChatItemProps> = ({ chat, selectedChat, setSelectedChat }) => {
   const { friend, lastMessage, me } = chat
 
   const isLastMessageRead = moment(me.lastVisit).isSameOrAfter(moment(lastMessage.createdAt)) || lastMessage.senderId === me._id
@@ -26,4 +26,7 @@ const ChatItem: FC<ChatItemProps> = ({ chat }) => {
   )
 }
 
-export default ChatItem
+export default memo(ChatItem, (prevProps, nextProps) => {
+  return JSON.stringify(prevProps.chat) === JSON.stringify(nextProps.chat)
+    && JSON.stringify(prevProps.selectedChat) === JSON.stringify(nextProps.selectedChat)
+})
