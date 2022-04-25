@@ -26,12 +26,14 @@ export const useFetchMessages = (chatId: string, limit: number) => {
 }
 
 export const useSendMessage = (onSuccess?: Function) => {
+  const queryClient = useQueryClient()
   const { mutate, isLoading, error } = useMutation(
     ({ chatId, text }: MessageInput) => sendMessage(chatId, text),
     {
       onSuccess: ({ message }) => {
         socket.emit('chatMessageSent', message)
         onSuccess?.()
+        queryClient.invalidateQueries('chats')
       }
     }
   )
