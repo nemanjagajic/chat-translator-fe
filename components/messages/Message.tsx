@@ -30,7 +30,7 @@ const Message: FC<MessageProps> = ({ message: {
         className={
           `flex flex-col 
           ${isMessageMine ? 'self-end bg-indigo-500 mt-1' : 'self-start bg-gray-200 mt-2'} 
-          mx-4 max-w-[40%] rounded-3xl px-4 pt-2 pb-1`
+          mx-4 max-w-[50%] rounded-3xl px-4 pt-2 pb-1 break-words`
         }
       >
         <div className={`${isMessageMine ? 'text-white' : 'text-gray-800'}`}>{textTranslated || text}</div>

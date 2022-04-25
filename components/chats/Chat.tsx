@@ -110,7 +110,7 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
   const isReady = !isLoading && selectedChat
 
   return (
-    <div className='flex flex-1 flex-col h-full bg-gray-50'>
+    <div className='flex flex-1 flex-col h-full bg-gray-50 overflow-auto'>
       <Modal
         isOpen={isSettingsModalOpen}
         onClose={() => { setIsSettingsModalOpen(false)} }
@@ -130,7 +130,7 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
       {isFriendTyping && <div>Typing...</div>}
       <div className='flex flex-row'>
         <MessageInput fetchNewestMessages={fetchNewestMessages} />
-        <div className='m-2' onClick={() => { setIsSettingsModalOpen(true)}}>
+        <div className='m-2' onClick={() => { setIsSettingsModalOpen(true)} }>
           Settings
         </div>
       </div>

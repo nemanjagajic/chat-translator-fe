@@ -9,14 +9,14 @@ type MessageInputProps = {
 
 const MessageInput: FC<MessageInputProps> = ({ fetchNewestMessages }) => {
   const { selectedChat } = useChatsContext()
-  const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>
+  const textAreaRef = useRef() as React.MutableRefObject<HTMLTextAreaElement>
   const [text, setText] = useState('')
   const [isTyping, setIsTyping] = useState(false)
 
   const { mutate: sendMessage } = useSendMessage(fetchNewestMessages)
 
   useEffect(() => {
-    const isInputFocused = document.activeElement === inputRef.current
+    const isInputFocused = document.activeElement === textAreaRef.current
     if (text !== '' && isInputFocused && !isTyping) setIsTyping(true)
     if (text === '' && isTyping) setIsTyping(false)
   }, [text, isTyping])
@@ -29,8 +29,11 @@ const MessageInput: FC<MessageInputProps> = ({ fetchNewestMessages }) => {
     })
   }, [isTyping, selectedChat])
 
-  const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (event.target.value === '\n') return
     setText(event.target.value)
+    textAreaRef.current.style.height = ''
+    textAreaRef.current.style.height = textAreaRef.current.scrollHeight + 'px'
   }
 
   const handleSendMessage = () => {
@@ -42,17 +45,22 @@ const MessageInput: FC<MessageInputProps> = ({ fetchNewestMessages }) => {
     sendMessage({ chatId, text: typedText })
   }
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') handleSendMessage()
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      handleSendMessage()
+      textAreaRef.current.style.height = ''
+    }
   }
 
   return (
-    <div className='flex w-full h-12 bg-white'>
-      <input
-        ref={inputRef}
-        className='focus:outline-none w-full'
-        type='text'
-        value={text} onChange={handleTextChange}
+    <div
+      className='flex w-full bg-white ml-2 mb-2 rounded-2xl border'
+    >
+      <textarea
+        ref={textAreaRef}
+        className='focus:outline-none w-full p-2 rounded-2xl h-[40px] resize-none'
+        value={text}
+        onInput={handleTextChange}
         onKeyDown={handleKeyDown}
         onBlur={() => setIsTyping(false)}
       />
