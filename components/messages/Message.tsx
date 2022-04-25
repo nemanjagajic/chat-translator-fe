@@ -2,6 +2,7 @@ import React, { FC, memo } from 'react'
 import { Message } from '../../ts/messages'
 import { useLoggedUser } from '../../hooks/auth'
 import moment from 'moment'
+import { Checkmark, CheckmarkDone } from 'react-ionicons'
 
 type MessageProps = {
   message: Message,
@@ -26,16 +27,29 @@ const Message: FC<MessageProps> = ({ message: {
     <>
       <div
         data-testid='message-item'
-        className={`flex flex-col ${isMessageMine ? 'self-end' : 'self-start'} bg-gray-300 m-4 p-2 w-60`}
+        className={
+          `flex flex-col 
+          ${isMessageMine ? 'self-end bg-indigo-500 mt-1' : 'self-start bg-gray-200 mt-2'} 
+          mx-4 max-w-[40%] rounded-3xl px-4 pt-2 pb-1`
+        }
       >
-        <div>{textTranslated || text}</div>
-        <div>{moment(createdAt).format('HH:mm')}</div>
-        {isMessageMine && (
-          <div>{isRead ? 'seen' : 'not seen'}</div>
-        )}
+        <div className={`${isMessageMine ? 'text-white' : 'text-gray-800'}`}>{textTranslated || text}</div>
+        <div className={`flex flex-row items-center w-full ${isMessageMine ? 'justify-end' : 'justify-start'}`}>
+          <div className={`text-xs mr-1 ${isMessageMine ? 'text-gray-300' : 'text-gray-500'}`}>{moment(createdAt).format('HH:mm')}</div>
+          {isMessageMine && (
+            <div>{isRead
+              ? <CheckmarkDone height='15px' width='15px' color='#2dd4bf' />
+              : <Checkmark height='15px' width='15px' color='#2dd4bf' />}
+            </div>
+          )}
+        </div>
       </div>
       {showDateSeparator && (
-        <div>{moment(nextMessageDate).format('MMM DD, YYYY')}</div>
+        <div className='flex flex-row w-full items-center py-8 px-12'>
+          <div className='flex flex-1 h-[1px] bg-gray-200' />
+          <div className='px-6 text-gray-500 text-sm'>{moment(nextMessageDate).format('MMM DD, YYYY')}</div>
+          <div className='flex flex-1 h-[1px] bg-gray-200' />
+        </div>
       )}
     </>
   )

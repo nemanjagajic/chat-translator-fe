@@ -12,7 +12,7 @@ import { useLoggedUser } from '../../hooks/auth'
 import { ChatTypingUpdate } from '../../ts/chats'
 import { SocketEvents } from '../../ts/sockets'
 
-const PAGINATION_LIMIT = 50
+const PAGINATION_LIMIT = 100
 
 type ChatProps = {
   invalidateChats: () => Promise<void>
@@ -110,19 +110,7 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
   const isReady = !isLoading && selectedChat
 
   return (
-    <div className='flex flex-1 flex-col h-full bg-gray-400'>
-      <div
-        className='flex flex-row absolute cursor-pointer'
-      >
-        {!isLastPageReached && (
-          <div className='m-2' onClick={fetchOlderMessages}>
-            Fetch more
-          </div>
-        )}
-        <div className='m-2' onClick={() => { setIsSettingsModalOpen(true)}}>
-          Settings
-        </div>
-      </div>
+    <div className='flex flex-1 flex-col h-full bg-gray-50'>
       <Modal
         isOpen={isSettingsModalOpen}
         onClose={() => { setIsSettingsModalOpen(false)} }
@@ -130,12 +118,22 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
         <ChatSettings />
       </Modal>
       {isReady && allMessages?.pages ? (
-        <MessagesList messagesPages={allMessages.pages} friendLastVisit={selectedChat.friend.lastVisit} />
+        <MessagesList
+          messagesPages={allMessages.pages}
+          friendLastVisit={selectedChat.friend.lastVisit}
+          fetchOlderMessages={fetchOlderMessages}
+          isLastPageReached={isLastPageReached}
+        />
       ) : (
         <div className='flex flex-col-reverse h-full w-full overflow-y-scroll' />
       )}
       {isFriendTyping && <div>Typing...</div>}
-      <MessageInput fetchNewestMessages={fetchNewestMessages} />
+      <div className='flex flex-row'>
+        <MessageInput fetchNewestMessages={fetchNewestMessages} />
+        <div className='m-2' onClick={() => { setIsSettingsModalOpen(true)}}>
+          Settings
+        </div>
+      </div>
     </div>
   )
 }
