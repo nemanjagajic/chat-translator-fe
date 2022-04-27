@@ -16,12 +16,17 @@ const ChatItem: FC<ChatItemProps> = ({ chat, selectedChat, setSelectedChat }) =>
   return (
     <div
       data-testid='chat-item'
-      className={`cursor-pointer border py-4 ${selectedChat?._id === chat._id ? 'bg-gray-300' : ''}`}
+      className={`relative h-20 cursor-pointer border-b p-4 pr-6 ${selectedChat?._id === chat._id ? 'bg-gray-200' : ''}`}
       onClick={() => setSelectedChat(chat)}
     >
-      <div>{`${friend.firstName} ${friend.lastName}`}</div>
-      <div>{lastMessage.textTranslated || lastMessage.text}</div>
-      <div>{isLastMessageRead ? 'read' : 'not read'}</div>
+      <div className='text-gray-800'>{`${friend.firstName} ${friend.lastName}`}</div>
+      <div className={
+        `overflow-hidden text-ellipsis whitespace-nowrap text-sm
+        ${!isLastMessageRead ? 'text-indigo-500' : 'text-gray-500'}`
+      }>
+        {lastMessage.textTranslated || lastMessage.text}
+      </div>
+      {!isLastMessageRead && <div className='absolute right-3 top-[36px] rounded-full h-2 w-2 bg-indigo-500' />}
     </div>
   )
 }
