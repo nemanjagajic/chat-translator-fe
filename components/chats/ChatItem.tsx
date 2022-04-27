@@ -1,6 +1,7 @@
 import React, { FC, memo } from 'react'
 import { Chat } from '../../ts/chats'
 import moment from 'moment'
+import { formatChatPreviewDate } from '../../utils/dateFormatter'
 
 type ChatItemProps = {
   chat: Chat,
@@ -20,11 +21,14 @@ const ChatItem: FC<ChatItemProps> = ({ chat, selectedChat, setSelectedChat }) =>
       onClick={() => setSelectedChat(chat)}
     >
       <div className='text-gray-800'>{`${friend.firstName} ${friend.lastName}`}</div>
-      <div className={
-        `overflow-hidden text-ellipsis whitespace-nowrap text-sm
-        ${!isLastMessageRead ? 'text-indigo-500' : 'text-gray-500'}`
-      }>
-        {lastMessage.textTranslated || lastMessage.text}
+      <div className='flex flex-row items-center justify-between'>
+        <div className={
+          `overflow-hidden text-ellipsis whitespace-nowrap text-sm
+          ${!isLastMessageRead ? 'text-indigo-500' : 'text-gray-500'}`
+        }>
+          {lastMessage.textTranslated || lastMessage.text}
+        </div>
+        <div className='text-sm ml-1 text-gray-400 whitespace-nowrap'>{formatChatPreviewDate(lastMessage.createdAt)}</div>
       </div>
       {!isLastMessageRead && <div className='absolute right-3 top-[36px] rounded-full h-2 w-2 bg-indigo-500' />}
     </div>
