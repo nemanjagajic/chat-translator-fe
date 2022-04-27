@@ -8,10 +8,10 @@ import ChatsProvider from '../providers/ChatsProvider'
 import { useEffect } from 'react'
 import socket from '../sockets/index'
 import { SocketEvents } from '../ts/sockets'
+import Navbar from '../components/navbar/Navbar'
 
 const Home: NextPage = () => {
   const { t } = useLocale()
-  const { logOut } = useLogOut()
   const loggedUser = useLoggedUser()
 
   const { data: chats = [], isLoading: isLoadingChats, invalidateChats } = useFetchAllChats()
@@ -38,18 +38,8 @@ const Home: NextPage = () => {
   }, [])
 
   return (
-    <div className='h-screen bg-gray-200'>
-      <div
-        className='flex flex-row items-center h-[8%] px-4'
-      >
-        <div>{loggedUser?.firstName}</div>
-        <div
-          className='p-2 mx-4 cursor-pointer text-base font-medium'
-          onClick={logOut}
-        >
-          {t.auth.buttons.logOut}
-        </div>
-      </div>
+    <div className='h-screen'>
+      <Navbar />
       <ChatsProvider>
         <div className='flex flex-row h-[92%]'>
           <ChatsDrawer chats={chats} isLoadingChats={isLoadingChats} />

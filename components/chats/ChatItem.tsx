@@ -17,7 +17,9 @@ const ChatItem: FC<ChatItemProps> = ({ chat, selectedChat, setSelectedChat }) =>
   return (
     <div
       data-testid='chat-item'
-      className={`relative h-20 cursor-pointer border-b p-4 pr-6 ${selectedChat?._id === chat._id ? 'bg-gray-200' : ''}`}
+      className={`relative h-20 cursor-pointer m-3 mb-0 p-4 pr-6 rounded-2xl 
+        ${selectedChat?._id === chat._id ? 'bg-indigo-100' : ''}`
+      }
       onClick={() => setSelectedChat(chat)}
     >
       <div className='text-gray-800'>{`${friend.firstName} ${friend.lastName}`}</div>
