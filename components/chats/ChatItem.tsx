@@ -30,7 +30,7 @@ const ChatItem: FC<ChatItemProps> = ({ chat, selectedChat, setSelectedChat }) =>
         }>
           {lastMessage.textTranslated || lastMessage.text}
         </div>
-        <div className='text-sm ml-1 text-gray-400 whitespace-nowrap'>{formatChatPreviewDate(lastMessage.createdAt)}</div>
+        <div className='text-sm mx-1 text-gray-400 whitespace-nowrap'>{formatChatPreviewDate(lastMessage.createdAt)}</div>
       </div>
       {!isLastMessageRead && <div className='absolute right-3 top-[36px] rounded-full h-2 w-2 bg-indigo-500' />}
     </div>
