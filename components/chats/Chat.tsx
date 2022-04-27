@@ -11,6 +11,7 @@ import { Message } from '../../ts/messages'
 import { useLoggedUser } from '../../hooks/auth'
 import { ChatTypingUpdate } from '../../ts/chats'
 import { SocketEvents } from '../../ts/sockets'
+import { SettingsSharp } from 'react-ionicons'
 
 const PAGINATION_LIMIT = 100
 
@@ -130,8 +131,8 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
       {isFriendTyping && <div>Typing...</div>}
       <div className='flex flex-row'>
         <MessageInput fetchNewestMessages={fetchNewestMessages} />
-        <div className='m-2' onClick={() => { setIsSettingsModalOpen(true)} }>
-          Settings
+        <div className='m-4 mt-2 cursor-pointer' onClick={() => { setIsSettingsModalOpen(true)} }>
+          <SettingsSharp height='24px' width='24px' color='#6366f1' />
         </div>
       </div>
     </div>

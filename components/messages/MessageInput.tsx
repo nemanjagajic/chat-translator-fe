@@ -2,6 +2,7 @@ import React, { FC, useEffect, useRef, useState } from 'react'
 import { useSendMessage } from '../../hooks/chats'
 import { useChatsContext } from '../../providers/ChatsProvider'
 import socket from '../../sockets'
+import { Send } from 'react-ionicons'
 
 type MessageInputProps = {
   fetchNewestMessages: Function
@@ -37,12 +38,11 @@ const MessageInput: FC<MessageInputProps> = ({ fetchNewestMessages }) => {
   }
 
   const handleSendMessage = () => {
-    const typedText = text
-    const chatId = selectedChat?._id || ''
-    if (!chatId || !typedText) return
+    const chatId = selectedChat?._id
+    if (!chatId || !text) return
 
     setText('')
-    sendMessage({ chatId, text: typedText })
+    sendMessage({ chatId, text })
   }
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -64,7 +64,9 @@ const MessageInput: FC<MessageInputProps> = ({ fetchNewestMessages }) => {
         onKeyDown={handleKeyDown}
         onBlur={() => setIsTyping(false)}
       />
-      <button onClick={handleSendMessage}>Send</button>
+      <button className={`pr-4 ${!!text ? 'cursor-pointer' : 'cursor-auto'}`} onClick={handleSendMessage}>
+        <Send height='20px' width='20px' color={!!text ? '#2dd4bf' : '#d1d5db'} />
+      </button>
     </div>
   )
 }

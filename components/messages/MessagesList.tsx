@@ -47,7 +47,7 @@ const MessagesList: FC<MessagesListProps> = ({
         <div className='flex justify-center mb-4' onClick={fetchOlderMessages}>
           <div className='flex flex-row justify-center items-center bg-teal-400 text-white rounded-3xl px-4 py-2 cursor-pointer'>
             <ArrowUp height='15px' width='15px' color='white' />
-            <div className='pl-1'>Fetch older</div>
+            <div className='pl-1 text-sm'>{t.messages.fetchOlder}</div>
           </div>
         </div>
       )}

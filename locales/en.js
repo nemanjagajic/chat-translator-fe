@@ -14,6 +14,9 @@ export default {
     noMessages: 'Send a message to start the conversation!',
     settings: {
       languageNotSelected: 'Language not selected'
-    }
+    },
+  },
+  messages: {
+    fetchOlder: 'Fetch older'
   }
 }
