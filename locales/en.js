@@ -15,6 +15,8 @@ export default {
     settings: {
       languageNotSelected: 'Language not selected'
     },
+    myLanguage: 'My language',
+    friendsLanguage: 'Friend\'s language'
   },
   messages: {
     fetchOlder: 'Fetch older'

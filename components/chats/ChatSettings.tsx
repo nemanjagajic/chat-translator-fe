@@ -34,8 +34,11 @@ const ChatSettings = () => {
     socket.emit('chatSettingChanged', selectedChat)
   }
 
+  const isLanguageChanged = !!language && selectedChat?.me.sendLanguage !== language
+
   const renderSelectLanguage = (value: string, onChange: Dispatch<SetStateAction<string>>) => (
     <select
+      className='outline-0 cursor-pointer'
       value={value}
       onChange={(event) => onChange(event.target.value)}
     >
@@ -48,13 +51,25 @@ const ChatSettings = () => {
   const friendsLanguage = selectedChat?.friend.sendLanguage || t.chats.settings.languageNotSelected
 
   return (
-    <div>
-      <div>Mine</div>
-      {renderSelectLanguage(language, setLanguage)}
-      <div>Their: {friendsLanguage}</div>
-
-      <div onClick={applyChanges}>
-        Apply
+    <div className='p-4'>
+      <div className='flex flex-row mb-6'>
+        <div className='text-gray-500 w-44'>{t.chats.myLanguage}:</div>
+        {renderSelectLanguage(language, setLanguage)}
+      </div>
+      <div className='flex flex-row'>
+        <div className='text-gray-500 w-44'>{t.chats.friendsLanguage}:</div>
+        <div className='pl-1'>{friendsLanguage}</div>
+      </div>
+      <div className='flex items-center justify-center mt-12'>
+        <div
+          className={`
+          px-6 py-2 rounded-xl text-white 
+          ${isLanguageChanged ? 'bg-teal-400 cursor-pointer' : 'bg-gray-300 cursor-default'}`
+        }
+          onClick={() => isLanguageChanged && applyChanges()}
+        >
+          Apply
+        </div>
       </div>
     </div>
   )

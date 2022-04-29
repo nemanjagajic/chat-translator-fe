@@ -28,7 +28,7 @@ const Modal: FC<ModalProps> = ({ children, isOpen, onClose }) => {
     <div className='fixed top-0 left-0 w-full h-full bg-black/30'>
       <div
         ref={wrapperRef}
-        className='fixed bg-white top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] p-4 rounded-lg'
+        className='fixed bg-white top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] p-4 rounded-2xl'
       >
         {children}
       </div>
