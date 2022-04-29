@@ -13,10 +13,11 @@ export default {
     emptyChatList: 'There are no chats yet, start by sending someone message!',
     noMessages: 'Send a message to start the conversation!',
     settings: {
-      languageNotSelected: 'Language not selected'
-    },
-    myLanguage: 'My language',
-    friendsLanguage: 'Friend\'s language'
+      myLanguage: 'My language',
+      friendsLanguage: 'Friend\'s language',
+      languageNotSelected: 'Language not selected',
+      languageSuccessfullyChanged: 'Language successfully changed'
+    }
   },
   messages: {
     fetchOlder: 'Fetch older'

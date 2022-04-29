@@ -1,7 +1,6 @@
 import type { NextPage } from 'next'
-import { useLocale } from '../hooks/i18n'
 import { useFetchAllChats } from '../hooks/chats'
-import { useLoggedUser, useLogOut } from '../hooks/auth'
+import { useLoggedUser } from '../hooks/auth'
 import ChatsDrawer from '../components/chats/ChatsDrawer'
 import Chat from '../components/chats/Chat'
 import ChatsProvider from '../providers/ChatsProvider'
@@ -9,10 +8,19 @@ import { useEffect } from 'react'
 import socket from '../sockets/index'
 import { SocketEvents } from '../ts/sockets'
 import Navbar from '../components/navbar/Navbar'
+import 'react-toastify/dist/ReactToastify.css'
+import { toast } from 'react-toastify'
+
+const TOAST_DURATION_MS = 2000
 
 const Home: NextPage = () => {
-  const { t } = useLocale()
   const loggedUser = useLoggedUser()
+  const toastConfig = {
+    autoClose: TOAST_DURATION_MS,
+    hideProgressBar: true,
+    closeOnClick: true,
+    closeButton: false
+  }
 
   const { data: chats = [], isLoading: isLoadingChats, invalidateChats } = useFetchAllChats()
 
@@ -28,6 +36,7 @@ const Home: NextPage = () => {
   }, [loggedUser])
 
   useEffect(() => {
+    toast.configure(toastConfig)
     socket.on(SocketEvents.loadChatSettings, invalidateChats)
     socket.on(SocketEvents.updateFriendVisitData, invalidateChats)
     return () => {

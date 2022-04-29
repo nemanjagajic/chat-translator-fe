@@ -5,6 +5,8 @@ import { useLocale } from '../../hooks/i18n'
 import languages from '../../utils/languages'
 import { ChatSettingsProperty } from '../../ts/chats'
 import socket from '../../sockets'
+import { toast } from 'react-toastify'
+import ToastSuccess from '../shared/ToastSuccess'
 
 const ChatSettings = () => {
   const { t } = useLocale()
@@ -32,6 +34,7 @@ const ChatSettings = () => {
     })
     await invalidateChats()
     socket.emit('chatSettingChanged', selectedChat)
+    toast(<ToastSuccess text={t.chats.settings.languageSuccessfullyChanged} />)
   }
 
   const isLanguageChanged = !!language && selectedChat?.me.sendLanguage !== language
@@ -53,11 +56,11 @@ const ChatSettings = () => {
   return (
     <div className='p-4'>
       <div className='flex flex-row mb-6'>
-        <div className='text-gray-500 w-44'>{t.chats.myLanguage}:</div>
+        <div className='text-gray-500 w-44'>{t.chats.settings.myLanguage}:</div>
         {renderSelectLanguage(language, setLanguage)}
       </div>
       <div className='flex flex-row'>
-        <div className='text-gray-500 w-44'>{t.chats.friendsLanguage}:</div>
+        <div className='text-gray-500 w-44'>{t.chats.settings.friendsLanguage}:</div>
         <div className='pl-1'>{friendsLanguage}</div>
       </div>
       <div className='flex items-center justify-center mt-12'>
