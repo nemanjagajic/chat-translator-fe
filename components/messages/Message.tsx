@@ -31,8 +31,8 @@ const Message: FC<MessageProps> = ({ message: {
         data-testid='message-item'
         className={
           `flex flex-col 
-          ${isMessageMine ? 'self-end bg-indigo-500 mt-1' : 'self-start bg-gray-200 mt-2'} 
-          mx-4 max-w-[50%] rounded-3xl px-4 pt-2 pb-1 break-words z-[1]`
+          ${isMessageMine ? 'self-end bg-indigo-500' : 'self-start bg-gray-200'} 
+          mx-4 max-w-[50%] rounded-3xl px-4 pt-2 pb-1 break-words z-[1] mt-1`
         }
       >
         <div className={`${isMessageMine ? 'text-white' : 'text-gray-800'}`}>
@@ -52,8 +52,8 @@ const Message: FC<MessageProps> = ({ message: {
         <div
           className={
             `flex flex-col 
-          ${isMessageMine ? 'self-end bg-indigo-100 mt-2' : 'self-start bg-gray-100 mt-3'} 
-          mx-4 max-w-[50%] rounded-3xl px-4 pt-2 pb-1 break-words mb-[-8px] pb-2 text-gray-400`
+          ${isMessageMine ? 'self-end bg-indigo-100' : 'self-start bg-gray-100'} 
+          mx-4 max-w-[50%] rounded-3xl px-4 pt-2 pb-1 break-words mb-[-8px] pb-2 text-gray-400  mt-2`
           }
         >
           {text}
@@ -71,5 +71,6 @@ const Message: FC<MessageProps> = ({ message: {
 }
 
 export default memo(Message, (prevProps, nextProps) => {
-  return JSON.stringify(prevProps.message) === JSON.stringify(nextProps.message) && prevProps.isRead === nextProps.isRead
+  return JSON.stringify(prevProps.message) === JSON.stringify(nextProps.message)
+    && prevProps.isRead === nextProps.isRead && prevProps.showOriginalMessages === nextProps.showOriginalMessages
 })
