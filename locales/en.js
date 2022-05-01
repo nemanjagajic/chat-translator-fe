@@ -16,7 +16,8 @@ export default {
       myLanguage: 'My language',
       friendsLanguage: 'Friend\'s language',
       languageNotSelected: 'Language not selected',
-      languageSuccessfullyChanged: 'Language successfully changed'
+      settingsSuccessfullyChanged: 'Settings successfully changed',
+      showOriginalMessages: 'Show original messages'
     }
   },
   messages: {

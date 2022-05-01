@@ -26,13 +26,14 @@ export interface Chat {
 
 export enum ChatSettingsProperty {
   SEND_LANGUAGE = 'sendLanguage',
-  RECEIVE_LANGUAGE = 'receiveLanguage'
+  RECEIVE_LANGUAGE = 'receiveLanguage',
+  SHOW_ORIGINAL_MESSAGES = 'showOriginalMessages'
 }
 
 export interface ChatSettingsInput {
   chatId: string
   property: ChatSettingsProperty
-  value: string
+  value: string | boolean
 }
 
 export interface ChatLastVisitRequest {

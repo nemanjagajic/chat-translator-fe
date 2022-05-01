@@ -17,7 +17,7 @@ export const getMessages = async (chatId: string, offset: number, limit: number)
 export const sendMessage = async (chatId: string, text: string) =>
   apiRequest(request.post(API_ENDPOINTS.MESSAGES, { chatId, text }) )
 
-export const setSettingProperty = async (chatId: string, property: ChatSettingsProperty, value: string) =>
+export const setSettingProperty = async (chatId: string, property: ChatSettingsProperty, value: string | boolean) =>
   apiRequest(request.post(API_ENDPOINTS.SET_SETTINGS_PROPERTY, { chatId, property, value }) )
 
 export const setChatVisited = async (userId: string, chatId: string) =>
