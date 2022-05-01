@@ -12,7 +12,8 @@ type ChatItemProps = {
 const ChatItem: FC<ChatItemProps> = ({ chat, selectedChat, setSelectedChat }) => {
   const { friend, lastMessage, me } = chat
 
-  const isLastMessageRead = moment(me.lastVisit).isSameOrAfter(moment(lastMessage.createdAt)) || lastMessage.senderId === me._id
+  const isLastMessageMine = lastMessage.senderId === me._id
+  const isLastMessageRead = moment(me.lastVisit).isSameOrAfter(moment(lastMessage.createdAt)) || isLastMessageMine
 
   return (
     <div
@@ -28,7 +29,7 @@ const ChatItem: FC<ChatItemProps> = ({ chat, selectedChat, setSelectedChat }) =>
           `overflow-hidden text-ellipsis whitespace-nowrap text-sm
           ${!isLastMessageRead ? 'text-indigo-500' : 'text-gray-500'}`
         }>
-          {lastMessage.textTranslated || lastMessage.text}
+          {isLastMessageMine ? lastMessage.text : (lastMessage.textTranslated || lastMessage.text)}
         </div>
         <div className='text-sm mx-1 text-gray-400 whitespace-nowrap'>{formatChatPreviewDate(lastMessage.createdAt)}</div>
       </div>

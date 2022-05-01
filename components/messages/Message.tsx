@@ -33,7 +33,9 @@ const Message: FC<MessageProps> = ({ message: {
           mx-4 max-w-[50%] rounded-3xl px-4 pt-2 pb-1 break-words`
         }
       >
-        <div className={`${isMessageMine ? 'text-white' : 'text-gray-800'}`}>{textTranslated || text}</div>
+        <div className={`${isMessageMine ? 'text-white' : 'text-gray-800'}`}>
+          {isMessageMine ? text : (textTranslated || text)}
+        </div>
         <div className={`flex flex-row items-center w-full ${isMessageMine ? 'justify-end' : 'justify-start'}`}>
           <div className={`text-xs mr-1 ${isMessageMine ? 'text-gray-300' : 'text-gray-500'}`}>{moment(createdAt).format('HH:mm')}</div>
           {isMessageMine && (
