@@ -25,7 +25,7 @@ const Modal: FC<ModalProps> = ({ children, isOpen, onClose }) => {
   if (!isOpen) return null
 
   return (
-    <div className='fixed top-0 left-0 w-full h-full bg-black/30'>
+    <div className='fixed top-0 left-0 w-full h-full bg-black/30 z-[10]'>
       <div
         ref={wrapperRef}
         className='fixed bg-white top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] p-4 rounded-2xl'

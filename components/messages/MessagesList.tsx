@@ -9,14 +9,16 @@ type MessagesListProps = {
   messagesPages: IMessage[][],
   friendLastVisit: string | undefined,
   fetchOlderMessages: () => void,
-  isLastPageReached: boolean
+  isLastPageReached: boolean,
+  showOriginalMessages: boolean
 }
 
 const MessagesList: FC<MessagesListProps> = ({
  messagesPages,
  friendLastVisit,
  fetchOlderMessages,
- isLastPageReached
+ isLastPageReached,
+ showOriginalMessages
 }) => {
   const { t } = useLocale()
   const isMessagesListEmpty = !messagesPages[0][0]
@@ -32,6 +34,7 @@ const MessagesList: FC<MessagesListProps> = ({
         }
         nextMessageDate={messages[index - 1] && messages[index - 1].createdAt}
         isRead={!!friendLastVisit && moment(friendLastVisit).isSameOrAfter(moment(message.createdAt))}
+        showOriginalMessages={showOriginalMessages}
       />
     ))
   )

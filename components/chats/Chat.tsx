@@ -124,6 +124,7 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
           friendLastVisit={selectedChat.friend.lastVisit}
           fetchOlderMessages={fetchOlderMessages}
           isLastPageReached={isLastPageReached}
+          showOriginalMessages={selectedChat.me.showOriginalMessages}
         />
       ) : (
         <div className='flex flex-col-reverse h-full w-full overflow-y-scroll' />

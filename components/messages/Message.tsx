@@ -8,7 +8,8 @@ type MessageProps = {
   message: Message,
   showDateSeparator: boolean,
   nextMessageDate: string,
-  isRead: boolean
+  isRead: boolean,
+  showOriginalMessages: boolean
 }
 
 const Message: FC<MessageProps> = ({ message: {
@@ -19,7 +20,8 @@ const Message: FC<MessageProps> = ({ message: {
 },
   showDateSeparator,
   nextMessageDate,
-  isRead}) => {
+  isRead,
+  showOriginalMessages}) => {
   const loggedUser = useLoggedUser()
   const isMessageMine = senderId === loggedUser?._id
 
@@ -30,11 +32,11 @@ const Message: FC<MessageProps> = ({ message: {
         className={
           `flex flex-col 
           ${isMessageMine ? 'self-end bg-indigo-500 mt-1' : 'self-start bg-gray-200 mt-2'} 
-          mx-4 max-w-[50%] rounded-3xl px-4 pt-2 pb-1 break-words`
+          mx-4 max-w-[50%] rounded-3xl px-4 pt-2 pb-1 break-words z-[1]`
         }
       >
         <div className={`${isMessageMine ? 'text-white' : 'text-gray-800'}`}>
-          {isMessageMine ? text : (textTranslated || text)}
+          {isMessageMine && !showOriginalMessages ? text : (textTranslated || text)}
         </div>
         <div className={`flex flex-row items-center w-full ${isMessageMine ? 'justify-end' : 'justify-start'}`}>
           <div className={`text-xs mr-1 ${isMessageMine ? 'text-gray-300' : 'text-gray-500'}`}>{moment(createdAt).format('HH:mm')}</div>
@@ -46,6 +48,17 @@ const Message: FC<MessageProps> = ({ message: {
           )}
         </div>
       </div>
+      {showOriginalMessages && (
+        <div
+          className={
+            `flex flex-col 
+          ${isMessageMine ? 'self-end bg-indigo-100 mt-2' : 'self-start bg-gray-100 mt-3'} 
+          mx-4 max-w-[50%] rounded-3xl px-4 pt-2 pb-1 break-words mb-[-8px] pb-2 text-gray-400`
+          }
+        >
+          {text}
+        </div>
+      )}
       {showDateSeparator && (
         <div className='flex flex-row w-full items-center py-8 px-12'>
           <div className='flex flex-1 h-[1px] bg-gray-200' />

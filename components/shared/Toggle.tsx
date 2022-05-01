@@ -8,7 +8,7 @@ type ToggleProps = {
 const Toggle: FC<ToggleProps> = ({ isChecked, onChange }) => {
   return (
     <div className='relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in'>
-      <label className='relative flex justify-between items-center group ml-[-20px] text-xl'>
+      <label className='relative flex justify-between items-center group ml-[-16px] text-xl'>
         <input
           checked={isChecked}
           type='checkbox'
