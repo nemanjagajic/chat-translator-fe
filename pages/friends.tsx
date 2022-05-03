@@ -17,7 +17,7 @@ const Friends = () => {
   const debouncedSearchText = useDebounce(searchText, SEARCH_INPUT_DEBOUNCE_TIMEOUT_MS)
 
   const { data: allFriends } = useFetchAllFriends()
-  const { data: searchFriendList, refetch: fetchUsers } =
+  const { data: searchFriendList, refetch: fetchUsers, isRefetching: isRefetchingUsers } =
     useSearchUser(debouncedSearchText, SEARCH_FRIEND_OFFSET, SEARCH_FRIEND_LIMIT)
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const Friends = () => {
 
   const renderSearchResultList = () => {
     if (debouncedSearchText && searchFriendList) return (
-      <FriendsList friends={searchFriendList} isSearchList />
+      <FriendsList friends={searchFriendList} isSearchList isRefetching={isRefetchingUsers} />
     )
 
     return <div>{t.friends.searchResultsWillAppearHere}</div>
