@@ -37,6 +37,7 @@ export default {
     searchResultsWillAppearHere: 'Search results will appear here',
     noUsersMatchingSearch: 'No users found matching this search',
     successfullySentFriendRequest: 'Successfully sent friend request',
-    successfullyRespondedToRequest: 'Successfully responded to request'
+    successfullyRespondedToRequest: 'Successfully responded to request',
+    sendRequest: 'Send request'
   }
 }

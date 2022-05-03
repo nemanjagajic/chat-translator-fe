@@ -18,7 +18,7 @@ const FriendsList: FC<FriendsListProps> = ({
 
   if (!friends) return null
   if (isSearchList && friends.length === 0 && !isRefetching) return (
-    <div>{t.friends.noUsersMatchingSearch}</div>
+    <div className='text-gray-400 mt-8'>{t.friends.noUsersMatchingSearch}</div>
   )
 
   return (

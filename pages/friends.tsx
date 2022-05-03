@@ -31,7 +31,10 @@ const Friends = () => {
 
   const renderFriendsTab = (tab: FriendsSelectedTab, title: string) => (
     <div
-      className='p-2 mx-4'
+      className={`
+        px-4 py-3 mx-4 rounded-3xl cursor-pointer w-44 text-center
+        ${tab === selectedTab ? 'bg-indigo-500 text-white' : 'text-gray-600 bg-gray-200'}`
+    }
       onClick={() => setSelectedTab(tab)}
     >
       {title}
@@ -47,7 +50,7 @@ const Friends = () => {
       />
     )
 
-    return <div>{t.friends.searchResultsWillAppearHere}</div>
+    return <div className='text-gray-400 mt-8'>{t.friends.searchResultsWillAppearHere}</div>
   }
 
   const onSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,7 +74,7 @@ const Friends = () => {
         {friendsTabs.map(tabItem => renderFriendsTab(tabItem.tab, tabItem.title))}
       </div>
       {allFriends && (
-        <div className='flex flex-col items-center w-[1024px] mt-6'>
+        <div className='flex flex-col items-center w-[1024px] mt-6 overflow-y-scroll mb-20'>
           {selectedTab === FriendsSelectedTab.myFriends && myFriends && (
             <FriendsList friends={myFriends} />
           )}
@@ -83,7 +86,12 @@ const Friends = () => {
           )}
           {selectedTab === FriendsSelectedTab.addNewFriend && (
             <div className='w-full flex flex-col items-center'>
-              <input className='w-52' onInput={onSearchInputChange} value={searchText}/>
+              <input
+                className='w-80 focus:outline-none p-2 rounded-2xl h-[40px] resize-none border mt-6'
+                onInput={onSearchInputChange}
+                value={searchText}
+                placeholder={'Type user name or email'}
+              />
               {renderSearchResultList()}
             </div>
           )}
