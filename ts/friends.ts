@@ -12,12 +12,12 @@ export interface Friend {
   email: string
 }
 
-export interface FriendRequest {
-  _id: string
-  firstName: string
-  lastName: string
-  email: string,
+export interface FriendRequest extends Friend{
   requestedByMe?: boolean
+}
+
+export interface FriendSearchItem extends Friend{
+  isFriend?: boolean
 }
 
 export type AllFriends = {

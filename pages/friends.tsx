@@ -1,16 +1,28 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FriendsSelectedTab } from '../ts/friends'
-import { useFetchAllFriends } from '../hooks/friends'
+import { useFetchAllFriends, useSearchUser } from '../hooks/friends'
 import FriendsList from '../components/friends/FriendsList'
 import { useLocale } from '../hooks/i18n'
 import FriendRequestsList from '../components/friendRequests/FriendRequestsList'
+import useDebounce from '../hooks/helpers/useDebounce'
+
+const SEARCH_FRIEND_OFFSET = 0
+const SEARCH_FRIEND_LIMIT = 10
+const SEARCH_INPUT_DEBOUNCE_TIMEOUT_MS = 500
 
 const Friends = () => {
   const { t } = useLocale()
   const [selectedTab, setSelectedTab] = useState<FriendsSelectedTab>(FriendsSelectedTab.myFriends)
+  const [searchText, setSearchText] = useState('')
+  const debouncedSearchText = useDebounce(searchText, SEARCH_INPUT_DEBOUNCE_TIMEOUT_MS)
 
   const { data: allFriends } = useFetchAllFriends()
-  console.log(allFriends)
+  const { data: searchFriendList, refetch: fetchUsers } =
+    useSearchUser(debouncedSearchText, SEARCH_FRIEND_OFFSET, SEARCH_FRIEND_LIMIT)
+
+  useEffect(() => {
+    if (debouncedSearchText) fetchUsers()
+  }, [debouncedSearchText])
 
   const renderFriendsTab = (tab: FriendsSelectedTab, title: string) => (
     <div
@@ -20,6 +32,18 @@ const Friends = () => {
       {title}
     </div>
   )
+
+  const renderSearchResultList = () => {
+    if (debouncedSearchText && searchFriendList) return (
+      <FriendsList friends={searchFriendList} isSearchList />
+    )
+
+    return <div>{t.friends.searchResultsWillAppearHere}</div>
+  }
+
+  const onSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value)
+  }
 
   const friendsTabs = [
     { tab: FriendsSelectedTab.myFriends, title: t.friends.tabTitles.myFriends },
@@ -49,7 +73,10 @@ const Friends = () => {
             <FriendRequestsList friendsRequests={sentRequests} />
           )}
           {selectedTab === FriendsSelectedTab.addNewFriend && (
-            <div>Add new friend</div>
+            <div className='w-full flex flex-col items-center'>
+              <input className='w-52' onInput={onSearchInputChange} value={searchText}/>
+              {renderSearchResultList()}
+            </div>
           )}
         </div>
       )}

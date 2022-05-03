@@ -33,6 +33,8 @@ export default {
       receivedRequests: 'Received requests',
       sentRequests: 'Sent requests',
       addNewFriend: 'Add new friend'
-    }
+    },
+    searchResultsWillAppearHere: 'Search results will appear here',
+    noUsersMatchingSearch: 'No users found matching this search'
   }
 }
