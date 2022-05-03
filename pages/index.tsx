@@ -7,7 +7,6 @@ import ChatsProvider from '../providers/ChatsProvider'
 import { useEffect } from 'react'
 import socket from '../sockets/index'
 import { SocketEvents } from '../ts/sockets'
-import Navbar from '../components/navbar/Navbar'
 import 'react-toastify/dist/ReactToastify.css'
 import { toast } from 'react-toastify'
 
