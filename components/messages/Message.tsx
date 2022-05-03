@@ -52,8 +52,8 @@ const Message: FC<MessageProps> = ({ message: {
         <div
           className={
             `flex flex-col 
-          ${isMessageMine ? 'self-end bg-indigo-100' : 'self-start bg-gray-100'} 
-          mx-4 max-w-[50%] rounded-3xl px-4 pt-2 pb-1 break-words mb-[-8px] pb-2 text-gray-400  mt-2`
+          ${isMessageMine ? 'self-end bg-indigo-200 text-white' : 'self-start bg-gray-100 text-gray-400'} 
+          mx-4 max-w-[50%] rounded-3xl px-4 pt-2 pb-1 break-words mb-[-8px] pb-2 mt-2`
           }
         >
           {text}
