@@ -3,12 +3,14 @@ import { FriendsSelectedTab } from '../ts/friends'
 import { useFetchAllFriends } from '../hooks/friends'
 import MyFriendsList from '../components/friends/myFriends/MyFriendsList'
 import { useLocale } from '../hooks/i18n'
+import FriendRequestsList from '../components/friends/friendRequests/FriendRequestsList'
 
 const Friends = () => {
   const { t } = useLocale()
   const [selectedTab, setSelectedTab] = useState<FriendsSelectedTab>(FriendsSelectedTab.myFriends)
 
   const { data: allFriends } = useFetchAllFriends()
+  console.log(allFriends)
 
   const renderFriendsTab = (tab: FriendsSelectedTab, title: string) => (
     <div
@@ -26,6 +28,10 @@ const Friends = () => {
     { tab: FriendsSelectedTab.addNewFriend, title: t.friends.tabTitles.addNewFriend }
   ]
 
+  const myFriends = allFriends?.friends
+  const receivedRequests = allFriends && allFriends.friendRequests.filter(friendRequest => !friendRequest.requestedByMe)
+  const sentRequests = allFriends && allFriends.friendRequests.filter(friendRequest => friendRequest.requestedByMe)
+
   return (
     <div className='flex flex-col h-screen bg-gray-50 items-center'>
       <div className='flex flex-row w-full pt-8 items-center justify-center'>
@@ -33,14 +39,14 @@ const Friends = () => {
       </div>
       {allFriends && (
         <div className='flex flex-col items-center w-[1024px] mt-6'>
-          {selectedTab === FriendsSelectedTab.myFriends && (
-            <MyFriendsList friends={allFriends.friends} />
+          {selectedTab === FriendsSelectedTab.myFriends && myFriends && (
+            <MyFriendsList friends={myFriends} />
           )}
-          {selectedTab === FriendsSelectedTab.receivedRequests && (
-            <div>Received requests</div>
+          {selectedTab === FriendsSelectedTab.receivedRequests && receivedRequests && (
+            <FriendRequestsList friendsRequests={receivedRequests} />
           )}
-          {selectedTab === FriendsSelectedTab.sentRequests && (
-            <div>Sent requests</div>
+          {selectedTab === FriendsSelectedTab.sentRequests && sentRequests && (
+            <FriendRequestsList friendsRequests={sentRequests} />
           )}
           {selectedTab === FriendsSelectedTab.addNewFriend && (
             <div>Add new friend</div>
