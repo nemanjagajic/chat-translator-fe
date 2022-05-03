@@ -1,11 +1,11 @@
 import React, { FC } from 'react'
 import { Friend } from '../../ts/friends'
 
-type MyFriendItemProps = {
+type FriendItemProps = {
   friend: Friend
 }
 
-const FriendItem: FC<MyFriendItemProps> = ({ friend: { firstName, lastName } }) => {
+const FriendItem: FC<FriendItemProps> = ({ friend: { firstName, lastName } }) => {
   return (
     <div className='flex flex-row'>
       <div>{firstName}</div>
