@@ -22,5 +22,9 @@ export default {
   },
   messages: {
     fetchOlder: 'Fetch older'
+  },
+  navbar: {
+    chats: 'Chats',
+    friends: 'Friends'
   }
 }

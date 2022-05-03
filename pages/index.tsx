@@ -48,7 +48,6 @@ const Home: NextPage = () => {
 
   return (
     <div className='h-screen'>
-      <Navbar />
       <ChatsProvider>
         <div className='flex flex-row h-[92%]'>
           <ChatsDrawer chats={chats} isLoadingChats={isLoadingChats} />
