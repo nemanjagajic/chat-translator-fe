@@ -3,13 +3,13 @@ import { Friend, FriendSearchItem } from '../../ts/friends'
 import FriendItem from './FriendItem'
 import { useLocale } from '../../hooks/i18n'
 
-type MyFriendsListProps = {
+type FriendsListProps = {
   friends: Friend[] | FriendSearchItem[]
   isSearchList?: boolean
   isRefetching?: boolean
 }
 
-const FriendsList: FC<MyFriendsListProps> = ({
+const FriendsList: FC<FriendsListProps> = ({
  friends,
  isSearchList = false,
  isRefetching = false
@@ -17,7 +17,7 @@ const FriendsList: FC<MyFriendsListProps> = ({
   const { t } = useLocale()
 
   if (!friends) return null
-  if (friends.length === 0 && isSearchList && !isRefetching) return (
+  if (isSearchList && friends.length === 0 && !isRefetching) return (
     <div>{t.friends.noUsersMatchingSearch}</div>
   )
 
