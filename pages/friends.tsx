@@ -5,6 +5,7 @@ import FriendsList from '../components/friends/FriendsList'
 import { useLocale } from '../hooks/i18n'
 import FriendRequestsList from '../components/friendRequests/FriendRequestsList'
 import useDebounce from '../hooks/helpers/useDebounce'
+import { configureToast } from '../utils/toast'
 
 const SEARCH_FRIEND_OFFSET = 0
 const SEARCH_FRIEND_LIMIT = 10
@@ -21,6 +22,10 @@ const Friends = () => {
     useSearchUser(debouncedSearchText, SEARCH_FRIEND_OFFSET, SEARCH_FRIEND_LIMIT)
 
   useEffect(() => {
+    configureToast()
+  }, [])
+
+  useEffect(() => {
     if (debouncedSearchText) fetchUsers()
   }, [debouncedSearchText])
 
@@ -35,7 +40,11 @@ const Friends = () => {
 
   const renderSearchResultList = () => {
     if (debouncedSearchText && searchFriendList) return (
-      <FriendsList friends={searchFriendList} isSearchList isRefetching={isRefetchingUsers} />
+      <FriendsList
+        friends={searchFriendList}
+        isSearchList
+        isRefetching={isRefetchingUsers}
+      />
     )
 
     return <div>{t.friends.searchResultsWillAppearHere}</div>

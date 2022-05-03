@@ -7,19 +7,10 @@ import ChatsProvider from '../providers/ChatsProvider'
 import { useEffect } from 'react'
 import socket from '../sockets/index'
 import { SocketEvents } from '../ts/sockets'
-import 'react-toastify/dist/ReactToastify.css'
-import { toast } from 'react-toastify'
-
-const TOAST_DURATION_MS = 2000
+import { configureToast } from '../utils/toast'
 
 const Home: NextPage = () => {
   const loggedUser = useLoggedUser()
-  const toastConfig = {
-    autoClose: TOAST_DURATION_MS,
-    hideProgressBar: true,
-    closeOnClick: true,
-    closeButton: false
-  }
 
   const { data: chats = [], isLoading: isLoadingChats, invalidateChats } = useFetchAllChats()
 
@@ -35,7 +26,7 @@ const Home: NextPage = () => {
   }, [loggedUser])
 
   useEffect(() => {
-    toast.configure(toastConfig)
+    configureToast()
     socket.on(SocketEvents.loadChatSettings, invalidateChats)
     socket.on(SocketEvents.updateFriendVisitData, invalidateChats)
     return () => {

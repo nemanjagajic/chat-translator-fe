@@ -35,6 +35,7 @@ export default {
       addNewFriend: 'Add new friend'
     },
     searchResultsWillAppearHere: 'Search results will appear here',
-    noUsersMatchingSearch: 'No users found matching this search'
+    noUsersMatchingSearch: 'No users found matching this search',
+    successfullySentFriendRequest: 'Successfully sent friend request'
   }
 }

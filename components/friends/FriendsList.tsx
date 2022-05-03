@@ -23,7 +23,7 @@ const FriendsList: FC<FriendsListProps> = ({
 
   return (
     <div>
-      {friends.map(friend => <FriendItem key={friend._id} friend={friend} />)}
+      {friends.map(friend => <FriendItem key={friend._id} friend={friend} isSearchList={isSearchList} />)}
     </div>
   )
 }

@@ -1,5 +1,5 @@
-import { useQuery } from 'react-query'
-import { getAllFriends, getSearchUser } from '../services/api/friends'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { getAllFriends, getSearchUser, sendFriendRequest } from '../services/api/friends'
 import { AllFriends, FriendSearchItem } from '../ts/friends'
 
 export const useFetchAllFriends = () => {
@@ -19,4 +19,19 @@ export const useSearchUser = (text: string, offset: number, limit: number) => {
     }
   )
   return { data, isLoading, error, refetch, isRefetching }
+}
+
+export const useSendFriendRequest = (onSuccess?: Function) => {
+  const queryClient = useQueryClient()
+  const { mutate, isLoading, error } = useMutation(
+    ({ userId }: { userId: string }) => sendFriendRequest(userId),
+    {
+      onSuccess: () => {
+        onSuccess?.()
+        queryClient.invalidateQueries('friends')
+      }
+    }
+  )
+
+  return { mutate, isLoading, error }
 }
