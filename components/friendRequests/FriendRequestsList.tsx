@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { FriendRequest } from '../../../ts/friends'
+import { FriendRequest } from '../../ts/friends'
 import FriendRequestItem from './FriendRequestItem'
 
 type FriendRequestsListProps = {

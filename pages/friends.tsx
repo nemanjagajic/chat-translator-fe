@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { FriendsSelectedTab } from '../ts/friends'
 import { useFetchAllFriends } from '../hooks/friends'
-import MyFriendsList from '../components/friends/myFriends/MyFriendsList'
+import FriendsList from '../components/friends/FriendsList'
 import { useLocale } from '../hooks/i18n'
-import FriendRequestsList from '../components/friends/friendRequests/FriendRequestsList'
+import FriendRequestsList from '../components/friendRequests/FriendRequestsList'
 
 const Friends = () => {
   const { t } = useLocale()
@@ -40,7 +40,7 @@ const Friends = () => {
       {allFriends && (
         <div className='flex flex-col items-center w-[1024px] mt-6'>
           {selectedTab === FriendsSelectedTab.myFriends && myFriends && (
-            <MyFriendsList friends={myFriends} />
+            <FriendsList friends={myFriends} />
           )}
           {selectedTab === FriendsSelectedTab.receivedRequests && receivedRequests && (
             <FriendRequestsList friendsRequests={receivedRequests} />
