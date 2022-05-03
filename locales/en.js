@@ -26,5 +26,13 @@ export default {
   navbar: {
     chats: 'Chats',
     friends: 'Friends'
+  },
+  friends: {
+    tabTitles: {
+      myFriends: 'My friends',
+      receivedRequests: 'Received requests',
+      sentRequests: 'Sent requests',
+      addNewFriend: 'Add new friend'
+    }
   }
 }
