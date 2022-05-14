@@ -22,7 +22,7 @@ const ChatsList: FC<ChatsListProps> = ({ chats, selectedChat, setSelectedChat })
       {t.chats.emptyChatList}
       <div
         className='flex cursor-pointer bg-indigo-500 text-white p-2 rounded-3xl w-32 items-center justify-center mt-4'
-        onClick={() => router.push('/friends')}
+        onClick={() => router.push('/friends?addNewFriend')}
       >
         {t.chats.addFriend}
       </div>

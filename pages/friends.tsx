@@ -6,6 +6,7 @@ import { useLocale } from '../hooks/i18n'
 import FriendRequestsList from '../components/friendRequests/FriendRequestsList'
 import useDebounce from '../hooks/helpers/useDebounce'
 import { configureToast } from '../utils/toast'
+import { useRouter } from 'next/router'
 
 const SEARCH_FRIEND_OFFSET = 0
 const SEARCH_FRIEND_LIMIT = 10
@@ -13,6 +14,7 @@ const SEARCH_INPUT_DEBOUNCE_TIMEOUT_MS = 500
 
 const Friends = () => {
   const { t } = useLocale()
+  const router = useRouter()
   const [selectedTab, setSelectedTab] = useState<FriendsSelectedTab>(FriendsSelectedTab.myFriends)
   const [searchText, setSearchText] = useState('')
   const debouncedSearchText = useDebounce(searchText, SEARCH_INPUT_DEBOUNCE_TIMEOUT_MS)
@@ -29,13 +31,21 @@ const Friends = () => {
     if (debouncedSearchText) fetchUsers()
   }, [debouncedSearchText])
 
+  useEffect(() => {
+    const path = router.asPath
+    if (path === `/friends?${FriendsSelectedTab.myFriends}`) setSelectedTab(FriendsSelectedTab.myFriends)
+    if (path === `/friends?${FriendsSelectedTab.receivedRequests}`) setSelectedTab(FriendsSelectedTab.receivedRequests)
+    if (path === `/friends?${FriendsSelectedTab.sentRequests}`) setSelectedTab(FriendsSelectedTab.sentRequests)
+    if (path === `/friends?${FriendsSelectedTab.addNewFriend}`) setSelectedTab(FriendsSelectedTab.addNewFriend)
+  }, [router.asPath])
+
   const renderFriendsTab = (tab: FriendsSelectedTab, title: string) => (
     <div
       className={`
         flex flex-row px-4 py-3 mx-4 rounded-3xl cursor-pointer w-52 justify-center items-center
         ${tab === selectedTab ? 'bg-indigo-500 text-white' : 'text-gray-600 bg-gray-200'}`
     }
-      onClick={() => setSelectedTab(tab)}
+      onClick={() => router.push(`/friends?${tab}`)}
     >
       <div>{title}</div>
       {tab !== FriendsSelectedTab.addNewFriend && (
