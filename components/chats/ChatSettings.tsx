@@ -57,6 +57,7 @@ const ChatSettings = () => {
       value={value}
       onChange={(event) => onChange(event.target.value)}
     >
+      <option className='hidden'>{t.chats.selectLanguage}</option>
       {languages.map(language => (
         <option key={language.code} value={language.code}>{language.name}</option>
       ))}

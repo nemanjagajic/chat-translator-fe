@@ -32,14 +32,30 @@ const Friends = () => {
   const renderFriendsTab = (tab: FriendsSelectedTab, title: string) => (
     <div
       className={`
-        px-4 py-3 mx-4 rounded-3xl cursor-pointer w-44 text-center
+        flex flex-row px-4 py-3 mx-4 rounded-3xl cursor-pointer w-52 justify-center items-center
         ${tab === selectedTab ? 'bg-indigo-500 text-white' : 'text-gray-600 bg-gray-200'}`
     }
       onClick={() => setSelectedTab(tab)}
     >
-      {title}
+      <div>{title}</div>
+      {tab !== FriendsSelectedTab.addNewFriend && (
+        <div className='flex items-center justify-center bg-white text-gray-500 rounded-full w-5 h-5 ml-2 text-sm border'>
+          {getItemsNumberByTab(tab)}
+        </div>
+      )}
     </div>
   )
+
+  const getItemsNumberByTab = (tab: FriendsSelectedTab) => {
+    if (!allFriends) return 0
+    if (tab === FriendsSelectedTab.myFriends)
+      return allFriends.friends.length
+    if (tab === FriendsSelectedTab.sentRequests)
+      return allFriends.friendRequests.filter(request => request.requestedByMe).length
+    if (tab === FriendsSelectedTab.receivedRequests)
+      return allFriends.friendRequests.filter(request => !request.requestedByMe).length
+    return 0
+  }
 
   const renderSearchResultList = () => {
     if (debouncedSearchText && searchFriendList) return (

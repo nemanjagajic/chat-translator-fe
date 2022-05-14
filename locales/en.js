@@ -23,7 +23,8 @@ export default {
     addFriend: 'Add friend',
     noMessagesYet: 'No messages yet',
     chatWith: (friend) => `Chat settings for ${friend}`,
-    friendTyping: 'Friend typing...'
+    friendTyping: 'Friend typing...',
+    selectLanguage: 'Select language'
   },
   messages: {
     fetchOlder: 'Fetch older'
