@@ -1,6 +1,13 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query'
 import { Chat, ChatLastVisitRequest, ChatSettingsInput } from '../ts/chats'
-import { getAllChats, getMessages, sendMessage, setChatVisited, setSettingProperty } from '../services/api/chats'
+import {
+  createChat,
+  getAllChats,
+  getMessages,
+  sendMessage,
+  setChatVisited,
+  setSettingProperty
+} from '../services/api/chats'
 import { Message, MessageInput } from '../ts/messages'
 import socket from '../sockets'
 
@@ -54,6 +61,14 @@ export const useSetSettingsProperty = () => {
 export const useSetChatVisited = () => {
   const { mutate, mutateAsync, isLoading, error } = useMutation(
     ({ userId, chatId }: ChatLastVisitRequest) => setChatVisited(userId, chatId)
+  )
+
+  return { mutate, mutateAsync, isLoading, error }
+}
+
+export const useCreateChat = () => {
+  const { mutate, mutateAsync, isLoading, error } = useMutation(
+    ({ userId }: { userId: string }) => createChat(userId)
   )
 
   return { mutate, mutateAsync, isLoading, error }

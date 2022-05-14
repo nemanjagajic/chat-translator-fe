@@ -6,6 +6,7 @@ import ToastSuccess from '../shared/ToastSuccess'
 import { useLocale } from '../../hooks/i18n'
 import { Checkmark } from 'react-ionicons'
 import { Close } from 'react-ionicons'
+import { useCreateChat } from '../../hooks/chats'
 
 type FriendRequestItemProps = {
   friendRequest: FriendRequest
@@ -16,8 +17,10 @@ const FriendRequestItem: FC<FriendRequestItemProps> = ({
 }) => {
   const { t } = useLocale()
 
+  const { mutate: createChat } = useCreateChat()
   const { mutate: respondToFriendRequest } = useRespondToFriendRequest(() => {
     toast(<ToastSuccess text={t.friends.successfullyRespondedToRequest} />)
+    createChat({ userId: _id })
   })
 
   return (

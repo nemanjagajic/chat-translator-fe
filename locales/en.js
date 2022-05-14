@@ -20,7 +20,8 @@ export default {
       showOriginalMessages: 'Show original messages'
     },
     chatWillAppear: 'Selected chat will appear here',
-    addFriend: 'Add friend'
+    addFriend: 'Add friend',
+    noMessagesYet: 'No messages yet'
   },
   messages: {
     fetchOlder: 'Fetch older'

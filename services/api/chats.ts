@@ -5,7 +5,8 @@ const API_ENDPOINTS = {
   CHATS: '/api/chats',
   MESSAGES: '/api/messages',
   SET_SETTINGS_PROPERTY: 'api/chats/setSettingsProperty',
-  SET_CHAT_VISITED: 'api/chats/setChatVisited'
+  SET_CHAT_VISITED: 'api/chats/setChatVisited',
+  CREATE_CHAT: '/api/chats/create'
 }
 
 export const getAllChats = async () =>
@@ -22,3 +23,6 @@ export const setSettingProperty = async (chatId: string, property: ChatSettingsP
 
 export const setChatVisited = async (userId: string, chatId: string) =>
   apiRequest(request.post(API_ENDPOINTS.SET_CHAT_VISITED, { userId, chatId }) )
+
+export const createChat = async (userId: string) =>
+  apiRequest(request.post(API_ENDPOINTS.CREATE_CHAT, { userId }))

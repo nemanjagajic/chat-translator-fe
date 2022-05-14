@@ -40,7 +40,7 @@ const MessagesList: FC<MessagesListProps> = ({
   )
 
   const renderNoMessagesText = () => (
-    <div>{t.chats.noMessages}</div>
+    <div className='flex items-center justify-center mb-4 w-full text-gray-400 h-full'>{t.chats.noMessages}</div>
   )
 
   return (

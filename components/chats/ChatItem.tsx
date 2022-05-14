@@ -2,6 +2,7 @@ import React, { FC, memo } from 'react'
 import { Chat } from '../../ts/chats'
 import moment from 'moment'
 import { formatChatPreviewDate } from '../../utils/dateFormatter'
+import { useLocale } from '../../hooks/i18n'
 
 type ChatItemProps = {
   chat: Chat,
@@ -11,6 +12,7 @@ type ChatItemProps = {
 
 const ChatItem: FC<ChatItemProps> = ({ chat, selectedChat, setSelectedChat }) => {
   const { friend, lastMessage, me } = chat
+  const { t } = useLocale()
 
   const isLastMessageMine = lastMessage.senderId === me._id
   const isLastMessageRead = moment(me.lastVisit).isSameOrAfter(moment(lastMessage.createdAt)) || isLastMessageMine
@@ -29,7 +31,7 @@ const ChatItem: FC<ChatItemProps> = ({ chat, selectedChat, setSelectedChat }) =>
           `overflow-hidden text-ellipsis whitespace-nowrap text-sm
           ${!isLastMessageRead ? 'text-indigo-500' : 'text-gray-500'}`
         }>
-          {isLastMessageMine ? lastMessage.text : (lastMessage.textTranslated || lastMessage.text)}
+          {isLastMessageMine ? lastMessage.text : (lastMessage.textTranslated || lastMessage.text || t.chats.noMessagesYet)}
         </div>
         <div className='text-sm mx-1 text-gray-400 whitespace-nowrap'>{formatChatPreviewDate(lastMessage.createdAt)}</div>
       </div>
