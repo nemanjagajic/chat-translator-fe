@@ -39,7 +39,7 @@ const Friends = () => {
     >
       <div>{title}</div>
       {tab !== FriendsSelectedTab.addNewFriend && (
-        <div className='flex items-center justify-center bg-white text-gray-500 rounded-full w-5 h-5 ml-2 text-sm border'>
+        <div className='flex items-center justify-center bg-white text-gray-500 rounded-full px-2 ml-2 text-sm border'>
           {getItemsNumberByTab(tab)}
         </div>
       )}
