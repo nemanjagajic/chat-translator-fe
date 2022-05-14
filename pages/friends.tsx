@@ -47,6 +47,7 @@ const Friends = () => {
         friends={searchFriendList}
         isSearchList
         isRefetching={isRefetchingUsers}
+        allFriends={allFriends}
       />
     )
 

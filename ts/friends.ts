@@ -24,3 +24,10 @@ export type AllFriends = {
   friends: Friend[],
   friendRequests: FriendRequest[]
 }
+
+export type FriendStatus = {
+  isMe: boolean
+  isFriend: boolean
+  isRequestSent: boolean
+  isRequestReceived: boolean
+}
