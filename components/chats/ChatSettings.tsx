@@ -66,11 +66,14 @@ const ChatSettings = () => {
   const friendsLanguage = selectedChat?.friend.sendLanguage || t.chats.settings.languageNotSelected
 
   if (!isInitialFetchingFinished) return (
-    <div className='w-[430.5px] h-[240px] bg-white' />
+    <div className='w-[430.5px] h-[312px] bg-white' />
   )
 
   return (
     <div className='p-4'>
+      <div className={'flex items-center justify-center h-8 w-full mb-10 text-indigo-500'}>
+        {t.chats.chatWith(`${selectedChat?.friend.firstName} ${selectedChat?.friend.lastName}`)}
+      </div>
       <div className='flex flex-row mb-6'>
         <div className='text-gray-500 w-60'>{t.chats.settings.myLanguage}:</div>
         {renderSelectLanguage(language, setLanguage)}

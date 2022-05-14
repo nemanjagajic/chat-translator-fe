@@ -44,6 +44,8 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
     socket.on(SocketEvents.friendStoppedTyping, onFriendStoppedTyping)
     handleChatVisited(true)
 
+    if (!selectedChat.me.sendLanguage) setIsSettingsModalOpen(true)
+
     return () => {
       resetQueryAndPageParamData()
       socket.off(SocketEvents.loadMessage, onLoadMessage)
@@ -137,7 +139,7 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
       ) : (
         <div className='flex flex-col-reverse h-full w-full overflow-y-scroll' />
       )}
-      {isFriendTyping && <div>Typing...</div>}
+      {isFriendTyping && <div className='m-2 ml-6 text-gray-400 italic'>{t.chats.friendTyping}</div>}
       <div className='flex flex-row'>
         <MessageInput fetchNewestMessages={fetchNewestMessages} />
         <div className='m-4 mt-2 cursor-pointer' onClick={() => { setIsSettingsModalOpen(true)} }>

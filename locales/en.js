@@ -21,7 +21,9 @@ export default {
     },
     chatWillAppear: 'Selected chat will appear here',
     addFriend: 'Add friend',
-    noMessagesYet: 'No messages yet'
+    noMessagesYet: 'No messages yet',
+    chatWith: (friend) => `Chat settings for ${friend}`,
+    friendTyping: 'Friend typing...'
   },
   messages: {
     fetchOlder: 'Fetch older'
