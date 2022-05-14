@@ -10,7 +10,7 @@ export default {
     }
   },
   chats: {
-    emptyChatList: 'There are no chats yet, start by sending someone message!',
+    emptyChatList: 'There are no chats yet, start by adding a friend!',
     noMessages: 'Send a message to start the conversation!',
     settings: {
       myLanguage: 'My language',
@@ -18,7 +18,9 @@ export default {
       languageNotSelected: 'Language not selected',
       settingsSuccessfullyChanged: 'Settings successfully changed',
       showOriginalMessages: 'Show original messages'
-    }
+    },
+    chatWillAppear: 'Selected chat will appear here',
+    addFriend: 'Add friend'
   },
   messages: {
     fetchOlder: 'Fetch older'
@@ -38,6 +40,14 @@ export default {
     noUsersMatchingSearch: 'No users found matching this search',
     successfullySentFriendRequest: 'Successfully sent friend request',
     successfullyRespondedToRequest: 'Successfully responded to request',
-    sendRequest: 'Send request'
+    sendRequest: 'Send request',
+    friendStatus: {
+      me: 'Me',
+      friend: 'Friend',
+      requestSent: 'Request sent',
+      requestReceived: 'Request received'
+    },
+    requestListIsEmpty: 'Request list is empty',
+    friendListEmpty: 'Friend list is empty'
   }
 }

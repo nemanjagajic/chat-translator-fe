@@ -12,6 +12,7 @@ import { useLoggedUser } from '../../hooks/auth'
 import { ChatTypingUpdate } from '../../ts/chats'
 import { SocketEvents } from '../../ts/sockets'
 import { SettingsSharp } from 'react-ionicons'
+import { useLocale } from '../../hooks/i18n'
 
 const PAGINATION_LIMIT = 100
 
@@ -24,6 +25,7 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
   const { selectedChat } = useChatsContext()
   const selectedChatId = selectedChat ? selectedChat._id : ''
   const loggedUser = useLoggedUser()
+  const { t } = useLocale()
 
   const [nextPageParam, setNextPageParam] = useState(1)
   const [isLastPageReached, setIsLastPageReached] = useState(false)
@@ -109,6 +111,12 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
   }
 
   const isReady = !isLoading && selectedChat
+
+  if (!selectedChat) return (
+    <div className='flex items-center justify-center w-full text-gray-400'>
+      {t.chats.chatWillAppear}
+    </div>
+  )
 
   return (
     <div className='flex flex-1 flex-col h-full bg-gray-50 overflow-auto'>

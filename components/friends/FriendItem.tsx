@@ -29,10 +29,10 @@ const FriendItem: FC<FriendItemProps> = (
     let label = ''
     let cursor = 'cursor-default'
 
-    if (isMe) label = 'Me'
-    if (isFriend) label = 'Friend'
-    if (isRequestSent) label = 'Request sent'
-    if (isRequestReceived) label = 'Request received'
+    if (isMe) label = t.friends.friendStatus.me
+    if (isFriend) label = t.friends.friendStatus.friend
+    if (isRequestSent) label = t.friends.friendStatus.requestSent
+    if (isRequestReceived) label = t.friends.friendStatus.requestReceived
     if (!isMe && !isFriend && !isRequestSent && !isRequestReceived) {
       onClick = () => sendFriendRequest({ userId: _id })
       bgColor = 'bg-teal-400'
