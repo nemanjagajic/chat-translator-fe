@@ -1,12 +1,20 @@
 export default {
   auth: {
+    pageTitle: 'Break language barrier.',
+    pageDescription: 'Chat with messages instantly translated to desired language',
+    login: 'Login',
+    register: 'Register',
+    or: 'or',
     placeholders: {
-      email: 'Email',
-      password: 'Password'
+      usernameOrEmail: 'Username or email',
+      password: 'Password',
+      firstName: 'First name',
+      lastName: 'Last name'
     },
     buttons: {
       logIn: 'Log in',
-      logOut: 'Log out'
+      logOut: 'Log out',
+      register: 'Register'
     }
   },
   chats: {
