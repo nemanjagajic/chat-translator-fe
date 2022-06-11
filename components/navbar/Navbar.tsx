@@ -2,11 +2,13 @@ import React from 'react'
 import { useLoggedUser, useLogOut } from '../../hooks/auth'
 import { useLocale } from '../../hooks/i18n'
 import { useRouter } from 'next/router'
+import { useThemeContext } from '../../providers/ThemeProvider'
 
 const CHATS_ROUTE = '/'
 const FRIENDS_ROUTE = '/friends'
 
 const Navbar = () => {
+  const { isDark, setIsDark } = useThemeContext()
   const loggedUser = useLoggedUser()
   const { t } = useLocale()
   const { logOut } = useLogOut()
@@ -38,6 +40,7 @@ const Navbar = () => {
           >
             {t.auth.buttons.logOut}
           </div>
+          <div onClick={() => setIsDark(!isDark)}>Theme</div>
           <div className='flex items-center justify-center mr-3 cursor-default text-gray-800 bg-gray-300 px-4 py-2 rounded-2xl'>
             {loggedUser?.firstName}
           </div>

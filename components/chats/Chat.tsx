@@ -13,6 +13,7 @@ import { ChatTypingUpdate } from '../../ts/chats'
 import { SocketEvents } from '../../ts/sockets'
 import { SettingsSharp } from 'react-ionicons'
 import { useLocale } from '../../hooks/i18n'
+import { useThemeContext } from '../../providers/ThemeProvider'
 
 const PAGINATION_LIMIT = 100
 
@@ -21,6 +22,7 @@ type ChatProps = {
 }
 
 const Chat: FC<ChatProps> = ({ invalidateChats }) => {
+  const { isDark } = useThemeContext()
   const queryClient = useQueryClient()
   const { selectedChat } = useChatsContext()
   const selectedChatId = selectedChat ? selectedChat._id : ''
@@ -121,7 +123,7 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
   )
 
   return (
-    <div className='flex flex-1 flex-col h-full bg-gray-50 overflow-auto'>
+    <div className={`flex flex-1 flex-col h-full ${isDark ? 'bg-gray-700' : 'bg-gray-50'} overflow-auto`}>
       <Modal
         isOpen={isSettingsModalOpen}
         onClose={() => { setIsSettingsModalOpen(false)} }

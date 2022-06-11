@@ -23,7 +23,6 @@ const MessagesList: FC<MessagesListProps> = ({
   const { t } = useLocale()
   const isMessagesListEmpty = !messagesPages[0][0]
 
-
   const renderMessages = () => messagesPages?.map(
     messages => messages.map((message, index) => (
       <Message

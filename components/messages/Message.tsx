@@ -3,6 +3,7 @@ import { Message } from '../../ts/messages'
 import { useLoggedUser } from '../../hooks/auth'
 import moment from 'moment'
 import { Checkmark, CheckmarkDone } from 'react-ionicons'
+import { useThemeContext } from '../../providers/ThemeProvider'
 
 type MessageProps = {
   message: Message,
@@ -22,6 +23,7 @@ const Message: FC<MessageProps> = ({ message: {
   nextMessageDate,
   isRead,
   showOriginalMessages}) => {
+  const { isDark } = useThemeContext()
   const loggedUser = useLoggedUser()
   const isMessageMine = senderId === loggedUser?._id
 
@@ -31,11 +33,11 @@ const Message: FC<MessageProps> = ({ message: {
         data-testid='message-item'
         className={
           `flex flex-col 
-          ${isMessageMine ? 'self-end bg-indigo-500' : 'self-start bg-gray-200'} 
+          ${isMessageMine ? 'self-end bg-indigo-500' : `self-start ${isDark ? 'bg-gray-500' : 'bg-gray-200'}`} 
           mx-4 max-w-[50%] rounded-3xl px-4 pt-2 pb-1 break-words z-[1] mt-1`
         }
       >
-        <div className={`${isMessageMine ? 'text-white' : 'text-gray-800'}`}>
+        <div className={`${(isMessageMine || isDark) ? 'text-white' : 'text-gray-800'}`}>
           {isMessageMine && !showOriginalMessages ? text : (textTranslated || text)}
         </div>
         <div className={`flex flex-row items-center w-full ${isMessageMine ? 'justify-end' : 'justify-start'}`}>
@@ -52,7 +54,10 @@ const Message: FC<MessageProps> = ({ message: {
         <div
           className={
             `flex flex-col 
-          ${isMessageMine ? 'self-end bg-indigo-200 text-white' : 'self-start bg-gray-100 text-gray-400'} 
+          ${isMessageMine ? 
+              `self-end ${isDark ? 'bg-indigo-900 text-gray-200' : 'bg-indigo-200'} text-white` 
+              : `self-start ${isDark ? 'bg-gray-800 text-gray-400' : 'bg-gray-100 text-gray-400'}`
+            } 
           mx-4 max-w-[50%] rounded-3xl px-4 pt-2 pb-1 break-words mb-[-8px] pb-2 mt-2`
           }
         >
@@ -61,9 +66,9 @@ const Message: FC<MessageProps> = ({ message: {
       )}
       {showDateSeparator && (
         <div className='flex flex-row w-full items-center py-8 px-12'>
-          <div className='flex flex-1 h-[1px] bg-gray-200' />
-          <div className='px-6 text-gray-500 text-sm'>{moment(nextMessageDate).format('MMM DD, YYYY')}</div>
-          <div className='flex flex-1 h-[1px] bg-gray-200' />
+          <div className={`flex flex-1 h-[1px] ${isDark ? 'bg-gray-500' : 'bg-gray-200'}`} />
+          <div className={`px-6 ${isDark ? 'text-gray-300' : 'text-gray-500'} text-sm`}>{moment(nextMessageDate).format('MMM DD, YYYY')}</div>
+          <div className={`flex flex-1 h-[1px] ${isDark ? 'bg-gray-500' : 'bg-gray-200'}`} />
         </div>
       )}
     </>

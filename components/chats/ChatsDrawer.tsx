@@ -2,6 +2,7 @@ import React, { FC, useEffect } from 'react'
 import ChatsList from './ChatsList'
 import { Chat } from '../../ts/chats'
 import { useChatsContext } from '../../providers/ChatsProvider'
+import { useThemeContext } from '../../providers/ThemeProvider'
 
 type ChatsDrawerProps = {
   chats: Chat[]
@@ -9,6 +10,7 @@ type ChatsDrawerProps = {
 }
 
 const ChatsDrawer: FC<ChatsDrawerProps> = ({ chats, isLoadingChats }) => {
+  const { isDark } = useThemeContext()
   const { selectedChat, setSelectedChat } = useChatsContext()
 
   useEffect(() => {
@@ -34,7 +36,7 @@ const ChatsDrawer: FC<ChatsDrawerProps> = ({ chats, isLoadingChats }) => {
   }
 
   return (
-    <div className='flex h-full w-[25%] bg-gray-100 border-r'>
+    <div className={`flex h-full w-[25%] ${isDark ? 'bg-gray-700 border-gray-600' : 'bg-gray-100'} border-r`}>
       {!isLoadingChats && <ChatsList chats={chats} selectedChat={selectedChat} setSelectedChat={setSelectedChat} />}
     </div>
   )

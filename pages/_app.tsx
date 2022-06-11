@@ -5,6 +5,7 @@ import { useAuthRedirection } from '../hooks/auth'
 import Navbar from '../components/navbar/Navbar'
 import React from 'react'
 import { useRouter } from 'next/router'
+import ThemeProvider from '../providers/ThemeProvider'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,10 +21,12 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className='h-screen overflow-hidden'>
-        {router.pathname !== '/auth' && <Navbar />}
-        <Component {...pageProps} />
-      </div>
+      <ThemeProvider>
+        <div className='h-screen overflow-hidden'>
+          {router.pathname !== '/auth' && <Navbar />}
+          <Component {...pageProps} />
+        </div>
+      </ThemeProvider>
     </QueryClientProvider>
   )
 }

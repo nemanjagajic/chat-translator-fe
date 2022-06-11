@@ -3,12 +3,14 @@ import { useSendMessage } from '../../hooks/chats'
 import { useChatsContext } from '../../providers/ChatsProvider'
 import socket from '../../sockets'
 import { Send } from 'react-ionicons'
+import { useThemeContext } from '../../providers/ThemeProvider'
 
 type MessageInputProps = {
   fetchNewestMessages: Function
 }
 
 const MessageInput: FC<MessageInputProps> = ({ fetchNewestMessages }) => {
+  const { isDark } = useThemeContext()
   const { selectedChat } = useChatsContext()
   const textAreaRef = useRef() as React.MutableRefObject<HTMLTextAreaElement>
   const [text, setText] = useState('')
@@ -54,11 +56,13 @@ const MessageInput: FC<MessageInputProps> = ({ fetchNewestMessages }) => {
 
   return (
     <div
-      className='flex w-full bg-white ml-2 mb-2 rounded-2xl border'
+      className={`flex w-full ${isDark ? 'bg-gray-600 border-gray-500' : 'white'} ml-2 mb-2 rounded-2xl border`}
     >
       <textarea
         ref={textAreaRef}
-        className='focus:outline-none w-full p-2 rounded-2xl h-[40px] resize-none'
+        className={
+          `focus:outline-none w-full p-2 rounded-2xl h-[40px] resize-none ${isDark ? 'bg-gray-600 text-white' : 'white'}`
+        }
         value={text}
         onInput={handleTextChange}
         onKeyDown={handleKeyDown}
