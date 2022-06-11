@@ -3,6 +3,7 @@ import { useLoggedUser, useLogOut } from '../../hooks/auth'
 import { useLocale } from '../../hooks/i18n'
 import { useRouter } from 'next/router'
 import { useThemeContext } from '../../providers/ThemeProvider'
+import DarkModeToggle from 'react-dark-mode-toggle'
 
 const CHATS_ROUTE = '/'
 const FRIENDS_ROUTE = '/friends'
@@ -37,7 +38,11 @@ const Navbar = () => {
       </div>
       {loggedUser && (
         <div className='flex flex-row items-center justify-between'>
-          <div className='cursor-pointer' onClick={() => setIsDark(!isDark)}>Theme</div>
+          <DarkModeToggle
+            onChange={() => setIsDark(!isDark)}
+            checked={isDark}
+            size={50}
+          />
           <div
             className={`p-2 mr-4 ml-4 cursor-pointer ${isDark ? 'text-gray-100' : 'text-gray-800 '}`}
             onClick={logOut}
