@@ -7,6 +7,7 @@ import { useLocale } from '../../hooks/i18n'
 import { Checkmark } from 'react-ionicons'
 import { Close } from 'react-ionicons'
 import { useCreateChat } from '../../hooks/chats'
+import { useThemeContext } from '../../providers/ThemeProvider'
 
 type FriendRequestItemProps = {
   friendRequest: FriendRequest
@@ -15,6 +16,7 @@ type FriendRequestItemProps = {
 const FriendRequestItem: FC<FriendRequestItemProps> = ({
  friendRequest: { _id, firstName, lastName, email, requestedByMe = false }
 }) => {
+  const { isDark } = useThemeContext()
   const { t } = useLocale()
 
   const { mutate: createChat } = useCreateChat()
@@ -24,7 +26,8 @@ const FriendRequestItem: FC<FriendRequestItemProps> = ({
   })
 
   return (
-    <div className='flex flex-row bg-gray-100 w-96 my-4 mt-6 p-4 rounded-xl drop-shadow-sm justify-between'>
+    <div className={`flex flex-row ${isDark ? 'bg-gray-300' : 'bg-gray-100'} 
+    w-96 my-4 mt-6 p-4 rounded-xl drop-shadow-sm justify-between`}>
       <div className='flex flex-col'>
         <div className='text-gray-800'>{`${firstName} ${lastName}`}</div>
         <div className='text-sm text-gray-500'>{email}</div>

@@ -16,17 +16,20 @@ const Navbar = () => {
 
   return (
     <div
-      className='flex flex-row items-center justify-between h-[8%] px-4 bg-gray-100 border-b drop-shadow-sm'
+      className={`flex flex-row items-center justify-between h-[8%] px-4 
+      ${isDark ? 'bg-gray-600 border-gray-600' : 'bg-gray-100'} border-b drop-shadow-sm`}
     >
       <div className='flex flex-row'>
         <div
-          className={`ml-3 mr-6 cursor-pointer text-gray-800 ${router.pathname === CHATS_ROUTE && 'text-indigo-500'}`}
+          className={`ml-3 mr-6 cursor-pointer ${isDark ? 'text-gray-100' : 'text-gray-800 '}
+          ${router.pathname === CHATS_ROUTE && `${isDark ? 'text-indigo-300' : 'text-indigo-500'}`}`}
           onClick={() => router.push(CHATS_ROUTE)}
         >
           {t.navbar.chats}
         </div>
         <div
-          className={`cursor-pointer text-gray-800 ${router.pathname === FRIENDS_ROUTE && 'text-indigo-500'}`}
+          className={`cursor-pointer ${isDark ? 'text-gray-100' : 'text-gray-800 '}
+          ${router.pathname === FRIENDS_ROUTE && `${isDark ? 'text-indigo-300' : 'text-indigo-500'}`}`}
           onClick={() => router.push(`${FRIENDS_ROUTE}?myFriends`)}
         >
           {t.navbar.friends}
@@ -34,13 +37,13 @@ const Navbar = () => {
       </div>
       {loggedUser && (
         <div className='flex flex-row items-center justify-between'>
+          <div className='cursor-pointer' onClick={() => setIsDark(!isDark)}>Theme</div>
           <div
-            className='p-2 mr-4 ml-4 cursor-pointer'
+            className={`p-2 mr-4 ml-4 cursor-pointer ${isDark ? 'text-gray-100' : 'text-gray-800 '}`}
             onClick={logOut}
           >
             {t.auth.buttons.logOut}
           </div>
-          <div onClick={() => setIsDark(!isDark)}>Theme</div>
           <div className='flex items-center justify-center mr-3 cursor-default text-gray-800 bg-gray-300 px-4 py-2 rounded-2xl'>
             {loggedUser?.firstName}
           </div>

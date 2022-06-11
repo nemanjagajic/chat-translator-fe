@@ -4,6 +4,7 @@ import { useSendFriendRequest } from '../../hooks/friends'
 import { toast } from 'react-toastify'
 import ToastSuccess from '../shared/ToastSuccess'
 import { useLocale } from '../../hooks/i18n'
+import { useThemeContext } from '../../providers/ThemeProvider'
 
 type FriendItemProps = {
   friend: Friend,
@@ -15,6 +16,7 @@ const FriendItem: FC<FriendItemProps> = (
   { friend: { _id, firstName, lastName, email},
   isSearchList = false, status }
 ) => {
+  const { isDark } = useThemeContext()
   const { t } = useLocale()
 
   const { mutate: sendFriendRequest } = useSendFriendRequest(() => {
@@ -51,7 +53,8 @@ const FriendItem: FC<FriendItemProps> = (
   }
 
   return (
-    <div className='flex flex-row bg-gray-100 w-96 my-4 mt-6 p-4 rounded-xl drop-shadow-sm justify-between items-center'>
+    <div className={`flex flex-row ${isDark ? 'bg-gray-300' : 'bg-gray-100'} w-96 my-4 mt-6 p-4 
+    rounded-xl drop-shadow-sm justify-between items-center`}>
       <div className='flex flex-col'>
         <div className='text-gray-800'>{`${firstName} ${lastName}`}</div>
         <div className='text-sm text-gray-500'>{email}</div>

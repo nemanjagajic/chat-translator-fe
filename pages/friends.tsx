@@ -7,12 +7,14 @@ import FriendRequestsList from '../components/friendRequests/FriendRequestsList'
 import useDebounce from '../hooks/helpers/useDebounce'
 import { configureToast } from '../utils/toast'
 import { useRouter } from 'next/router'
+import { useThemeContext } from '../providers/ThemeProvider'
 
 const SEARCH_FRIEND_OFFSET = 0
 const SEARCH_FRIEND_LIMIT = 10
 const SEARCH_INPUT_DEBOUNCE_TIMEOUT_MS = 500
 
 const Friends = () => {
+  const { isDark } = useThemeContext()
   const { t } = useLocale()
   const router = useRouter()
   const [selectedTab, setSelectedTab] = useState<FriendsSelectedTab>(FriendsSelectedTab.myFriends)
@@ -96,7 +98,7 @@ const Friends = () => {
   const sentRequests = allFriends && allFriends.friendRequests.filter(friendRequest => friendRequest.requestedByMe)
 
   return (
-    <div className='flex flex-col h-screen bg-gray-50 items-center'>
+    <div className={`flex flex-col h-screen ${isDark ? 'bg-gray-700' : 'bg-gray-50'} items-center`}>
       <div className='flex flex-row w-full pt-8 items-center justify-center'>
         {friendsTabs.map(tabItem => renderFriendsTab(tabItem.tab, tabItem.title))}
       </div>
