@@ -4,7 +4,6 @@ export default {
     pageDescription: 'Chat with messages instantly translated to desired language',
     login: 'Login',
     register: 'Register',
-    or: 'or',
     placeholders: {
       usernameOrEmail: 'Username or email',
       password: 'Password',

@@ -52,16 +52,15 @@ const Auth = () => {
       <div className='w-[500px] h-[380px]'>
         <div className='flex flex-row justify-around items-center mb-6'>
           <div
-            className={`flex justify-center items-center ${isLogin ? 'bg-indigo-400' : 'bg-indigo-700'} text-white 
-            bg-white px-4 py-3 flex-1 rounded-3xl cursor-pointer mr-4`}
+            className={`flex justify-center items-center border-b ${isLogin ? 'border-indigo-400' : 'border-indigo-700'} text-white 
+            px-4 py-3 flex-1 cursor-pointer mr-4`}
             onClick={() => setIsLogin(true)}
           >
             {t.auth.login}
           </div>
-          <div className='text-white'>{t.auth.or}</div>
           <div
-            className={`flex justify-center items-center ${!isLogin ? 'bg-indigo-400' : 'bg-indigo-700'} text-white 
-            bg-white px-4 py-3 flex-1 rounded-3xl cursor-pointer ml-4`}
+            className={`flex justify-center items-center border-b ${!isLogin ? 'border-indigo-400' : 'border-indigo-700'} text-white 
+            px-4 py-3 flex-1 cursor-pointer ml-4`}
             onClick={() => setIsLogin(false)}
           >
             {t.auth.register}
@@ -105,7 +104,7 @@ const Auth = () => {
             </div>
           )}
           <input
-            className='bg-teal-400 w-full h-12 mt-6 rounded-3xl font-bold text-white tracking-wide cursor-pointer'
+            className='bg-teal-400 w-[50%] h-12 mt-6 rounded-3xl font-bold text-white tracking-wide cursor-pointer'
             type={'submit'}
             value={isLogin ? t.auth.buttons.logIn : t.auth.buttons.register}
             onClick={isLogin ? handleLogIn : handleRegister}
