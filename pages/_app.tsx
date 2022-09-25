@@ -6,6 +6,8 @@ import Navbar from '../components/navbar/Navbar'
 import React from 'react'
 import { useRouter } from 'next/router'
 import ThemeProvider from '../providers/ThemeProvider'
+import Head from 'next/head'
+import { useLocale } from '../hooks/i18n'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,16 +20,22 @@ const queryClient = new QueryClient({
 function MyApp({ Component, pageProps }: AppProps) {
   useAuthRedirection()
   const router = useRouter()
+  const { t } = useLocale()
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <div className='h-screen overflow-hidden'>
-          {router.pathname !== '/auth' && <Navbar />}
-          <Component {...pageProps} />
-        </div>
-      </ThemeProvider>
-    </QueryClientProvider>
+    <>
+      <Head>
+        <title>{t.general.title}</title>
+      </Head>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <div className='h-screen overflow-hidden'>
+            {router.pathname !== '/auth' && <Navbar />}
+            <Component {...pageProps} />
+          </div>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </>
   )
 }
 

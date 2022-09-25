@@ -4,5 +4,6 @@ export enum SocketEvents {
   updateFriendVisitData = 'updateFriendVisitData',
   loadMessage = 'loadMessage',
   friendStartedTyping = 'friendStartedTyping',
-  friendStoppedTyping = 'friendStoppedTyping'
+  friendStoppedTyping = 'friendStoppedTyping',
+  newFriendRequest = 'newFriendRequest'
 }

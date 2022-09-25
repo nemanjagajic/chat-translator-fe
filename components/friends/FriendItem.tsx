@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 import ToastSuccess from '../shared/ToastSuccess'
 import { useLocale } from '../../hooks/i18n'
 import { useThemeContext } from '../../providers/ThemeProvider'
+import socket from '../../sockets'
 
 type FriendItemProps = {
   friend: Friend,
@@ -20,6 +21,7 @@ const FriendItem: FC<FriendItemProps> = (
   const { t } = useLocale()
 
   const { mutate: sendFriendRequest } = useSendFriendRequest(() => {
+    socket.emit('friendSentRequest', _id)
     toast(<ToastSuccess text={t.friends.successfullySentFriendRequest} />)
   })
 

@@ -14,6 +14,7 @@ import { SocketEvents } from '../../ts/sockets'
 import { SettingsSharp } from 'react-ionicons'
 import { useLocale } from '../../hooks/i18n'
 import { useThemeContext } from '../../providers/ThemeProvider'
+import useWindowFocus from '../../hooks/helpers/useWindowFocus'
 
 const PAGINATION_LIMIT = 100
 
@@ -28,6 +29,7 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
   const selectedChatId = selectedChat ? selectedChat._id : ''
   const loggedUser = useLoggedUser()
   const { t } = useLocale()
+  const isWindowFocused = useWindowFocus()
 
   const [nextPageParam, setNextPageParam] = useState(1)
   const [isLastPageReached, setIsLastPageReached] = useState(false)
@@ -41,7 +43,6 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
   useEffect(() => {
     setIsFriendTyping(false)
     if (!selectedChat || !loggedUser) return
-    socket.on(SocketEvents.loadMessage, onLoadMessage)
     socket.on(SocketEvents.friendStartedTyping, onFriendStartedTyping)
     socket.on(SocketEvents.friendStoppedTyping, onFriendStoppedTyping)
     handleChatVisited(true)
@@ -50,18 +51,34 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
 
     return () => {
       resetQueryAndPageParamData()
-      socket.off(SocketEvents.loadMessage, onLoadMessage)
       socket.off(SocketEvents.friendStartedTyping, onFriendStartedTyping)
       socket.off(SocketEvents.friendStoppedTyping, onFriendStoppedTyping)
     }
   }, [selectedChatId])
 
   useEffect(() => {
+    socket.on(SocketEvents.loadMessage, onLoadMessage)
+
+    return () => {
+      socket.off(SocketEvents.loadMessage, onLoadMessage)
+    }
+  }, [selectedChatId, isWindowFocused])
+
+  useEffect(() => {
     allMessagesRef.current = allMessages
     checkIsLastPageReached()
   }, [allMessages])
 
+  useEffect(() => {
+    if (isWindowFocused && document.title.includes(`(${t.messages.new})`)) {
+      document.title = t.general.title
+    }
+  }, [isWindowFocused])
+
   const onLoadMessage = async (message: Message) => {
+    if (!isWindowFocused) {
+      document.title = `${t.general.title} (${t.messages.new})`
+    }
     if (message.chatId === selectedChatId) {
       fetchNewestMessages()
       await handleChatVisited()
@@ -117,7 +134,7 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
   const isReady = !isLoading && selectedChat
 
   if (!selectedChat) return (
-    <div className='flex items-center justify-center w-full text-gray-400'>
+    <div className={`flex items-center justify-center w-full text-gray-400 ${isDark ? 'bg-gray-700' : 'bg-gray-50'}`}>
       {t.chats.chatWillAppear}
     </div>
   )
@@ -145,7 +162,7 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
       <div className='flex flex-row'>
         <MessageInput fetchNewestMessages={fetchNewestMessages} />
         <div className='m-4 mt-2 cursor-pointer' onClick={() => { setIsSettingsModalOpen(true)} }>
-          <SettingsSharp height='24px' width='24px' color='#6366f1' />
+          <SettingsSharp height='24px' width='24px' color={isDark ? '#ccc' : '#6366f1'} />
         </div>
       </div>
     </div>

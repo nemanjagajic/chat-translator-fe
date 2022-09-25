@@ -8,9 +8,13 @@ import { useEffect } from 'react'
 import socket from '../sockets/index'
 import { SocketEvents } from '../ts/sockets'
 import { configureToast } from '../utils/toast'
+import { useLocale } from '../hooks/i18n'
+import useWindowFocus from '../hooks/helpers/useWindowFocus'
 
 const Home: NextPage = () => {
   const loggedUser = useLoggedUser()
+  const { t } = useLocale()
+  const isWindowFocused = useWindowFocus()
 
   const { data: chats = [], isLoading: isLoadingChats, invalidateChats } = useFetchAllChats()
 
@@ -29,12 +33,27 @@ const Home: NextPage = () => {
     configureToast()
     socket.on(SocketEvents.loadChatSettings, invalidateChats)
     socket.on(SocketEvents.updateFriendVisitData, invalidateChats)
+    socket.on(SocketEvents.newFriendRequest, handleFriendRequest)
     return () => {
       socket.off(SocketEvents.loadChatSettings, invalidateChats)
       socket.off(SocketEvents.updateFriendVisitData, invalidateChats)
-
+      socket.off(SocketEvents.newFriendRequest, handleFriendRequest)
     }
   }, [])
+
+  useEffect(() => {
+    configureToast()
+    socket.on(SocketEvents.newFriendRequest, handleFriendRequest)
+    return () => {
+      socket.off(SocketEvents.newFriendRequest, handleFriendRequest)
+    }
+  }, [isWindowFocused])
+
+  const handleFriendRequest = () => {
+    if (!isWindowFocused) {
+      document.title = `${t.general.title} (${t.friends.newFriendRequest})`
+    }
+  }
 
   return (
     <div className='h-screen'>

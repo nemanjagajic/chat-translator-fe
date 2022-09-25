@@ -8,6 +8,8 @@ import useDebounce from '../hooks/helpers/useDebounce'
 import { configureToast } from '../utils/toast'
 import { useRouter } from 'next/router'
 import { useThemeContext } from '../providers/ThemeProvider'
+import socket from '../sockets'
+import { SocketEvents } from '../ts/sockets'
 
 const SEARCH_FRIEND_OFFSET = 0
 const SEARCH_FRIEND_LIMIT = 10
@@ -21,12 +23,16 @@ const Friends = () => {
   const [searchText, setSearchText] = useState('')
   const debouncedSearchText = useDebounce(searchText, SEARCH_INPUT_DEBOUNCE_TIMEOUT_MS)
 
-  const { data: allFriends } = useFetchAllFriends()
+  const { data: allFriends, invalidateFriends } = useFetchAllFriends()
   const { data: searchFriendList, refetch: fetchUsers, isRefetching: isRefetchingUsers } =
     useSearchUser(debouncedSearchText, SEARCH_FRIEND_OFFSET, SEARCH_FRIEND_LIMIT)
 
   useEffect(() => {
     configureToast()
+    socket.on(SocketEvents.newFriendRequest, handleFriendRequest)
+    return () => {
+      socket.off(SocketEvents.newFriendRequest, handleFriendRequest)
+    }
   }, [])
 
   useEffect(() => {
@@ -40,6 +46,10 @@ const Friends = () => {
     if (path === `/friends?${FriendsSelectedTab.sentRequests}`) setSelectedTab(FriendsSelectedTab.sentRequests)
     if (path === `/friends?${FriendsSelectedTab.addNewFriend}`) setSelectedTab(FriendsSelectedTab.addNewFriend)
   }, [router.asPath])
+
+  const handleFriendRequest = () => {
+    invalidateFriends()
+  }
 
   const renderFriendsTab = (tab: FriendsSelectedTab, title: string) => (
     <div

@@ -3,11 +3,13 @@ import { getAllFriends, getSearchUser, respondToFriendRequest, sendFriendRequest
 import { AllFriends, FriendSearchItem } from '../ts/friends'
 
 export const useFetchAllFriends = () => {
+  const queryClient = useQueryClient()
+  const invalidateFriends = () => queryClient.invalidateQueries('friends')
   const { data, isLoading, error } = useQuery<AllFriends>(
     'friends',
     getAllFriends,
   )
-  return { data, isLoading, error }
+  return { data, isLoading, error, invalidateFriends }
 }
 
 export const useSearchUser = (text: string, offset: number, limit: number) => {

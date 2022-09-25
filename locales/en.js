@@ -1,4 +1,7 @@
 export default {
+  general: {
+    title: 'Chat translator'
+  },
   auth: {
     pageTitle: 'Break language barrier.',
     pageDescription: 'Chat with messages instantly translated to desired language',
@@ -34,7 +37,8 @@ export default {
     selectLanguage: 'Select language'
   },
   messages: {
-    fetchOlder: 'Fetch older'
+    fetchOlder: 'Fetch older',
+    new: 'new'
   },
   navbar: {
     chats: 'Chats',
@@ -59,6 +63,7 @@ export default {
       requestReceived: 'Request received'
     },
     requestListIsEmpty: 'Request list is empty',
-    friendListEmpty: 'Friend list is empty'
+    friendListEmpty: 'Friend list is empty',
+    newFriendRequest: 'new friend request'
   }
 }
