@@ -38,7 +38,8 @@ export default {
   },
   messages: {
     fetchOlder: 'Fetch older',
-    new: 'new'
+    new: 'new',
+    messageNotSent: 'Message not sent'
   },
   navbar: {
     chats: 'Chats',

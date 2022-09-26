@@ -4,6 +4,9 @@ import { useChatsContext } from '../../providers/ChatsProvider'
 import socket from '../../sockets'
 import { Send } from 'react-ionicons'
 import { useThemeContext } from '../../providers/ThemeProvider'
+import { toast } from 'react-toastify'
+import ToastError from '../shared/ToastError'
+import { useLocale } from '../../hooks/i18n'
 
 type MessageInputProps = {
   fetchNewestMessages: Function
@@ -15,8 +18,10 @@ const MessageInput: FC<MessageInputProps> = ({ fetchNewestMessages }) => {
   const textAreaRef = useRef() as React.MutableRefObject<HTMLTextAreaElement>
   const [text, setText] = useState('')
   const [isTyping, setIsTyping] = useState(false)
+  const { t } = useLocale()
 
-  const { mutate: sendMessage } = useSendMessage(fetchNewestMessages)
+  const onSendMessageError = () => toast(<ToastError text={t.messages.messageNotSent} />)
+  const { mutate: sendMessage } = useSendMessage(fetchNewestMessages, onSendMessageError)
 
   useEffect(() => {
     const isInputFocused = document.activeElement === textAreaRef.current
