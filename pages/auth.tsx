@@ -74,6 +74,7 @@ const Auth = () => {
             name={'email'}
             placeholder={t.auth.placeholders.usernameOrEmail}
             value={userData.email}
+            data-cy={'emailInput'}
           />
           <input
             className='focus:outline-none py-3 px-4 m-2 rounded-3xl w-full'
@@ -82,6 +83,7 @@ const Auth = () => {
             placeholder={t.auth.placeholders.password}
             type={'password'}
             value={userData.password}
+            data-cy={'passwordInput'}
           />
           {!isLogin && (
             <div className='flex flex-row w-full'>
@@ -109,6 +111,7 @@ const Auth = () => {
             value={isLogin ? t.auth.buttons.logIn : t.auth.buttons.register}
             onClick={isLogin ? handleLogIn : handleRegister}
             onSubmit={isLogin ? handleLogIn : handleRegister}
+            data-cy={'submitButton'}
           />
           <div className='mt-4 text-red-400 h-6'>
             <div data-testid={'error-message'}>{authError}</div>

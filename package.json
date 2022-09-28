@@ -24,6 +24,7 @@
   "dependencies": {
     "@testing-library/react-hooks": "^7.0.2",
     "axios": "^0.26.1",
+    "cypress": "^10.9.0",
     "moment": "^2.29.1",
     "next": "12.1.0",
     "react": "17.0.2",
