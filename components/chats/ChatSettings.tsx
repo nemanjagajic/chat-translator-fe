@@ -56,6 +56,7 @@ const ChatSettings = () => {
       className='outline-0 cursor-pointer'
       value={value}
       onChange={(event) => onChange(event.target.value)}
+      data-cy='selectLanguageDropdown'
     >
       <option className='hidden'>{t.chats.selectLanguage}</option>
       {languages.map(language => (
@@ -97,6 +98,7 @@ const ChatSettings = () => {
           ${hasChanges ? 'bg-teal-400 cursor-pointer' : 'bg-gray-300 cursor-default'}`
         }
           onClick={() => hasChanges && applyChanges()}
+          data-cy='applySettingsButton'
         >
           Apply
         </div>

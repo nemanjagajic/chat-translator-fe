@@ -1,5 +1,5 @@
 describe('Authentication', () => {
-  it('should successfully log in', () => {
+  it('logs in', () => {
     cy.visit('http://localhost:3000/auth')
     cy.get('[data-cy="emailInput"]').type('test@cypress.com')
     cy.get('[data-cy="passwordInput"]').type('aaaaaaaa')
@@ -7,7 +7,7 @@ describe('Authentication', () => {
     cy.get('[data-cy="homeScreen"]')
   })
 
-  it('should successfully log out',() => {
+  it('logs out',() => {
     cy.logIn()
     cy.visit('http://localhost:3000/')
     cy.get('[data-cy="homeScreen"]')

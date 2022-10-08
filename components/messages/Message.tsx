@@ -37,7 +37,10 @@ const Message: FC<MessageProps> = ({ message: {
           mx-4 max-w-[50%] rounded-3xl px-4 pt-2 pb-1 break-words z-[1] mt-1`
         }
       >
-        <div className={`${(isMessageMine || isDark) ? 'text-white' : 'text-gray-800'}`}>
+        <div
+          className={`${(isMessageMine || isDark) ? 'text-white' : 'text-gray-800'}`}
+          data-cy='translatedMessageText'
+        >
           {isMessageMine && !showOriginalMessages ? text : (textTranslated || text)}
         </div>
         <div className={`flex flex-row items-center w-full ${isMessageMine ? 'justify-end' : 'justify-start'}`}>
@@ -60,6 +63,7 @@ const Message: FC<MessageProps> = ({ message: {
             } 
           mx-4 max-w-[50%] rounded-3xl px-4 pt-2 pb-1 break-words mb-[-8px] pb-2 mt-2`
           }
+          data-cy='originalMessageText'
         >
           {text}
         </div>

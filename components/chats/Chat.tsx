@@ -161,7 +161,11 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
       {isFriendTyping && <div className='m-2 ml-4 text-gray-400 italic'>{t.chats.friendTyping}</div>}
       <div className='flex flex-row'>
         <MessageInput fetchNewestMessages={fetchNewestMessages} />
-        <div className='m-4 mt-2 cursor-pointer' onClick={() => { setIsSettingsModalOpen(true)} }>
+        <div
+          className='m-4 mt-2 cursor-pointer'
+          onClick={() => { setIsSettingsModalOpen(true)} }
+          data-cy='settingsIcon'
+        >
           <SettingsSharp height='24px' width='24px' color={isDark ? '#ccc' : '#6366f1'} />
         </div>
       </div>

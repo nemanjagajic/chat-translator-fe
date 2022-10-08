@@ -72,8 +72,13 @@ const MessageInput: FC<MessageInputProps> = ({ fetchNewestMessages }) => {
         onInput={handleTextChange}
         onKeyDown={handleKeyDown}
         onBlur={() => setIsTyping(false)}
+        data-cy='messageTextarea'
       />
-      <button className={`pr-4 ${!!text ? 'cursor-pointer' : 'cursor-auto'}`} onClick={handleSendMessage}>
+      <button
+        className={`pr-4 ${!!text ? 'cursor-pointer' : 'cursor-auto'}`}
+        onClick={handleSendMessage}
+        data-cy='sendMessageButton'
+      >
         <Send height='20px' width='20px' color={!!text ? '#2dd4bf' : '#d1d5db'} />
       </button>
     </div>
