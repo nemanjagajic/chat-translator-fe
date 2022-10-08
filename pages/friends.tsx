@@ -129,7 +129,8 @@ const Friends = () => {
                 className='w-80 focus:outline-none p-2 rounded-2xl h-[40px] resize-none border mt-6'
                 onInput={onSearchInputChange}
                 value={searchText}
-                placeholder={'Type user name or email'}
+                placeholder={t.friends.addFriendInputPlaceholder}
+                data-cy='addFriendSearchInput'
               />
               {renderSearchResultList()}
             </div>

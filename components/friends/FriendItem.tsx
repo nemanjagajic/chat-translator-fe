@@ -55,8 +55,11 @@ const FriendItem: FC<FriendItemProps> = (
   }
 
   return (
-    <div className={`flex flex-row ${isDark ? 'bg-gray-300' : 'bg-gray-100'} w-96 my-4 mt-6 p-4 
-    rounded-xl drop-shadow-sm justify-between items-center`}>
+    <div
+      className={`flex flex-row ${isDark ? 'bg-gray-300' : 'bg-gray-100'} w-96 my-4 mt-6 p-4 
+    rounded-xl drop-shadow-sm justify-between items-center`}
+      data-cy='friendItem'
+    >
       <div className='flex flex-col'>
         <div className='text-gray-800'>{`${firstName} ${lastName}`}</div>
         <div className='text-sm text-gray-500'>{email}</div>

@@ -65,6 +65,7 @@ export default {
     },
     requestListIsEmpty: 'Request list is empty',
     friendListEmpty: 'Friend list is empty',
-    newFriendRequest: 'new friend request'
+    newFriendRequest: 'new friend request',
+    addFriendInputPlaceholder: 'Type user name or email'
   }
 }

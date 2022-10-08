@@ -32,6 +32,7 @@ const Navbar = () => {
           className={`cursor-pointer ${isDark ? 'text-gray-100' : 'text-gray-800 '}
           ${router.pathname === FRIENDS_ROUTE && `${isDark ? 'text-indigo-300' : 'text-indigo-500'}`}`}
           onClick={() => router.push(`${FRIENDS_ROUTE}?myFriends`)}
+          data-cy='navbarFriends'
         >
           {t.navbar.friends}
         </div>
