@@ -56,7 +56,7 @@ const Home: NextPage = () => {
   }
 
   return (
-    <div className='h-screen'>
+    <div className='h-screen' data-cy='homeScreen'>
       <ChatsProvider>
         <div className='flex flex-row h-[92%]'>
           <ChatsDrawer chats={chats} isLoadingChats={isLoadingChats} />

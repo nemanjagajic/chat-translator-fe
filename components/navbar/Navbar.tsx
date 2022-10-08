@@ -46,6 +46,7 @@ const Navbar = () => {
           <div
             className={`p-2 mr-4 ml-4 cursor-pointer ${isDark ? 'text-gray-100' : 'text-gray-800 '}`}
             onClick={logOut}
+            data-cy='logOutButton'
           >
             {t.auth.buttons.logOut}
           </div>
