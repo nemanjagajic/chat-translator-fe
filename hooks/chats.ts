@@ -10,13 +10,18 @@ import {
 } from '../services/api/chats'
 import { Message, MessageInput } from '../ts/messages'
 import socket from '../sockets'
+import { useLoggedUser } from './auth'
 
 export const useFetchAllChats = () => {
   const queryClient = useQueryClient()
+  const loggedUser = useLoggedUser()
   const invalidateChats = () => queryClient.invalidateQueries('chats')
   const { data, isLoading, error } = useQuery<Chat[]>(
     'chats',
     getAllChats,
+    {
+      enabled: !!loggedUser
+    }
   )
   return { data, isLoading, error, invalidateChats }
 }
