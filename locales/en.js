@@ -1,6 +1,8 @@
 export default {
   general: {
-    title: 'Chat translator'
+    title: 'Chat translator',
+    yes: 'Yes',
+    no: 'No'
   },
   auth: {
     pageTitle: 'Break language barrier.',
@@ -66,6 +68,8 @@ export default {
     requestListIsEmpty: 'Request list is empty',
     friendListEmpty: 'Friend list is empty',
     newFriendRequest: 'new friend request',
-    addFriendInputPlaceholder: 'Type user name or email'
+    addFriendInputPlaceholder: 'Type user name or email',
+    areYouSureDeleteMessage: 'Are you sue you want to delete a friend?',
+    friendRemoved: 'Friend removed'
   }
 }

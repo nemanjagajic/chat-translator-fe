@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { FriendsSelectedTab } from '../ts/friends'
-import { useFetchAllFriends, useSearchUser } from '../hooks/friends'
+import { useFetchAllFriends, useRemoveFriend, useSearchUser } from '../hooks/friends'
 import FriendsList from '../components/friends/FriendsList'
 import { useLocale } from '../hooks/i18n'
 import FriendRequestsList from '../components/friendRequests/FriendRequestsList'
@@ -10,6 +10,9 @@ import { useRouter } from 'next/router'
 import { useThemeContext } from '../providers/ThemeProvider'
 import socket from '../sockets'
 import { SocketEvents } from '../ts/sockets'
+import Modal from '../components/shared/Modal'
+import { toast } from 'react-toastify'
+import ToastSuccess from '../components/shared/ToastSuccess'
 
 const SEARCH_FRIEND_OFFSET = 0
 const SEARCH_FRIEND_LIMIT = 10
@@ -21,11 +24,17 @@ const Friends = () => {
   const router = useRouter()
   const [selectedTab, setSelectedTab] = useState<FriendsSelectedTab>(FriendsSelectedTab.myFriends)
   const [searchText, setSearchText] = useState('')
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
+  const [activeFriendIdToDelete, setActiveFriendIdToDelete] = useState('')
   const debouncedSearchText = useDebounce(searchText, SEARCH_INPUT_DEBOUNCE_TIMEOUT_MS)
 
   const { data: allFriends, invalidateFriends } = useFetchAllFriends()
   const { data: searchFriendList, refetch: fetchUsers, isRefetching: isRefetchingUsers } =
     useSearchUser(debouncedSearchText, SEARCH_FRIEND_OFFSET, SEARCH_FRIEND_LIMIT)
+  const { mutate: removeFriend } = useRemoveFriend(() => {
+    toast(<ToastSuccess text={t.friends.friendRemoved} />)
+    setIsSettingsModalOpen(false)
+  })
 
   useEffect(() => {
     configureToast()
@@ -115,7 +124,11 @@ const Friends = () => {
       {allFriends && (
         <div className='flex flex-col items-center w-[1024px] mt-6 overflow-y-scroll mb-20'>
           {selectedTab === FriendsSelectedTab.myFriends && myFriends && (
-            <FriendsList friends={myFriends} />
+            <FriendsList
+              friends={myFriends}
+              setIsSettingsModalOpen={setIsSettingsModalOpen}
+              setActiveFriendIdToDelete={setActiveFriendIdToDelete}
+            />
           )}
           {selectedTab === FriendsSelectedTab.receivedRequests && receivedRequests && (
             <FriendRequestsList friendsRequests={receivedRequests} />
@@ -137,6 +150,34 @@ const Friends = () => {
           )}
         </div>
       )}
+      <Modal
+        isOpen={isSettingsModalOpen}
+        onClose={() => {
+          setIsSettingsModalOpen(false)
+          setActiveFriendIdToDelete('')
+        }}
+      >
+        <div className='my-4 mx-2'>
+          <div className='text-gray-600'>{t.friends.areYouSureDeleteMessage}</div>
+          <div className='flex flex-row justify-center mt-6'>
+            <div
+              className='flex items-center justify-center w-16 h-8 bg-teal-400 rounded-xl cursor-pointer text-white mr-2'
+              onClick={() => removeFriend({ userId: activeFriendIdToDelete })}
+            >
+              {t.general.yes}
+            </div>
+            <div
+              className='flex items-center justify-center w-16 h-8 bg-gray-300 rounded-xl cursor-pointer text-white ml-2'
+              onClick={() => {
+                setIsSettingsModalOpen(false)
+                setActiveFriendIdToDelete('')
+              }}
+            >
+              {t.general.no}
+            </div>
+          </div>
+        </div>
+      </Modal>
     </div>
   )
 }

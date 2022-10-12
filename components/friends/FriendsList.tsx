@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { Dispatch, FC, SetStateAction } from 'react'
 import { AllFriends, Friend, FriendSearchItem } from '../../ts/friends'
 import FriendItem from './FriendItem'
 import { useLocale } from '../../hooks/i18n'
@@ -9,13 +9,17 @@ type FriendsListProps = {
   isSearchList?: boolean
   isRefetching?: boolean
   allFriends?: AllFriends
+  setIsSettingsModalOpen?: Dispatch<SetStateAction<boolean>>
+  setActiveFriendIdToDelete?: Dispatch<SetStateAction<string>>
 }
 
 const FriendsList: FC<FriendsListProps> = ({
  friends,
  isSearchList = false,
  isRefetching = false,
- allFriends
+ allFriends,
+ setIsSettingsModalOpen,
+ setActiveFriendIdToDelete
 }) => {
   const { t } = useLocale()
   const loggedUser = useLoggedUser()
@@ -45,6 +49,8 @@ const FriendsList: FC<FriendsListProps> = ({
           friend={friend}
           isSearchList={isSearchList}
           status={isSearchList ? getFriendStatus(friend) : null}
+          setIsSettingsModalOpen={setIsSettingsModalOpen}
+          setActiveFriendIdToDelete={setActiveFriendIdToDelete}
         />
       ))}
     </div>

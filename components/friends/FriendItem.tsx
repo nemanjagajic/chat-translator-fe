@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { Dispatch, FC, SetStateAction, useState } from 'react'
 import { Friend, FriendStatus } from '../../ts/friends'
 import { useSendFriendRequest } from '../../hooks/friends'
 import { toast } from 'react-toastify'
@@ -6,16 +6,19 @@ import ToastSuccess from '../shared/ToastSuccess'
 import { useLocale } from '../../hooks/i18n'
 import { useThemeContext } from '../../providers/ThemeProvider'
 import socket from '../../sockets'
+import { Close } from 'react-ionicons'
 
 type FriendItemProps = {
   friend: Friend,
   isSearchList?: boolean,
   status?: FriendStatus | null
+  setIsSettingsModalOpen?: Dispatch<SetStateAction<boolean>>
+  setActiveFriendIdToDelete?: Dispatch<SetStateAction<string>>
 }
 
 const FriendItem: FC<FriendItemProps> = (
   { friend: { _id, firstName, lastName, email},
-  isSearchList = false, status }
+  isSearchList = false, status , setIsSettingsModalOpen, setActiveFriendIdToDelete}
 ) => {
   const { isDark } = useThemeContext()
   const { t } = useLocale()
@@ -54,6 +57,18 @@ const FriendItem: FC<FriendItemProps> = (
     )
   }
 
+  const renderRemoveFriendIcon = () => (
+    <div
+      onClick={() => {
+        setIsSettingsModalOpen?.(true)
+        setActiveFriendIdToDelete?.(_id)
+      }}
+      className='flex items-center justify-center bg-red-400 w-10 h-10 rounded-full cursor-pointer mx-2 my-1'
+    >
+      <Close height='20px' width='15px' color='#ffffff' />
+    </div>
+  )
+
   return (
     <div
       className={`flex flex-row ${isDark ? 'bg-gray-300' : 'bg-gray-100'} w-96 my-4 mt-6 p-4 
@@ -64,7 +79,7 @@ const FriendItem: FC<FriendItemProps> = (
         <div className='text-gray-800'>{`${firstName} ${lastName}`}</div>
         <div className='text-sm text-gray-500'>{email}</div>
       </div>
-      {isSearchList && renderFriendStatusLabel()}
+      {isSearchList ? renderFriendStatusLabel() : renderRemoveFriendIcon()}
     </div>
   )
 }
