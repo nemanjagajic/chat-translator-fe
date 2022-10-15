@@ -13,6 +13,7 @@ import { SocketEvents } from '../ts/sockets'
 import Modal from '../components/shared/Modal'
 import { toast } from 'react-toastify'
 import ToastSuccess from '../components/shared/ToastSuccess'
+import { useFetchAllChats } from '../hooks/chats'
 
 const SEARCH_FRIEND_OFFSET = 0
 const SEARCH_FRIEND_LIMIT = 10
@@ -31,6 +32,7 @@ const Friends = () => {
   const { data: allFriends, invalidateFriends } = useFetchAllFriends()
   const { data: searchFriendList, refetch: fetchUsers, isRefetching: isRefetchingUsers } =
     useSearchUser(debouncedSearchText, SEARCH_FRIEND_OFFSET, SEARCH_FRIEND_LIMIT)
+  const { data: chats = [] } = useFetchAllChats(true)
   const { mutate: removeFriend } = useRemoveFriend(() => {
     toast(<ToastSuccess text={t.friends.friendRemoved} />)
     setIsSettingsModalOpen(false)
@@ -131,7 +133,7 @@ const Friends = () => {
             />
           )}
           {selectedTab === FriendsSelectedTab.receivedRequests && receivedRequests && (
-            <FriendRequestsList friendsRequests={receivedRequests} />
+            <FriendRequestsList friendsRequests={receivedRequests} chats={chats} />
           )}
           {selectedTab === FriendsSelectedTab.sentRequests && sentRequests && (
             <FriendRequestsList friendsRequests={sentRequests} />

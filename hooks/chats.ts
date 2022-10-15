@@ -12,13 +12,13 @@ import { Message, MessageInput } from '../ts/messages'
 import socket from '../sockets'
 import { useLoggedUser } from './auth'
 
-export const useFetchAllChats = () => {
+export const useFetchAllChats = (showRemovedFriends = false) => {
   const queryClient = useQueryClient()
   const loggedUser = useLoggedUser()
   const invalidateChats = () => queryClient.invalidateQueries('chats')
   const { data, isLoading, error } = useQuery<Chat[]>(
     'chats',
-    getAllChats,
+    () => getAllChats(showRemovedFriends),
     {
       enabled: !!loggedUser
     }

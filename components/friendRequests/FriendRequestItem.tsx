@@ -8,13 +8,15 @@ import { Checkmark } from 'react-ionicons'
 import { Close } from 'react-ionicons'
 import { useCreateChat } from '../../hooks/chats'
 import { useThemeContext } from '../../providers/ThemeProvider'
+import { Chat } from '../../ts/chats'
 
 type FriendRequestItemProps = {
   friendRequest: FriendRequest
+  chats?: Chat[]
 }
 
 const FriendRequestItem: FC<FriendRequestItemProps> = ({
- friendRequest: { _id, firstName, lastName, email, requestedByMe = false }
+ friendRequest: { _id, firstName, lastName, email, requestedByMe = false }, chats
 }) => {
   const { isDark } = useThemeContext()
   const { t } = useLocale()
@@ -22,7 +24,11 @@ const FriendRequestItem: FC<FriendRequestItemProps> = ({
   const { mutate: createChat } = useCreateChat()
   const { mutate: respondToFriendRequest } = useRespondToFriendRequest(() => {
     toast(<ToastSuccess text={t.friends.successfullyRespondedToRequest} />)
-    createChat({ userId: _id })
+    const chatAlreadyExists = chats?.find(c => {
+      console.log({ first: c.friend._id, second: _id })
+      return c.friend._id === _id
+    })
+    if (!chatAlreadyExists) createChat({ userId: _id })
   })
 
   return (

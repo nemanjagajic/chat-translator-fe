@@ -9,8 +9,8 @@ const API_ENDPOINTS = {
   CREATE_CHAT: '/api/chats/create'
 }
 
-export const getAllChats = async () =>
-  apiRequest(request.get(API_ENDPOINTS.CHATS))
+export const getAllChats = async (showRemovedFriends: boolean) =>
+  apiRequest(request.get(`${API_ENDPOINTS.CHATS}?showRemovedFriends=${showRemovedFriends}`))
 
 export const getMessages = async (chatId: string, offset: number, limit: number) =>
   apiRequest(request.get(`${API_ENDPOINTS.MESSAGES}?chatId=${chatId}&offset=${offset}&limit=${limit}`))
