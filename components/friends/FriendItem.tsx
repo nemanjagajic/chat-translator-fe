@@ -7,6 +7,8 @@ import { useLocale } from '../../hooks/i18n'
 import { useThemeContext } from '../../providers/ThemeProvider'
 import socket from '../../sockets'
 import { Close } from 'react-ionicons'
+import * as Sentry from '@sentry/react'
+import ToastError from '../shared/ToastError'
 
 type FriendItemProps = {
   friend: Friend,
@@ -26,6 +28,9 @@ const FriendItem: FC<FriendItemProps> = (
   const { mutate: sendFriendRequest } = useSendFriendRequest(() => {
     socket.emit('friendSentRequest', _id)
     toast(<ToastSuccess text={t.friends.successfullySentFriendRequest} />)
+  }, (error: any) => {
+    toast(<ToastError text={t.friends.failedToAddFriend} />)
+    Sentry.captureException({ user: error.user, userId: _id })
   })
 
   const renderFriendStatusLabel = () => {

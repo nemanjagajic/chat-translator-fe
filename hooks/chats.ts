@@ -39,6 +39,7 @@ export const useFetchMessages = (chatId: string, limit: number) => {
 
 export const useSendMessage = (onSuccess?: Function, onError?: Function) => {
   const queryClient = useQueryClient()
+  const user = useLoggedUser()
   const { mutate, isLoading, error } = useMutation(
     ({ chatId, text }: MessageInput) => sendMessage(chatId, text),
     {
@@ -48,7 +49,7 @@ export const useSendMessage = (onSuccess?: Function, onError?: Function) => {
         queryClient.invalidateQueries('chats')
       },
       onError: (() => {
-        onError?.()
+        onError?.({ user })
       })
     }
   )

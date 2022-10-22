@@ -10,6 +10,7 @@ import Head from 'next/head'
 import { useLocale } from '../hooks/i18n'
 import { toast } from 'react-toastify'
 import ToastError from '../components/shared/ToastError'
+import * as Sentry from '@sentry/react'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,6 +21,7 @@ const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: () => {
       toast(<ToastError text={'Failed to fetch data'} />)
+      Sentry.captureException(new Error('Failed to fetch data'))
     },
   })
 })
@@ -38,6 +40,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ThemeProvider>
           <div className='h-screen overflow-hidden'>
             {router.pathname !== '/auth' && <Navbar />}
+            { /* @ts-ignore */ }
             <Component {...pageProps} />
           </div>
         </ThemeProvider>

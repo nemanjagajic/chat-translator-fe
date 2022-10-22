@@ -10,6 +10,8 @@ import { SocketEvents } from '../ts/sockets'
 import { configureToast } from '../utils/toast'
 import { useLocale } from '../hooks/i18n'
 import useWindowFocus from '../hooks/helpers/useWindowFocus'
+import * as Sentry from '@sentry/react'
+import { BrowserTracing } from '@sentry/tracing'
 
 const Home: NextPage = () => {
   const loggedUser = useLoggedUser()
@@ -42,12 +44,21 @@ const Home: NextPage = () => {
   }, [])
 
   useEffect(() => {
+    initializeSentry()
     configureToast()
     socket.on(SocketEvents.newFriendRequest, handleFriendRequest)
     return () => {
       socket.off(SocketEvents.newFriendRequest, handleFriendRequest)
     }
   }, [isWindowFocused])
+
+  const initializeSentry = () => {
+    Sentry.init({
+      dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+      integrations: [new BrowserTracing()],
+      tracesSampleRate: 1.0
+    })
+  }
 
   const handleFriendRequest = () => {
     if (!isWindowFocused) {

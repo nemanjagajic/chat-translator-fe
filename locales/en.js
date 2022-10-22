@@ -70,6 +70,7 @@ export default {
     newFriendRequest: 'new friend request',
     addFriendInputPlaceholder: 'Type user name or email',
     areYouSureDeleteMessage: 'Are you sue you want to delete a friend?',
-    friendRemoved: 'Friend removed'
+    friendRemoved: 'Friend removed',
+    failedToAddFriend: 'Failed to add friend'
   }
 }

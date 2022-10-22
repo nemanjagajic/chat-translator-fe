@@ -7,6 +7,7 @@ import {
   sendFriendRequest
 } from '../services/api/friends'
 import { AllFriends, FriendSearchItem } from '../ts/friends'
+import { useLoggedUser } from './auth'
 
 export const useFetchAllFriends = () => {
   const queryClient = useQueryClient()
@@ -29,14 +30,18 @@ export const useSearchUser = (text: string, offset: number, limit: number) => {
   return { data, isLoading, error, refetch, isRefetching }
 }
 
-export const useSendFriendRequest = (onSuccess?: Function) => {
+export const useSendFriendRequest = (onSuccess?: Function, onError?: Function) => {
   const queryClient = useQueryClient()
+  const loggedUser = useLoggedUser()
   const { mutate, isLoading, error } = useMutation(
     ({ userId }: { userId: string }) => sendFriendRequest(userId),
     {
       onSuccess: () => {
         onSuccess?.()
         queryClient.invalidateQueries('friends')
+      },
+      onError: () => {
+        onError?.({ user: loggedUser })
       }
     }
   )

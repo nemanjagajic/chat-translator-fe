@@ -7,6 +7,7 @@ import { useThemeContext } from '../../providers/ThemeProvider'
 import { toast } from 'react-toastify'
 import ToastError from '../shared/ToastError'
 import { useLocale } from '../../hooks/i18n'
+import * as Sentry from '@sentry/react'
 
 type MessageInputProps = {
   fetchNewestMessages: Function
@@ -20,7 +21,10 @@ const MessageInput: FC<MessageInputProps> = ({ fetchNewestMessages }) => {
   const [isTyping, setIsTyping] = useState(false)
   const { t } = useLocale()
 
-  const onSendMessageError = () => toast(<ToastError text={t.messages.messageNotSent} />)
+  const onSendMessageError = (error: any) => {
+    toast(<ToastError text={t.messages.messageNotSent} />)
+    Sentry.captureException({ user: error.user, text, chatId: selectedChat?._id })
+  }
   const { mutate: sendMessage } = useSendMessage(fetchNewestMessages, onSendMessageError)
 
   useEffect(() => {
