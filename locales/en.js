@@ -52,7 +52,9 @@ export default {
       myFriends: 'My friends',
       receivedRequests: 'Received requests',
       sentRequests: 'Sent requests',
-      addNewFriend: 'Add new friend'
+      addNewFriend: 'Add new friend',
+      received: 'Received',
+      sent: 'Sent'
     },
     searchResultsWillAppearHere: 'Search results will appear here',
     noUsersMatchingSearch: 'No users found matching this search',

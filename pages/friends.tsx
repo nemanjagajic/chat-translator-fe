@@ -14,6 +14,11 @@ import Modal from '../components/shared/Modal'
 import { toast } from 'react-toastify'
 import ToastSuccess from '../components/shared/ToastSuccess'
 import { useFetchAllChats } from '../hooks/chats'
+import useWindowDimensions from '../hooks/helpers/useWindowDimensions'
+import {
+  WINDOW_WIDTH_BREAKPOINT_MD,
+  WINDOW_WIDTH_BREAKPOINT_SM
+} from '../constants/windowBreakpoints'
 
 const SEARCH_FRIEND_OFFSET = 0
 const SEARCH_FRIEND_LIMIT = 10
@@ -28,6 +33,7 @@ const Friends = () => {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
   const [activeFriendIdToDelete, setActiveFriendIdToDelete] = useState('')
   const debouncedSearchText = useDebounce(searchText, SEARCH_INPUT_DEBOUNCE_TIMEOUT_MS)
+  const { width: windowWidth } = useWindowDimensions()
 
   const { data: allFriends, invalidateFriends } = useFetchAllFriends()
   const { data: searchFriendList, refetch: fetchUsers, isRefetching: isRefetchingUsers } =
@@ -65,7 +71,8 @@ const Friends = () => {
   const renderFriendsTab = (tab: FriendsSelectedTab, title: string) => (
     <div
       className={`
-        flex flex-row px-4 py-3 mx-4 rounded-3xl cursor-pointer w-52 justify-center items-center
+        flex flex-row px-4 py-3 mx-4 rounded-3xl cursor-pointer w-52 
+        justify-center items-center overflow-hidden whitespace-nowrap mt-2
         ${tab === selectedTab ? 'bg-indigo-500 text-white' : 'text-gray-600 bg-gray-200'}`
     }
       onClick={() => router.push(`/friends?${tab}`)}
@@ -109,8 +116,18 @@ const Friends = () => {
 
   const friendsTabs = [
     { tab: FriendsSelectedTab.myFriends, title: t.friends.tabTitles.myFriends },
-    { tab: FriendsSelectedTab.receivedRequests, title: t.friends.tabTitles.receivedRequests },
-    { tab: FriendsSelectedTab.sentRequests, title: t.friends.tabTitles.sentRequests },
+    {
+      tab: FriendsSelectedTab.receivedRequests,
+      title: windowWidth > WINDOW_WIDTH_BREAKPOINT_MD
+        ? t.friends.tabTitles.receivedRequests
+        : t.friends.tabTitles.received
+    },
+    {
+      tab: FriendsSelectedTab.sentRequests,
+      title: windowWidth > WINDOW_WIDTH_BREAKPOINT_MD
+        ? t.friends.tabTitles.sentRequests
+        : t.friends.tabTitles.sent
+    },
     { tab: FriendsSelectedTab.addNewFriend, title: t.friends.tabTitles.addNewFriend }
   ]
 
@@ -120,7 +137,9 @@ const Friends = () => {
 
   return (
     <div className={`flex flex-col h-screen ${isDark ? 'bg-gray-700' : 'bg-gray-50'} items-center`}>
-      <div className='flex flex-row w-full pt-8 items-center justify-center'>
+      <div className={
+        `flex ${windowWidth > WINDOW_WIDTH_BREAKPOINT_SM ? 'flex-row' : 'flex-col'} w-full pt-8 items-center justify-center`
+      }>
         {friendsTabs.map(tabItem => renderFriendsTab(tabItem.tab, tabItem.title))}
       </div>
       {allFriends && (
