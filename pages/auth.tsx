@@ -47,8 +47,8 @@ const Auth = () => {
 
   return (
     <div className='flex flex-col h-full justify-center items-center bg-indigo-600' data-cy='authScreen'>
-      <h1 className='text-white text-8xl mb-4'>{t.auth.pageTitle}</h1>
-      <h2 className='text-indigo-200 text-3xl mb-20'>{t.auth.pageDescription}</h2>
+      <h1 className='text-white text-8xl mb-4 text-center'>{t.auth.pageTitle}</h1>
+      <h2 className='text-indigo-200 text-3xl mb-20 text-center'>{t.auth.pageDescription}</h2>
       <div className='w-[500px] h-[380px]'>
         <div className='flex flex-row justify-around items-center mb-6'>
           <div
