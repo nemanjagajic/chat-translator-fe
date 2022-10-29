@@ -249,7 +249,7 @@ const useCreateChat = ()=>{
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(167);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
-const BASE_API_ENDPOINT = "http://46.101.119.178:8000" || 0;
+const BASE_API_ENDPOINT = "http://46.101.119.178:5000" || 0;
 const IS_SERVER = "undefined" === 'undefined';
 const defaultConfig = {
     baseURL: BASE_API_ENDPOINT || '',
