@@ -145,7 +145,7 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
         isOpen={isSettingsModalOpen}
         onClose={() => { setIsSettingsModalOpen(false)} }
       >
-        <ChatSettings />
+        <ChatSettings onApplyChanges={() => { setIsSettingsModalOpen(false)}} />
       </Modal>
       {isReady && allMessages?.pages ? (
         <MessagesList

@@ -54,7 +54,8 @@ var router_ = __webpack_require__(853);
         chatWith: (friend)=>`Chat settings for ${friend}`
         ,
         friendTyping: 'Friend typing...',
-        selectLanguage: 'Select language'
+        selectLanguage: 'Select language',
+        apply: 'Apply'
     },
     messages: {
         fetchOlder: 'Fetch older',

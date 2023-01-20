@@ -4,6 +4,8 @@ import moment from 'moment'
 import { formatChatPreviewDate } from '../../utils/dateFormatter'
 import { useLocale } from '../../hooks/i18n'
 import { useThemeContext } from '../../providers/ThemeProvider'
+import useWindowDimensions from '../../hooks/helpers/useWindowDimensions'
+import { WINDOW_WIDTH_BREAKPOINT_MD, WINDOW_WIDTH_BREAKPOINT_SM } from '../../constants/windowBreakpoints'
 
 type ChatItemProps = {
   chat: Chat,
@@ -15,6 +17,7 @@ const ChatItem: FC<ChatItemProps> = ({ chat, selectedChat, setSelectedChat }) =>
   const { isDark } = useThemeContext()
   const { friend, lastMessage, me } = chat
   const { t } = useLocale()
+  const { width: windowWidth } = useWindowDimensions()
 
   const isLastMessageMine = lastMessage.senderId === me._id
   const isLastMessageRead = moment(me.lastVisit).isSameOrAfter(moment(lastMessage.createdAt)) || isLastMessageMine
@@ -39,7 +42,9 @@ const ChatItem: FC<ChatItemProps> = ({ chat, selectedChat, setSelectedChat }) =>
         }>
           {isLastMessageMine ? lastMessage.text : (lastMessage.textTranslated || lastMessage.text || t.chats.noMessagesYet)}
         </div>
-        <div className='text-sm mx-1 text-gray-400 whitespace-nowrap'>{formatChatPreviewDate(lastMessage.createdAt)}</div>
+        {windowWidth > WINDOW_WIDTH_BREAKPOINT_SM && (
+          <div className='text-sm mx-1 text-gray-400 whitespace-nowrap'>{formatChatPreviewDate(lastMessage.createdAt)}</div>
+        )}
       </div>
       {!isLastMessageRead && <div className='absolute right-3 top-[36px] rounded-full h-2 w-2 bg-indigo-500' />}
     </div>

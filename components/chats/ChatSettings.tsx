@@ -8,13 +8,19 @@ import socket from '../../sockets'
 import { toast } from 'react-toastify'
 import ToastSuccess from '../shared/ToastSuccess'
 import Toggle from '../shared/Toggle'
+import { BeatLoader } from 'react-spinners'
 
-const ChatSettings = () => {
+type ChatSettingsProps = {
+  onApplyChanges: () => void
+}
+
+const ChatSettings = ({ onApplyChanges }: ChatSettingsProps) => {
   const { t } = useLocale()
   const { selectedChat } = useChatsContext()
 
   const { mutateAsync: setSettingsProperty, invalidateChats } = useSetSettingsProperty()
   const [language, setLanguage] = useState('')
+  const [isApplyingChanges, setIsApplyingChanges] = useState(false)
   const [showOriginalMessages, setShowOriginalMessages] = useState(false)
   const [isInitialFetchingFinished, setIsInitialFetchingFinished] = useState(false)
 
@@ -26,6 +32,7 @@ const ChatSettings = () => {
 
   const applyChanges = async () => {
     if (!selectedChat || !language) return
+    setIsApplyingChanges(true)
 
     await setSettingsProperty({
       chatId: selectedChat._id,
@@ -45,6 +52,8 @@ const ChatSettings = () => {
     await invalidateChats()
     socket.emit('chatSettingChanged', selectedChat)
     toast(<ToastSuccess text={t.chats.settings.settingsSuccessfullyChanged} />)
+    setIsApplyingChanges(false)
+    onApplyChanges()
   }
 
   const isLanguageChanged = !!language && selectedChat?.me.sendLanguage !== language
@@ -95,12 +104,12 @@ const ChatSettings = () => {
         <div
           className={`
           px-6 py-2 rounded-xl text-white 
-          ${hasChanges ? 'bg-teal-400 cursor-pointer' : 'bg-gray-300 cursor-default'}`
+          ${(hasChanges && !isApplyingChanges) ? 'bg-teal-400 cursor-pointer' : 'bg-gray-300 cursor-default'}`
         }
-          onClick={() => hasChanges && applyChanges()}
+          onClick={() => hasChanges && !isApplyingChanges && applyChanges()}
           data-cy='applySettingsButton'
         >
-          Apply
+          {isApplyingChanges ? <BeatLoader color={'gray'} size={10} /> : t.chats.apply}
         </div>
       </div>
     </div>

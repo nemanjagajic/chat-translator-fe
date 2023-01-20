@@ -36,7 +36,8 @@ export default {
     noMessagesYet: 'No messages yet',
     chatWith: (friend) => `Chat settings for ${friend}`,
     friendTyping: 'Friend typing...',
-    selectLanguage: 'Select language'
+    selectLanguage: 'Select language',
+    apply: 'Apply'
   },
   messages: {
     fetchOlder: 'Fetch older',
