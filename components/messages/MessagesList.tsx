@@ -10,7 +10,8 @@ type MessagesListProps = {
   friendLastVisit: string | undefined,
   fetchOlderMessages: () => void,
   isLastPageReached: boolean,
-  showOriginalMessages: boolean
+  showOriginalMessages: boolean,
+  pendingMessage?: JSX.Element | null
 }
 
 const MessagesList: FC<MessagesListProps> = ({
@@ -18,7 +19,8 @@ const MessagesList: FC<MessagesListProps> = ({
  friendLastVisit,
  fetchOlderMessages,
  isLastPageReached,
- showOriginalMessages
+ showOriginalMessages,
+ pendingMessage
 }) => {
   const { t } = useLocale()
   const isMessagesListEmpty = !messagesPages[0][0]
@@ -44,6 +46,7 @@ const MessagesList: FC<MessagesListProps> = ({
 
   return (
     <div className='flex flex-col-reverse h-full w-full overflow-y-scroll py-4'>
+      {pendingMessage}
       {isMessagesListEmpty ? renderNoMessagesText() : renderMessages()}
       {!isLastPageReached && (
         <div className='flex justify-center mb-4' onClick={fetchOlderMessages}>

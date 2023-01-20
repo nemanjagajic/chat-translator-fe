@@ -10,10 +10,12 @@ import { useLocale } from '../../hooks/i18n'
 import * as Sentry from '@sentry/react'
 
 type MessageInputProps = {
-  fetchNewestMessages: Function
+  fetchNewestMessages: Function,
+  onMessageDispatched: Function,
+  isSendingMessagesDisabled: boolean
 }
 
-const MessageInput: FC<MessageInputProps> = ({ fetchNewestMessages }) => {
+const MessageInput: FC<MessageInputProps> = ({ fetchNewestMessages, onMessageDispatched, isSendingMessagesDisabled }) => {
   const { isDark } = useThemeContext()
   const { selectedChat } = useChatsContext()
   const textAreaRef = useRef() as React.MutableRefObject<HTMLTextAreaElement>
@@ -50,10 +52,11 @@ const MessageInput: FC<MessageInputProps> = ({ fetchNewestMessages }) => {
 
   const handleSendMessage = () => {
     const chatId = selectedChat?._id
-    if (!chatId || !text) return
+    if (!chatId || !text || isSendingMessagesDisabled) return
 
     setText('')
     sendMessage({ chatId, text })
+    onMessageDispatched(text)
   }
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -83,7 +86,7 @@ const MessageInput: FC<MessageInputProps> = ({ fetchNewestMessages }) => {
         onClick={handleSendMessage}
         data-cy='sendMessageButton'
       >
-        <Send height='20px' width='20px' color={!!text ? '#2dd4bf' : '#d1d5db'} />
+        <Send height='20px' width='20px' color={(!!text && !isSendingMessagesDisabled) ? '#2dd4bf' : '#d1d5db'} />
       </button>
     </div>
   )

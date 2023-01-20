@@ -4,13 +4,15 @@ import { useLoggedUser } from '../../hooks/auth'
 import moment from 'moment'
 import { Checkmark, CheckmarkDone } from 'react-ionicons'
 import { useThemeContext } from '../../providers/ThemeProvider'
+import { BeatLoader } from 'react-spinners'
 
 type MessageProps = {
   message: Message,
   showDateSeparator: boolean,
-  nextMessageDate: string,
+  nextMessageDate?: string,
   isRead: boolean,
   showOriginalMessages: boolean
+  isPendingMessage?: boolean
 }
 
 const Message: FC<MessageProps> = ({ message: {
@@ -22,10 +24,17 @@ const Message: FC<MessageProps> = ({ message: {
   showDateSeparator,
   nextMessageDate,
   isRead,
-  showOriginalMessages}) => {
+  showOriginalMessages,
+  isPendingMessage}) => {
   const { isDark } = useThemeContext()
   const loggedUser = useLoggedUser()
   const isMessageMine = senderId === loggedUser?._id
+
+  const getTranslatedText = () => {
+    const translatedText = isMessageMine && !showOriginalMessages ? text : (textTranslated || text)
+    const loader = <BeatLoader color={'white'} size={8} />
+    return isPendingMessage ? loader : translatedText
+  }
 
   return (
     <>
@@ -34,21 +43,21 @@ const Message: FC<MessageProps> = ({ message: {
         className={
           `flex flex-col 
           ${isMessageMine ? 'self-end bg-indigo-500' : `self-start ${isDark ? 'bg-gray-500' : 'bg-gray-200'}`} 
-          mx-4 max-w-[50%] rounded-3xl px-4 pt-2 pb-1 break-words z-[1] mt-1`
+          mx-4 max-w-[50%] rounded-3xl px-4 pt-2 pb-1 break-words z-[1] mt-1 ${isPendingMessage && 'bg-indigo-400'}`
         }
       >
         <div
           className={`${(isMessageMine || isDark) ? 'text-white' : 'text-gray-800'}`}
           data-cy='translatedMessageText'
         >
-          {isMessageMine && !showOriginalMessages ? text : (textTranslated || text)}
+          {getTranslatedText()}
         </div>
         <div className={`flex flex-row items-center w-full ${isMessageMine ? 'justify-end' : 'justify-start'}`}>
           <div className={`text-xs mr-1 ${isMessageMine ? 'text-gray-300' : 'text-gray-500'}`}>{moment(createdAt).format('HH:mm')}</div>
           {isMessageMine && (
             <div>{isRead
               ? <CheckmarkDone height='15px' width='15px' color='#2dd4bf' />
-              : <Checkmark height='15px' width='15px' color='#2dd4bf' />}
+              : <Checkmark height='15px' width='15px' color={`${isPendingMessage ? '#ccc' : '#2dd4bf'}`} />}
             </div>
           )}
         </div>

@@ -44,8 +44,8 @@ export const useSendMessage = (onSuccess?: Function, onError?: Function) => {
     ({ chatId, text }: MessageInput) => sendMessage(chatId, text),
     {
       onSuccess: ({ message }) => {
-        socket.emit('chatMessageSent', message)
         onSuccess?.()
+        socket.emit('chatMessageSent', message)
         queryClient.invalidateQueries('chats')
       },
       onError: (() => {

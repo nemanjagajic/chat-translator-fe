@@ -196,8 +196,8 @@ const useSendMessage = (onSuccess, onError)=>{
     const { mutate , isLoading , error  } = (0,external_react_query_.useMutation)(({ chatId , text  })=>sendMessage(chatId, text)
     , {
         onSuccess: ({ message  })=>{
-            sockets/* default.emit */.Z.emit('chatMessageSent', message);
             onSuccess === null || onSuccess === void 0 ? void 0 : onSuccess();
+            sockets/* default.emit */.Z.emit('chatMessageSent', message);
             queryClient.invalidateQueries('chats');
         },
         onError: ()=>{

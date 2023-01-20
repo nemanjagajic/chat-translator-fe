@@ -7,7 +7,7 @@ import MessageInput from '../messages/MessageInput'
 import Modal from '../shared/Modal'
 import ChatSettings from './ChatSettings'
 import socket from '../../sockets/index'
-import { Message } from '../../ts/messages'
+import { Message as MessageType } from '../../ts/messages'
 import { useLoggedUser } from '../../hooks/auth'
 import { ChatTypingUpdate } from '../../ts/chats'
 import { SocketEvents } from '../../ts/sockets'
@@ -15,6 +15,8 @@ import { SettingsSharp } from 'react-ionicons'
 import { useLocale } from '../../hooks/i18n'
 import { useThemeContext } from '../../providers/ThemeProvider'
 import useWindowFocus from '../../hooks/helpers/useWindowFocus'
+import Message from '../../components/messages/Message'
+import moment from 'moment'
 
 const PAGINATION_LIMIT = 100
 
@@ -35,9 +37,10 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
   const [isLastPageReached, setIsLastPageReached] = useState(false)
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
   const [isFriendTyping, setIsFriendTyping] = useState(false)
+  const [dispatchedMessage, setDispatchedMessage] = useState<string | null>(null)
 
   const { data: allMessages, fetchNextPage, isLoading } = useFetchMessages(selectedChatId, PAGINATION_LIMIT)
-  const allMessagesRef = useRef<InfiniteData<Message[]>>()
+  const allMessagesRef = useRef<InfiniteData<MessageType[]>>()
   const { mutateAsync: setChatVisited } = useSetChatVisited()
 
   useEffect(() => {
@@ -75,7 +78,7 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
     }
   }, [isWindowFocused])
 
-  const onLoadMessage = async (message: Message) => {
+  const onLoadMessage = async (message: MessageType) => {
     if (!isWindowFocused) {
       document.title = `${t.general.title} (${t.messages.new})`
     }
@@ -120,6 +123,7 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
     }))
     await queryClient.refetchQueries(['messages', selectedChatId])
     setNextPageParam(1)
+    setDispatchedMessage(null)
   }
 
   const handleChatVisited = async (updateChats = false) => {
@@ -139,6 +143,25 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
     </div>
   )
 
+  const renderPendingMessage = () => (
+    <Message
+      key={'pending'}
+      message={{
+        _id: 'pending',
+        chatId: selectedChatId,
+        text: dispatchedMessage || '',
+        textTranslated: '',
+        senderId: loggedUser?._id || '',
+        receiverId: '',
+        createdAt: moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
+      }}
+      showDateSeparator={false}
+      isRead={false}
+      showOriginalMessages={selectedChat.me.showOriginalMessages}
+      isPendingMessage={true}
+    />
+  )
+
   return (
     <div className={`flex flex-1 flex-col h-full ${isDark ? 'bg-gray-700' : 'bg-gray-50'} overflow-auto`}>
       <Modal
@@ -154,13 +177,20 @@ const Chat: FC<ChatProps> = ({ invalidateChats }) => {
           fetchOlderMessages={fetchOlderMessages}
           isLastPageReached={isLastPageReached}
           showOriginalMessages={selectedChat.me.showOriginalMessages}
+          pendingMessage={dispatchedMessage ? renderPendingMessage() : null}
         />
       ) : (
         <div className='flex flex-col-reverse h-full w-full overflow-y-scroll' />
       )}
       {isFriendTyping && <div className='m-2 ml-4 text-gray-400 italic'>{t.chats.friendTyping}</div>}
       <div className='flex flex-row'>
-        <MessageInput fetchNewestMessages={fetchNewestMessages} />
+        <MessageInput
+          fetchNewestMessages={fetchNewestMessages}
+          onMessageDispatched={(text: string) => {
+            setDispatchedMessage(text)
+          }}
+          isSendingMessagesDisabled={!!dispatchedMessage}
+        />
         <div
           className='m-4 mt-2 cursor-pointer'
           onClick={() => { setIsSettingsModalOpen(true)} }

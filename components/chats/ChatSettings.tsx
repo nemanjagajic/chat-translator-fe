@@ -109,7 +109,7 @@ const ChatSettings = ({ onApplyChanges }: ChatSettingsProps) => {
           onClick={() => hasChanges && !isApplyingChanges && applyChanges()}
           data-cy='applySettingsButton'
         >
-          {isApplyingChanges ? <BeatLoader color={'gray'} size={10} /> : t.chats.apply}
+          {isApplyingChanges ? <BeatLoader color={'#808080'} size={10} /> : t.chats.apply}
         </div>
       </div>
     </div>
